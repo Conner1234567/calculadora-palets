@@ -27,9 +27,11 @@ function actualizarCamion() {
     let currentY = 0; // Posición vertical para la siguiente columna
     let maxHeightInColumn = 0; // Altura máxima de los palets en la columna
 
+    // Recorremos todos los palets
     palets.forEach(palet => {
-        if (currentY + palet.ancho <= camionAncho) {
-            // Si el palet cabe en la columna actual, añadirlo
+        // Si el palet cabe dentro del ancho del camión, añádelo
+        if (currentX + palet.largo <= camionLargo) {
+            // Colocar el palet en el camión
             let paletElemento = document.createElement('div');
             paletElemento.classList.add('palet');
             paletElemento.style.width = `${palet.largo}px`;
@@ -40,15 +42,14 @@ function actualizarCamion() {
             paletElemento.style.top = `${currentY}px`;
             camionArea.appendChild(paletElemento);
 
-            // Actualizar el recorrido vertical y ancho de la columna
-            currentY += palet.ancho;
-            maxHeightInColumn = Math.max(maxHeightInColumn, palet.largo);
+            // Actualizar el espacio ocupado en el camión
+            currentX += palet.largo; // Avanzamos en la dirección horizontal
         } else {
-            // Si el palet no cabe en la columna, mover a la siguiente columna
-            currentX += maxHeightInColumn; // Mover horizontalmente
-            currentY = 0; // Reiniciar la posición vertical
+            // Si el palet no cabe en la fila actual, pasamos a la siguiente fila
+            currentY += palet.ancho; // Mover al siguiente nivel
+            currentX = 0; // Reiniciar la posición horizontal
 
-            // Colocar el palet en la nueva columna
+            // Colocar el palet en la nueva fila
             let paletElemento = document.createElement('div');
             paletElemento.classList.add('palet');
             paletElemento.style.width = `${palet.largo}px`;
@@ -58,20 +59,18 @@ function actualizarCamion() {
             paletElemento.style.left = `${currentX}px`;
             paletElemento.style.top = `${currentY}px`;
             camionArea.appendChild(paletElemento);
-            
-            // Actualizar la posición para el siguiente palet
-            currentY += palet.ancho;
-            maxHeightInColumn = palet.largo; // Cambio de la altura máxima de la columna
-        }
 
-        // Calcular los metros lineales ocupados
-        totalLdm = Math.max(totalLdm, currentX / 100); // Convertir a metros
+            // Actualizar el espacio ocupado
+            currentX += palet.largo; // Avanzamos en la dirección horizontal
+        }
     });
 
-    // Mostrar el resultado
+    // Cálculo de los metros lineales ocupados
+    totalLdm = currentY / 100; // Total de metros lineales ocupados
     resultadoDiv.innerHTML = `Total de metros lineales ocupados: ${totalLdm.toFixed(2)} m`;
 }
 
+// Función para generar colores aleatorios
 function getRandomColor() {
     const letters = '0123456789ABCDEF';
     let color = '#';
@@ -80,5 +79,6 @@ function getRandomColor() {
     }
     return color;
 }
+
 
 
