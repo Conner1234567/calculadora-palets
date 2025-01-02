@@ -4,48 +4,29 @@ let camionLargo = 1360; // Largo del camión en cm
 let camionArea = document.getElementById('camionArea');
 let resultadoDiv = document.getElementById('resultado');
 
-function agregarPalet() {
-    const formPalets = document.getElementById('formPalets');
-    const paletDiv = document.createElement('div');
-    paletDiv.classList.add('palet-input');
-    
-    paletDiv.innerHTML = `
-        <label for="largo">Largo del palet (cm):</label>
-        <input type="number" class="largo" placeholder="Largo" required />
-        <label for="ancho">Ancho del palet (cm):</label>
-        <input type="number" class="ancho" placeholder="Ancho" required />
-        <button type="button" onclick="eliminarPalet(this)">Eliminar</button>
-    `;
-    
-    formPalets.appendChild(paletDiv);
-}
+function agregarPalets() {
+    const largo = parseInt(document.getElementById('largo').value);
+    const ancho = parseInt(document.getElementById('ancho').value);
+    const cantidad = parseInt(document.getElementById('cantidad').value);
 
-function eliminarPalet(button) {
-    button.parentElement.remove();
-    palets = palets.filter(palet => palet.div !== button.parentElement);
-    actualizarCamion();
-}
-
-function calcularEspacio() {
-    camionArea.innerHTML = '';  // Limpiar el área del camión y la lista de palets
-    palets = [];
-    
-    const inputs = document.querySelectorAll('.palet-input');
-    inputs.forEach(input => {
-        const largo = parseInt(input.querySelector('.largo').value);
-        const ancho = parseInt(input.querySelector('.ancho').value);
-        
-        if (largo && ancho) {
+    if (largo && ancho && cantidad) {
+        for (let i = 0; i < cantidad; i++) {
             palets.push({ largo, ancho });
         }
-    });
+        actualizarCamion();
+    } else {
+        alert('Por favor, ingresa las medidas y la cantidad de los palets.');
+    }
+}
 
+function actualizarCamion() {
+    camionArea.innerHTML = '';  // Limpiar el área del camión y la lista de palets
     let totalLdm = 0;
     let currentX = 0; // Posición horizontal para colocar los palets
     let currentY = 0; // Posición vertical para la siguiente columna
     let maxHeightInColumn = 0; // Altura máxima de los palets en la columna
     let colWidth = 0; // El ancho total de la columna en cada paso
-    
+
     palets.forEach(palet => {
         if (currentY + palet.ancho <= camionAncho) {
             // Si el palet cabe en la columna actual, añadirlo
@@ -99,5 +80,6 @@ function getRandomColor() {
     }
     return color;
 }
+
 
 
