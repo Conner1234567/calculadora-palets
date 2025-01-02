@@ -2,86 +2,89 @@ const camionAncho = 244; // Ancho del camión en cm
 const camionLargo = 1360; // Largo del camión en cm
 let palets = [];
 
-const agregarPaletBtn = document.getElementById("agregarPalet");
-const calcularBtn = document.getElementById("calcular");
-const camionArea = document.getElementById("camion-area");
-const resultadoDiv = document.getElementById("resultado");
-
-agregarPaletBtn.addEventListener("click", () => {
+document.getElementById("agregarPalet").addEventListener("click", () => {
     const ancho = parseInt(document.getElementById("ancho").value);
     const largo = parseInt(document.getElementById("largo").value);
     const cantidad = parseInt(document.getElementById("cantidad").value);
 
-    if (!ancho || !largo || !cantidad) {
-        alert("Por favor, ingresa valores válidos para todos los campos.");
+    if (isNaN(ancho) || isNaN(largo) || isNaN(cantidad) || ancho <= 0 || largo <= 0 || cantidad <= 0) {
+        alert("Por favor, ingrese valores válidos para ancho, largo y cantidad.");
         return;
     }
 
     palets.push({ ancho, largo, cantidad });
-    alert(`Se agregó ${cantidad} palets de ${ancho}x${largo} cm.`);
+    renderPalets();
 });
 
-calcularBtn.addEventListener("click", calcularDistribucion);
+document.getElementById("calcular").addEventListener("click", () => {
+    const metrosLineales = calcularMetrosLineales();
+    document.getElementById("resultado").innerText = `Metros lineales ocupados: ${metrosLineales.toFixed(2)} m`;
+});
 
-function calcularDistribucion() {
-    camionArea.innerHTML = ''; // Limpiar el área del camión
-    let ocupacion = Array.from({ length: camionLargo }, () => Array(camionAncho).fill(false)); // Matriz de ocupación
-    let totalLdm = 0;
+function renderPalets() {
+    const camionArea = document.getElementById("camion-area");
+    camionArea.innerHTML = "";
 
-    palets.forEach(palet => {
-        const { largo, ancho, cantidad } = palet;
-        let colocado = 0;
+    let x = 0; // Coordenada x en cm
+    let y = 0; // Coordenada y en cm
 
-        while (colocado < cantidad) {
-            let posicion = encontrarEspacioDisponible(ancho, largo, ocupacion); // Buscar espacio para el palet
-            if (!posicion) {
-                alert(`No hay suficiente espacio para un palet de ${ancho}x${largo} cm.`);
-                break;
+    palets.forEach(({ ancho, largo, cantidad }, index) => {
+        for (let i = 0; i < cantidad; i++) {
+            if (x + ancho > camionAncho) {
+                x = 0;
+                y += largo;
             }
 
-            // Marcar ocupación
-            ocuparEspacio(posicion, ancho, largo, ocupacion);
+            if (y + largo > camionLargo) {
+                alert("El camión está lleno, no caben más palets.");
+                return;
+            }
 
-            // Dibujar el palet
-            let color = obtenerColorParaPalet(ancho, largo);
-            let paletElemento = document.createElement('div');
-            paletElemento.classList.add('palet');
-            paletElemento.style.width = `${ancho}px`;
-            paletElemento.style.height = `${largo}px`;
-            paletElemento.style.backgroundColor = color;
-            paletElemento.style.left = `${posicion.y}px`;
-            paletElemento.style.top = `${posicion.x}px`;
-            camionArea.appendChild(paletElemento);
+            const paletDiv = document.createElement("div");
+            paletDiv.classList.add("palet");
+            paletDiv.style.width = `${ancho}px`;
+            paletDiv.style.height = `${largo}px`;
+            paletDiv.style.backgroundColor = getColor(index);
+            paletDiv.style.left = `${x}px`;
+            paletDiv.style.top = `${y}px`;
+            camionArea.appendChild(paletDiv);
 
-            colocado++;
+            x += ancho;
+        }
+        x = 0; // Reiniciar fila para un nuevo tipo de palet
+    });
+}
+
+function calcularMetrosLineales() {
+    let metrosLineales = 0;
+    let ocupadoAncho = 0;
+
+    palets.forEach(({ ancho, largo, cantidad }) => {
+        let paletsRestantes = cantidad;
+
+        while (paletsRestantes > 0) {
+            if (ocupadoAncho + ancho > camionAncho) {
+                ocupadoAncho = 0;
+                metrosLineales += largo / 100; // Convertir a metros
+            }
+
+            ocupadoAncho += ancho;
+            paletsRestantes--;
+        }
+
+        if (ocupadoAncho > 0) {
+            metrosLineales += largo / 100; // Agregar última fila ocupada
+            ocupadoAncho = 0;
         }
     });
 
-    // Calcular metros lineales ocupados
-    for (let x = 0; x < camionLargo; x++) {
-        if (ocupacion[x].some(celda => celda)) {
-            totalLdm += 1; // Cada fila ocupada suma 1 cm
-        }
-    }
-    resultadoDiv.innerHTML = `Total de metros lineales ocupados: ${(totalLdm / 100).toFixed(2)} m`;
+    return metrosLineales;
 }
 
-function encontrarEspacioDisponible(ancho, largo, ocupacion) {
-    for (let x = 0; x <= camionLargo - largo; x++) {
-        for (let y = 0; y <= camionAncho - ancho; y++) {
-            if (esEspacioLibre(x, y, largo, ancho, ocupacion)) {
-                return { x, y };
-            }
-        }
-    }
-    return null; // No hay espacio disponible
+function getColor(index) {
+    const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107"];
+    return colors[index % colors.length];
 }
-
-function esEspacioLibre(x, y, largo, ancho, ocupacion) {
-    for (let i = 0; i < largo; i++) {
-        for (let j = 0; j < ancho; j++) {
-            if (ocupacion[x + i] && ocupacion[x + i][y + j]) {
-                return false;
             }
         }
     }
