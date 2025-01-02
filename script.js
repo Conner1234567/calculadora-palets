@@ -3,17 +3,16 @@ let palets = [];  // Array para almacenar los palets
 // Función para agregar un palet al formulario
 function agregarPalet() {
     const formPalets = document.getElementById('formPalets');
-
-    const index = formPalets.childElementCount;  // Para saber el índice del palet
+    const index = formPalets.childElementCount;
 
     formPalets.innerHTML += `
         <div id="palet${index}">
             <h3>Palet ${index + 1}</h3>
-            <label for="largo${index}">Largo (en centímetros):</label>
-            <input type="number" id="largo${index}" placeholder="Largo del palet (cm)" required>
+            <label for="largo${index}">Largo (cm):</label>
+            <input type="number" id="largo${index}" placeholder="Largo (cm)" required>
 
-            <label for="ancho${index}">Ancho (en centímetros):</label>
-            <input type="number" id="ancho${index}" placeholder="Ancho del palet (cm)" required>
+            <label for="ancho${index}">Ancho (cm):</label>
+            <input type="number" id="ancho${index}" placeholder="Ancho (cm)" required>
 
             <label for="cantidad${index}">Cantidad:</label>
             <input type="number" id="cantidad${index}" value="1" min="1" required>
@@ -23,12 +22,12 @@ function agregarPalet() {
     `;
 }
 
-// Función para remover un palet
+// Función para eliminar un palet
 function removerPalet(index) {
     document.getElementById(`palet${index}`).remove();
 }
 
-// Función para calcular el espacio total
+// Función para calcular el espacio ocupado en el camión
 function calcularEspacio() {
     const camionLargo = 1360;  // Largo del camión en centímetros (13.6 metros)
     const camionAncho = 244;   // Ancho del camión en centímetros (2.44 metros)
@@ -40,9 +39,9 @@ function calcularEspacio() {
     let xPos = 0;
     let yPos = 0;
 
-    // Recoger los datos de los palets y calcular el espacio ocupado
-    palets = [];  // Reiniciar el array de palets
+    palets = [];  // Limpiar los palets
 
+    // Recoger datos y agregar palets
     const formPalets = document.getElementById('formPalets').children;
 
     for (let i = 0; i < formPalets.length; i++) {
@@ -50,86 +49,81 @@ function calcularEspacio() {
         const anchoPalet = parseFloat(document.getElementById(`ancho${i}`).value);
         const cantidadPalet = parseInt(document.getElementById(`cantidad${i}`).value);
 
-        // Validar que los campos no estén vacíos
+        // Validar datos
         if (isNaN(largoPalet) || isNaN(anchoPalet) || isNaN(cantidadPalet)) {
-            alert('Por favor ingresa todos los datos correctamente');
+            alert('Por favor, ingresa todos los datos correctamente.');
             return;
         }
 
-        // Agregar el palet al array
-        const colorPalet = obtenerColorAleatorio();  // Generar un solo color por tipo de palet
+        // Añadir palets al array
         for (let j = 0; j < cantidadPalet; j++) {
-            palets.push({
-                largo: largoPalet,
-                ancho: anchoPalet,
-                cantidad: cantidadPalet,
-                color: colorPalet
-            });
+            const colorPalet = obtenerColorAleatorio();
+            palets.push({ largo: largoPalet, ancho: anchoPalet, color: colorPalet });
         }
 
-        // Calcular los metros lineales
-        espacioOcupado += largoPalet * cantidadPalet; // Se suma el largo por cantidad
+        espacioOcupado += largoPalet * cantidadPalet;  // Cálculo de espacio total
         totalPalets += cantidadPalet;
-        totalMetrosLineales += (largoPalet * cantidadPalet) / 100;  // Convertir a metros
+        totalMetrosLineales += (largoPalet * cantidadPalet) / 100;
     }
 
-    // Mostrar el resultado
-    document.getElementById('resultado').textContent = `El espacio ocupado por ${totalPalets} palets es ${totalMetrosLineales.toFixed(2)} metros lineales de los ${camionLargo / 100} metros disponibles en el camión.`;
+    // Mostrar resultado en metros lineales
+    document.getElementById('resultado').textContent = `El espacio ocupado por ${totalPalets} palets es ${totalMetrosLineales.toFixed(2)} metros lineales.`;
 
-    // Mostrar los palets dentro del camión
+    // Dibujar los palets dentro del camión
     dibujarCamion(palets, camionLargo, camionAncho);
 }
 
 // Función para dibujar los palets dentro del camión
 function dibujarCamion(palets, camionLargo, camionAncho) {
     const camionDiv = document.getElementById('camion');
-    camionDiv.innerHTML = ''; // Limpiar antes de dibujar
+    camionDiv.innerHTML = '';  // Limpiar antes de dibujar
 
-    let xPos = 0;
-    let yPos = 0;
+    let xPos = 0;  // Posición inicial en X
+    let yPos = 0;  // Posición inicial en Y
 
-    // Organizar los palets de forma ordenada dentro del camión
     for (let i = 0; i < palets.length; i++) {
         const largoPalet = palets[i].largo;
         const anchoPalet = palets[i].ancho;
         const colorPalet = palets[i].color;
 
-        // Verificar si el palet cabe en la fila actual
+        // Verificar si cabe en la fila actual
         if (xPos + largoPalet <= camionLargo) {
-            // Dibujar el palet
+            // Dibujar palet
             const paletDiv = document.createElement('div');
             paletDiv.classList.add('palet');
-            paletDiv.style.width = `${largoPalet}px`; // Usar centímetros convertidos directamente a píxeles
-            paletDiv.style.height = `${anchoPalet}px`; // Usar centímetros convertidos directamente a píxeles
-            paletDiv.style.backgroundColor = colorPalet; // Asignar color aleatorio
+            paletDiv.style.width = `${largoPalet}px`;
+            paletDiv.style.height = `${anchoPalet}px`;
+            paletDiv.style.backgroundColor = colorPalet;
             paletDiv.style.left = `${xPos}px`;
-            paletDiv.style.top = `${yPos * anchoPalet}px`;
+            paletDiv.style.top = `${yPos}px`;
 
             camionDiv.appendChild(paletDiv);
 
-            // Actualizar posición para el siguiente palet
+            // Actualizar posición en X para el siguiente palet
             xPos += largoPalet;
         } else {
-            // Si el palet no cabe en la fila actual, comenzar una nueva fila
-            yPos++;
-            xPos = largoPalet;  // Comenzar desde el principio de la nueva fila
+            // Si no cabe en la fila, mover a la siguiente fila
+            yPos += anchoPalet;
+            xPos = largoPalet;  // Comenzar la nueva fila con el siguiente palet
+
+            // Dibujar en la nueva fila
             const paletDiv = document.createElement('div');
             paletDiv.classList.add('palet');
-            paletDiv.style.width = `${largoPalet}px`; // Usar centímetros convertidos directamente a píxeles
-            paletDiv.style.height = `${anchoPalet}px`; // Usar centímetros convertidos directamente a píxeles
-            paletDiv.style.backgroundColor = colorPalet; // Asignar color aleatorio
-            paletDiv.style.left = `${xPos - largoPalet}px`; // Ajustar posición de X para la nueva fila
-            paletDiv.style.top = `${yPos * anchoPalet}px`;
+            paletDiv.style.width = `${largoPalet}px`;
+            paletDiv.style.height = `${anchoPalet}px`;
+            paletDiv.style.backgroundColor = colorPalet;
+            paletDiv.style.left = `${xPos - largoPalet}px`;
+            paletDiv.style.top = `${yPos}px`;
 
             camionDiv.appendChild(paletDiv);
 
-            // Actualizar posición para el siguiente palet en la nueva fila
+            // Actualizar posición en X para el siguiente palet
             xPos += largoPalet;
         }
     }
 }
 
-// Función para obtener un color aleatorio
+// Función para obtener un color aleatorio para los palets
 function obtenerColorAleatorio() {
     const letras = '0123456789ABCDEF';
     let color = '#';
