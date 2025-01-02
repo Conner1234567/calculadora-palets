@@ -46,8 +46,7 @@ button:hover {
 }
 
 .palet {
-    width: 80px; /* Ancho del palet */
-    height: 120px; /* Alto del palet */
     background-color: #4caf50;
     position: absolute;
+    border: 1px solid #000;
 }
