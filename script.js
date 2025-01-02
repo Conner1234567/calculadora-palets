@@ -5,7 +5,7 @@ let camionArea = document.getElementById('camionArea');
 let resultadoDiv = document.getElementById('resultado');
 let paletListDiv = document.getElementById('palet-list');
 
-// Colores asignados a cada tipo de palet
+// Colores asignados para cada tamaño de palet
 let coloresAsignados = {};
 
 function agregarPalets() {
@@ -14,12 +14,9 @@ function agregarPalets() {
     const cantidad = parseInt(document.getElementById('cantidad').value);
 
     if (largo && ancho && cantidad) {
-        // Guardar palets en la lista
         palets.push({ largo, ancho, cantidad });
-
-        // Actualizar lista visual
         actualizarListaPalets();
-        actualizarCamion();
+        calcularDistribucion();
     } else {
         alert('Por favor, completa todos los campos.');
     }
@@ -41,14 +38,14 @@ function actualizarListaPalets() {
 function eliminarPalet(index) {
     palets.splice(index, 1);
     actualizarListaPalets();
-    actualizarCamion();
+    calcularDistribucion();
 }
 
-function actualizarCamion() {
-    camionArea.innerHTML = '';  // Limpiar el área del camión
+function calcularDistribucion() {
+    camionArea.innerHTML = ''; // Limpiar área del camión
     let totalLdm = 0;
-    let currentX = 0; // Posición horizontal
-    let currentY = 0; // Posición vertical
+    let currentX = 0;
+    let currentY = 0;
 
     palets.forEach(palet => {
         const { largo, ancho, cantidad } = palet;
@@ -70,14 +67,14 @@ function actualizarCamion() {
                 paletElemento.style.top = `${currentY}px`;
                 camionArea.appendChild(paletElemento);
 
-                currentX += largo; // Actualizar posición horizontal
+                currentX += largo;
             } else {
-                alert('No hay espacio suficiente para agregar más palets.');
+                alert('No hay suficiente espacio para más palets.');
                 break;
             }
         }
 
-        totalLdm += Math.ceil(currentX / 100); // Actualizar metros lineales
+        totalLdm += (currentX / 100);
     });
 
     resultadoDiv.innerHTML = `Total de metros lineales ocupados: ${totalLdm.toFixed(2)} m`;
