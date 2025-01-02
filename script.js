@@ -72,16 +72,16 @@ function calcularDistribucion() {
             camionArea.appendChild(paletElemento);
 
             // Actualizar metros lineales ocupados
-            totalLdm = Math.max(totalLdm, (posicion.x + largo) / 100);
+            totalLdm = Math.max(totalLdm, (posicion.y + ancho) / 100);
         }
     });
 
-    resultadoDiv.innerHTML = `Total de metros lineales ocupados: ${Math.min(totalLdm, 13.6).toFixed(2)} m`;
+    resultadoDiv.innerHTML = `Total de metros lineales ocupados: ${totalLdm.toFixed(2)} m`;
 }
 
 function encontrarEspacioDisponible(largo, ancho, ocupacion) {
-    for (let y = 0; y <= camionAncho - ancho; y++) {
-        for (let x = 0; x <= camionLargo - largo; x++) {
+    for (let x = 0; x <= camionLargo - largo; x++) {
+        for (let y = 0; y <= camionAncho - ancho; y++) {
             if (esEspacioLibre(x, y, largo, ancho, ocupacion)) {
                 return { x, y };
             }
@@ -93,7 +93,7 @@ function encontrarEspacioDisponible(largo, ancho, ocupacion) {
 function esEspacioLibre(x, y, largo, ancho, ocupacion) {
     for (let i = 0; i < largo; i++) {
         for (let j = 0; j < ancho; j++) {
-            if (ocupacion[x + i][y + j]) {
+            if (ocupacion[x + i] && ocupacion[x + i][y + j]) {
                 return false;
             }
         }
