@@ -38,6 +38,7 @@ function calcularEspacio() {
     let totalMetrosLineales = 0;
     let xPos = 0;
     let yPos = 0;
+    let largoActual = 0;  // Para calcular el largo total ocupado en una única línea
 
     palets = [];  // Limpiar los palets
 
@@ -72,8 +73,10 @@ function calcularEspacio() {
         // Cálculo de espacio total
         espacioOcupado += largoPalet * cantidadPalet;
         totalPalets += cantidadPalet;
-        totalMetrosLineales += (largoPalet * cantidadPalet) / 100; // Convertir a metros
     }
+
+    // Cálculo de metros lineales ocupados (sin contar filas separadas)
+    totalMetrosLineales = (espacioOcupado / 100); // Convertir a metros lineales (ya que estamos trabajando en centímetros)
 
     // Mostrar resultado en metros lineales
     document.getElementById('resultado').textContent = `El espacio ocupado por ${totalPalets} palets es ${totalMetrosLineales.toFixed(2)} metros lineales.`;
@@ -146,3 +149,4 @@ function obtenerColorAleatorio() {
     }
     return color;
 }
+
