@@ -1,35 +1,58 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Palets</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Cálculo de Metros Lineales</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        #camion-area {
+            position: relative;
+            width: 244px;
+            height: 1360px;
+            background-color: #f3f3f3;
+            border: 2px solid #000;
+            margin: 20px auto;
+            display: flex;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .palet {
+            position: absolute;
+            box-sizing: border-box;
+            border: 1px solid #000;
+        }
+
+        #formulario {
+            margin: 20px;
+            text-align: center;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <h1>Calculadora de Palets en Camión</h1>
-    
-    <div id="input-container">
-        <label for="largo">Largo del palet (cm):</label>
-        <input type="number" id="largo" placeholder="Largo (cm)" required>
-
-        <label for="ancho">Ancho del palet (cm):</label>
-        <input type="number" id="ancho" placeholder="Ancho (cm)" required>
-
-        <label for="cantidad">Cantidad de palets:</label>
-        <input type="number" id="cantidad" placeholder="Cantidad" required>
-
-        <button type="button" onclick="agregarPalets()">Agregar Palets</button>
+    <h1 style="text-align: center;">Cálculo de Palets en un Camión</h1>
+    <div id="formulario">
+        <label for="ancho">Ancho (cm):</label>
+        <input type="number" id="ancho" placeholder="Ejemplo: 80">
+        <label for="largo">Largo (cm):</label>
+        <input type="number" id="largo" placeholder="Ejemplo: 120">
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" placeholder="Ejemplo: 10">
+        <button id="agregarPalet">Agregar Palet</button>
+        <button id="calcular">Calcular Metros Lineales</button>
     </div>
-
-    <div id="palet-list"></div>
-
-    <div id="camionArea"></div>
+    <div id="camion-area"></div>
     <div id="resultado"></div>
-
     <script src="script.js"></script>
 </body>
 </html>
-
-
-
