@@ -5,16 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Palets en Camión</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        h1 {
+            color: #2d6a4f; /* Verde para el título */
+        }
+        #input-container {
+            margin-bottom: 20px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #input-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        #input-container input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #input-container button {
+            background-color: #2d6a4f; /* Verde */
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        #input-container button:hover {
+            background-color: #388e3c; /* Verde oscuro */
+        }
         #camionArea {
             position: relative;
             width: 1360px; /* Ancho del camión en px (13.6m) */
             height: 244px; /* Alto del camión en px (2.44m) */
-            background-color: lightgray;
+            background-color: #e0f7fa; /* Fondo claro para el camión */
             margin-top: 20px;
+            border: 2px solid #00796b;
+            border-radius: 8px;
         }
         .palet {
             position: absolute;
-            border: 1px solid black;
+            border: 1px solid #00796b; /* Color verde para los bordes */
+        }
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d6a4f; /* Verde */
         }
     </style>
 </head>
