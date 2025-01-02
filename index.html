@@ -5,40 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Espacio en el Camión</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .camion {
-            width: 500px;
-            height: 250px;
-            border: 2px solid #000;
-            position: relative;
-            background-color: #f0f0f0;
-        }
-
-        .palet {
-            width: 80px; /* Ancho del palet */
-            height: 120px; /* Alto del palet */
-            background-color: #4caf50;
-            position: absolute;
-        }
-    </style>
 </head>
 <body>
     <h1>Calculadora de Espacio en el Camión</h1>
 
     <div>
-        <label for="palets">Número de Palets:</label>
-        <input type="number" id="palets" placeholder="Número de palets">
+        <h2>Agrega los palets:</h2>
+        <label for="numPalets">Número de palets:</label>
+        <input type="number" id="numPalets" value="1" min="1">
+        <button onclick="agregarPalet()">Agregar Palet</button>
     </div>
 
-    <div>
-        <label for="largo">Largo del Palet (en metros):</label>
-        <input type="number" id="largo" placeholder="Largo del palet (m)">
-    </div>
-
-    <div>
-        <label for="ancho">Ancho del Palet (en metros):</label>
-        <input type="number" id="ancho" placeholder="Ancho del palet (m)">
-    </div>
+    <div id="formPalets"></div>
 
     <button onclick="calcularEspacio()">Calcular Espacio</button>
 
@@ -50,3 +28,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
