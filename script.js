@@ -51,7 +51,6 @@ function renderPalets() {
 
             x += ancho;
         }
-        x = 0; // Reiniciar fila para un nuevo tipo de palet
     });
 }
 
@@ -74,7 +73,6 @@ function calcularMetrosLineales() {
 
         if (ocupadoAncho > 0) {
             metrosLineales += largo / 100; // Agregar última fila ocupada
-            ocupadoAncho = 0;
         }
     });
 
@@ -85,25 +83,6 @@ function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107"];
     return colors[index % colors.length];
 }
-            }
-        }
-    }
-    return true;
-}
-
-function ocuparEspacio(posicion, ancho, largo, ocupacion) {
-    for (let i = 0; i < largo; i++) {
-        for (let j = 0; j < ancho; j++) {
-            ocupacion[posicion.x + i][posicion.y + j] = true;
-        }
-    }
-}
-
-function obtenerColorParaPalet(ancho, largo) {
-    const colores = ['#4CAF50', '#FF9800', '#2196F3', '#9C27B0', '#FFC107'];
-    return colores[(ancho + largo) % colores.length];
-}
-
 
 
 
