@@ -35,10 +35,8 @@ function calcularEspacio() {
     let espacioOcupado = 0;
     let totalPalets = 0;
     let totalMetrosLineales = 0;
-    let filaActual = 0;
     let xPos = 0;
     let yPos = 0;
-    let camionArea = camionLargo * camionAncho;
 
     palets = [];  // Limpiar los palets
 
@@ -76,36 +74,37 @@ function calcularEspacio() {
 
 // Función para dibujar los palets dentro del camión
 function dibujarCamion(palets, camionLargo, camionAncho) {
-    const camionDiv = document.getElementById('camion');
+    const camionDiv = document.getElementById('camionArea');
     camionDiv.innerHTML = '';  // Limpiar antes de dibujar
 
     let xPos = 0;  // Posición inicial en X
     let yPos = 0;  // Posición inicial en Y
+    let filaLargo = 0;  // Largo ocupado en la fila actual
 
     for (let i = 0; i < palets.length; i++) {
         const largoPalet = palets[i].largo;
         const anchoPalet = palets[i].ancho;
         const colorPalet = palets[i].color;
 
-        // Verificar si el palet cabe en la fila actual
-        if (xPos + largoPalet <= camionLargo) {
-            // Dibujar palet
+        // Verificar si el palet cabe en la fila actual (es decir, si sumamos este palet no excedemos el largo del camión)
+        if (filaLargo + largoPalet <= camionLargo) {
+            // Dibujar palet en la posición actual
             const paletDiv = document.createElement('div');
             paletDiv.classList.add('palet');
             paletDiv.style.width = `${largoPalet}px`;
             paletDiv.style.height = `${anchoPalet}px`;
             paletDiv.style.backgroundColor = colorPalet;
-            paletDiv.style.left = `${xPos}px`;
+            paletDiv.style.left = `${filaLargo}px`;
             paletDiv.style.top = `${yPos}px`;
 
             camionDiv.appendChild(paletDiv);
 
-            // Actualizar posición en X para el siguiente palet
-            xPos += largoPalet;
+            // Actualizar posición X para el siguiente palet
+            filaLargo += largoPalet;
         } else if (yPos + anchoPalet <= camionAncho) {
             // Si no cabe en la fila, mover a la siguiente fila
             yPos += anchoPalet;
-            xPos = largoPalet;  // Comenzar la nueva fila con el siguiente palet
+            filaLargo = largoPalet;  // Comenzar la nueva fila con el siguiente palet
 
             // Dibujar en la nueva fila
             const paletDiv = document.createElement('div');
@@ -113,13 +112,13 @@ function dibujarCamion(palets, camionLargo, camionAncho) {
             paletDiv.style.width = `${largoPalet}px`;
             paletDiv.style.height = `${anchoPalet}px`;
             paletDiv.style.backgroundColor = colorPalet;
-            paletDiv.style.left = `${xPos - largoPalet}px`;
+            paletDiv.style.left = `${0}px`;  // Comienza desde el borde izquierdo del camión
             paletDiv.style.top = `${yPos}px`;
 
             camionDiv.appendChild(paletDiv);
 
-            // Actualizar posición en X para el siguiente palet
-            xPos += largoPalet;
+            // Actualizar posición X para el siguiente palet en la nueva fila
+            filaLargo = largoPalet;
         } else {
             // Si no cabe, advertir que los palets exceden el espacio disponible
             alert("Los palets exceden el espacio del camión.");
@@ -137,4 +136,3 @@ function obtenerColorAleatorio() {
     }
     return color;
 }
-
