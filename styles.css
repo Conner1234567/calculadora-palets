@@ -44,6 +44,33 @@ h1 {
     background-color: #388e3c;
 }
 
+#palet-list {
+    margin-bottom: 20px;
+}
+
+#palet-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+#palet-list li {
+    background: #e8f5e9;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#palet-list button {
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
 #camionArea {
     position: relative;
     width: 1360px;
