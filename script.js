@@ -57,12 +57,13 @@ function calcularEspacio() {
         }
 
         // Agregar el palet al array
+        const colorPalet = obtenerColorAleatorio();  // Generar un solo color por tipo de palet
         for (let j = 0; j < cantidadPalet; j++) {
             palets.push({
                 largo: largoPalet,
                 ancho: anchoPalet,
                 cantidad: cantidadPalet,
-                color: obtenerColorAleatorio()
+                color: colorPalet
             });
         }
 
@@ -94,6 +95,7 @@ function dibujarCamion(palets) {
         const cantidadPalet = palets[i].cantidad;
         const colorPalet = palets[i].color;
 
+        // Solo dibujar una vez por cantidad (sin repetirse por cada palet)
         for (let j = 0; j < cantidadPalet; j++) {
             const paletDiv = document.createElement('div');
             paletDiv.classList.add('palet');
@@ -124,3 +126,4 @@ function obtenerColorAleatorio() {
     }
     return color;
 }
+
