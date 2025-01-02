@@ -11,7 +11,7 @@
             padding: 20px;
         }
         h1 {
-            color: #2d6a4f; /* Verde para el título */
+            color: #2d6a4f;
         }
         #input-container {
             margin-bottom: 20px;
@@ -33,7 +33,7 @@
             border-radius: 4px;
         }
         #input-container button {
-            background-color: #2d6a4f; /* Verde */
+            background-color: #2d6a4f;
             color: white;
             border: none;
             padding: 10px;
@@ -42,26 +42,26 @@
             border-radius: 4px;
         }
         #input-container button:hover {
-            background-color: #388e3c; /* Verde oscuro */
+            background-color: #388e3c;
         }
         #camionArea {
             position: relative;
-            width: 1360px; /* Ancho del camión en px (13.6m) */
-            height: 244px; /* Alto del camión en px (2.44m) */
-            background-color: #e0f7fa; /* Fondo claro para el camión */
+            width: 1360px;
+            height: 244px;
+            background-color: #e0f7fa;
             margin-top: 20px;
             border: 2px solid #00796b;
             border-radius: 8px;
         }
         .palet {
             position: absolute;
-            border: 1px solid #00796b; /* Color verde para los bordes */
+            border: 1px solid #00796b;
         }
         #resultado {
             margin-top: 20px;
             font-size: 18px;
             font-weight: bold;
-            color: #2d6a4f; /* Verde */
+            color: #2d6a4f;
         }
     </style>
 </head>
@@ -109,14 +109,14 @@
         }
 
         function actualizarCamion() {
-            camionArea.innerHTML = '';  // Limpiar el área del camión y la lista de palets
+            camionArea.innerHTML = '';  // Limpiar el área del camión
             let totalLdm = 0;
             let currentX = 0; // Posición horizontal para colocar los palets
             let currentY = 0; // Posición vertical para la siguiente fila
 
             // Recorremos todos los palets
             palets.forEach(palet => {
-                // Si el palet cabe dentro del ancho del camión
+                // Verificamos si el palet cabe en la fila actual
                 if (currentX + palet.largo <= camionLargo) {
                     // Colocar el palet en el camión
                     let paletElemento = document.createElement('div');
@@ -129,11 +129,11 @@
                     paletElemento.style.top = `${currentY}px`;
                     camionArea.appendChild(paletElemento);
 
-                    // Actualizar la posición horizontal
-                    currentX += palet.largo; // Avanzamos en la dirección horizontal
+                    // Actualizamos la posición horizontal para el siguiente palet
+                    currentX += palet.largo;
                 } else {
-                    // Si el palet no cabe en la fila actual, pasamos a la siguiente fila
-                    currentY += palet.ancho; // Mover al siguiente nivel
+                    // Si no cabe, movemos a la siguiente fila
+                    currentY += palet.ancho;
                     currentX = 0; // Reiniciar la posición horizontal
 
                     // Colocar el palet en la nueva fila
@@ -147,8 +147,8 @@
                     paletElemento.style.top = `${currentY}px`;
                     camionArea.appendChild(paletElemento);
 
-                    // Actualizar la posición horizontal
-                    currentX += palet.largo; // Avanzamos en la dirección horizontal
+                    // Actualizamos la posición horizontal
+                    currentX += palet.largo;
                 }
             });
 
