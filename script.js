@@ -1,4 +1,4 @@
-let palets = []; // Array para almacenar los palets
+let palets = [];  // Array para almacenar los palets
 
 // Función para agregar un palet al formulario
 function agregarPalet() {
@@ -17,8 +17,15 @@ function agregarPalet() {
 
             <label for="cantidad${index}">Cantidad:</label>
             <input type="number" id="cantidad${index}" value="1" min="1" required>
+
+            <button onclick="removerPalet(${index})">Eliminar</button>
         </div>
     `;
+}
+
+// Función para remover un palet
+function removerPalet(index) {
+    document.getElementById(`palet${index}`).remove();
 }
 
 // Función para calcular el espacio total
@@ -28,7 +35,10 @@ function calcularEspacio() {
 
     let espacioOcupado = 0;
     let totalPalets = 0;
-    const camionArea = camionLargo * camionAncho;
+    let totalMetrosLineales = 0;
+    let filaActual = 0;
+    let xPos = 0;
+    let yPos = 0;
 
     // Recoger los datos de los palets y calcular el espacio ocupado
     palets = [];  // Reiniciar el array de palets
@@ -46,14 +56,24 @@ function calcularEspacio() {
             return;
         }
 
-        const areaPalet = largoPalet * anchoPalet;
-        palets.push({ largo: largoPalet, ancho: anchoPalet, cantidad: cantidadPalet, color: obtenerColorAleatorio() });  // Guardar el palet con color aleatorio
-        espacioOcupado += areaPalet * cantidadPalet;
+        // Agregar el palet al array
+        for (let j = 0; j < cantidadPalet; j++) {
+            palets.push({
+                largo: largoPalet,
+                ancho: anchoPalet,
+                cantidad: cantidadPalet,
+                color: obtenerColorAleatorio()
+            });
+        }
+
+        // Calcular los metros lineales
+        espacioOcupado += largoPalet * cantidadPalet; // Se suma el largo por cantidad
         totalPalets += cantidadPalet;
+        totalMetrosLineales += (largoPalet * cantidadPalet) / 100;  // Convertir a metros
     }
 
     // Mostrar el resultado
-    document.getElementById('resultado').textContent = `El espacio ocupado por ${totalPalets} palets es ${espacioOcupado.toFixed(2)} centímetros cuadrados de los ${camionArea.toFixed(2)} disponibles en el camión.`;
+    document.getElementById('resultado').textContent = `El espacio ocupado por ${totalPalets} palets es ${totalMetrosLineales.toFixed(2)} metros lineales de los ${camionLargo / 100} metros disponibles en el camión.`;
 
     // Mostrar los palets dentro del camión
     dibujarCamion(palets);
