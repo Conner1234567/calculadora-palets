@@ -3,24 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Palets</title>
+    <title>Calculadora de Espacio en el Camión</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .camion {
+            width: 500px;
+            height: 250px;
+            border: 2px solid #000;
+            position: relative;
+            background-color: #f0f0f0;
+        }
+
+        .palet {
+            width: 80px; /* Ancho del palet */
+            height: 120px; /* Alto del palet */
+            background-color: #4caf50;
+            position: absolute;
+        }
+    </style>
 </head>
 <body>
-    <h1>Calculadora de Palets</h1>
-    <form id="formulario">
-        <label for="largo">Largo del palet (cm):</label>
-        <input type="number" id="largo" required>
+    <h1>Calculadora de Espacio en el Camión</h1>
 
-        <label for="ancho">Ancho del palet (cm):</label>
-        <input type="number" id="ancho" required>
+    <div>
+        <label for="palets">Número de Palets:</label>
+        <input type="number" id="palets" placeholder="Número de palets">
+    </div>
 
-        <label for="altura">Altura del palet (cm):</label>
-        <input type="number" id="altura" required>
+    <div>
+        <label for="largo">Largo del Palet (en metros):</label>
+        <input type="number" id="largo" placeholder="Largo del palet (m)">
+    </div>
 
-        <button type="submit">Calcular Volumen</button>
-    </form>
-    <div id="resultado"></div>
+    <div>
+        <label for="ancho">Ancho del Palet (en metros):</label>
+        <input type="number" id="ancho" placeholder="Ancho del palet (m)">
+    </div>
+
+    <button onclick="calcularEspacio()">Calcular Espacio</button>
+
+    <h2>Resultado:</h2>
+    <p id="resultado"></p>
+
+    <div class="camion" id="camion"></div>
+
     <script src="script.js"></script>
 </body>
 </html>
