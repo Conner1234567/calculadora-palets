@@ -10,6 +10,7 @@ function agregarPalets() {
     const cantidad = parseInt(document.getElementById('cantidad').value);
 
     if (largo && ancho && cantidad) {
+        // Generar la cantidad de palets con las mismas medidas
         for (let i = 0; i < cantidad; i++) {
             palets.push({ largo, ancho });
         }
@@ -25,7 +26,6 @@ function actualizarCamion() {
     let currentX = 0; // Posición horizontal para colocar los palets
     let currentY = 0; // Posición vertical para la siguiente columna
     let maxHeightInColumn = 0; // Altura máxima de los palets en la columna
-    let colWidth = 0; // El ancho total de la columna en cada paso
 
     palets.forEach(palet => {
         if (currentY + palet.ancho <= camionAncho) {
@@ -80,6 +80,5 @@ function getRandomColor() {
     }
     return color;
 }
-
 
 
