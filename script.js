@@ -1,6 +1,6 @@
 let palets = [];
-let camionAncho = 244; // Ancho del camión en cm (2.44 metros)
-let camionLargo = 1360; // Largo del camión en cm (13.6 metros)
+let camionAncho = 244; // Ancho del camión en cm
+let camionLargo = 1360; // Largo del camión en cm
 let camionArea = document.getElementById('camionArea');
 let resultadoDiv = document.getElementById('resultado');
 
@@ -27,11 +27,9 @@ function eliminarPalet(button) {
 }
 
 function calcularEspacio() {
-    // Limpiar el área del camión y la lista de palets
-    camionArea.innerHTML = '';
+    camionArea.innerHTML = '';  // Limpiar el área del camión y la lista de palets
     palets = [];
     
-    // Recoger los datos de los inputs
     const inputs = document.querySelectorAll('.palet-input');
     inputs.forEach(input => {
         const largo = parseInt(input.querySelector('.largo').value);
@@ -42,15 +40,15 @@ function calcularEspacio() {
         }
     });
 
-    // Organizar los palets en el camión optimizando el espacio
-    let currentX = 0; // Posición actual en el eje X (horizontal)
-    let currentY = 0; // Posición actual en el eje Y (vertical)
-    let maxHeightInRow = 0; // Para controlar la altura máxima en cada fila
-    let totalLdm = 0; // Total de metros lineales ocupados
-
+    let totalLdm = 0;
+    let currentX = 0; // Posición horizontal para colocar los palets
+    let currentY = 0; // Posición vertical para la siguiente columna
+    let maxHeightInColumn = 0; // Altura máxima de los palets en la columna
+    let colWidth = 0; // El ancho total de la columna en cada paso
+    
     palets.forEach(palet => {
-        if (currentX + palet.largo <= camionLargo) {
-            // El palet cabe en la fila actual (horizontal)
+        if (currentY + palet.ancho <= camionAncho) {
+            // Si el palet cabe en la columna actual, añadirlo
             let paletElemento = document.createElement('div');
             paletElemento.classList.add('palet');
             paletElemento.style.width = `${palet.largo}px`;
@@ -61,31 +59,31 @@ function calcularEspacio() {
             paletElemento.style.top = `${currentY}px`;
             camionArea.appendChild(paletElemento);
 
-            // Actualizar la posición para el próximo palet en la misma fila
-            currentX += palet.largo;
-            maxHeightInRow = Math.max(maxHeightInRow, palet.ancho); // Guardar la altura máxima
+            // Actualizar el recorrido vertical y ancho de la columna
+            currentY += palet.ancho;
+            maxHeightInColumn = Math.max(maxHeightInColumn, palet.largo);
         } else {
-            // El palet no cabe en la fila, ir a la siguiente fila
-            currentX = palet.largo; // Iniciar la nueva fila
-            currentY += maxHeightInRow; // Moverse hacia abajo según la altura de la fila
-            maxHeightInRow = palet.ancho; // Establecer la nueva altura máxima
+            // Si el palet no cabe en la columna, mover a la siguiente columna
+            currentX += maxHeightInColumn; // Mover horizontalmente
+            currentY = 0; // Reiniciar la posición vertical
 
-            // Colocar el palet en la nueva fila
+            // Colocar el palet en la nueva columna
             let paletElemento = document.createElement('div');
             paletElemento.classList.add('palet');
             paletElemento.style.width = `${palet.largo}px`;
             paletElemento.style.height = `${palet.ancho}px`;
             paletElemento.style.backgroundColor = getRandomColor();
             paletElemento.style.position = 'absolute';
-            paletElemento.style.left = `0px`;
+            paletElemento.style.left = `${currentX}px`;
             paletElemento.style.top = `${currentY}px`;
             camionArea.appendChild(paletElemento);
-
-            // Actualizar la posición para el próximo palet
-            currentX = palet.largo;
+            
+            // Actualizar la posición para el siguiente palet
+            currentY += palet.ancho;
+            maxHeightInColumn = palet.largo; // Cambio de la altura máxima de la columna
         }
 
-        // Sumar los metros lineales ocupados
+        // Calcular los metros lineales ocupados
         totalLdm = Math.max(totalLdm, currentX / 100); // Convertir a metros
     });
 
