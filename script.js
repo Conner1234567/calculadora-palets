@@ -1,9 +1,9 @@
 let palets = [];
-let camionAncho = 244; // Ancho del camión en cm
-let camionLargo = 1360; // Largo del camión en cm
-let camionArea = document.getElementById('camionArea');
-let resultadoDiv = document.getElementById('resultado');
-let paletListDiv = document.getElementById('palet-list');
+const camionAncho = 244; // Ancho del camión en cm
+const camionLargo = 1360; // Largo del camión en cm
+const camionArea = document.getElementById('camionArea');
+const resultadoDiv = document.getElementById('resultado');
+const paletListDiv = document.getElementById('palet-list');
 
 // Colores asignados para cada tipo de palet
 let coloresAsignados = {};
@@ -49,8 +49,9 @@ function calcularDistribucion() {
 
     palets.forEach(palet => {
         const { largo, ancho, cantidad } = palet;
+        let colocado = 0;
 
-        for (let i = 0; i < cantidad; i++) {
+        while (colocado < cantidad) {
             let posicion = encontrarEspacioDisponible(ancho, largo, ocupacion); // Buscar espacio para el palet
             if (!posicion) {
                 alert(`No hay suficiente espacio para un palet de ${largo}x${ancho} cm.`);
@@ -68,17 +69,21 @@ function calcularDistribucion() {
             paletElemento.style.height = `${largo}px`;
             paletElemento.style.backgroundColor = color;
             paletElemento.style.position = 'absolute';
-            paletElemento.style.left = `${posicion.x}px`;
-            paletElemento.style.top = `${posicion.y}px`;
+            paletElemento.style.left = `${posicion.y}px`; // Prioriza el ancho
+            paletElemento.style.top = `${posicion.x}px`; // Luego el largo
             camionArea.appendChild(paletElemento);
 
-            // Actualizar metros lineales ocupados
-            filasOcupadas = Math.max(filasOcupadas, Math.ceil((posicion.y + largo) / 100));
+            colocado++;
         }
     });
 
-    totalLdm = filasOcupadas * (palets.length > 0 ? palets[0].largo / 100 : 0); // Calcular metros lineales
-    resultadoDiv.innerHTML = `Total de metros lineales ocupados: ${totalLdm.toFixed(2)} m`;
+    // Calcular metros lineales ocupados
+    for (let x = 0; x < camionLargo; x++) {
+        if (ocupacion[x].some(celda => celda)) {
+            totalLdm += 1; // Cada fila con ocupación suma 1 cm
+        }
+    }
+    resultadoDiv.innerHTML = `Total de metros lineales ocupados: ${(totalLdm / 100).toFixed(2)} m`;
 }
 
 function encontrarEspacioDisponible(ancho, largo, ocupacion) {
