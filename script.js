@@ -67,13 +67,31 @@ function calcularEspacio() {
             palets.push({ largo: largoPalet, ancho: anchoPalet, color: colorPalet });
         }
 
-        // Sumar el total de palets y el espacio ocupado
-        espacioOcupado += largoPalet * cantidadPalet;
+        // Sumar el total de palets
         totalPalets += cantidadPalet;
     }
 
-    // Calcular los metros lineales ocupados, solo sumando el largo de los palets que caben en el camión
-    metrosLineales = espacioOcupado / 100;  // Convertir a metros lineales (dividiendo por 100)
+    // Ahora calculamos los metros lineales ocupados en el camión
+    let espacioEnFilas = 0;  // Variable para contar los metros lineales ocupados
+
+    let filaLargo = 0;  // Largo ocupado en la fila actual
+    let fila = 0;  // Número de fila que estamos procesando
+
+    for (let i = 0; i < palets.length; i++) {
+        const largoPalet = palets[i].largo;
+
+        // Si el largo del palet cabe en la fila
+        if (filaLargo + largoPalet <= camionLargo) {
+            filaLargo += largoPalet;  // Sumamos el largo del palet a la fila
+        } else {
+            // Si el palet no cabe, pasamos a la siguiente fila
+            fila++;
+            filaLargo = largoPalet;  // Empezamos con el largo del nuevo palet en la nueva fila
+        }
+    }
+
+    // Los metros lineales ocupados en el camión se calculan solo por la longitud de las filas
+    metrosLineales = filaLargo / 100;  // Convertimos a metros
 
     // Mostrar el resultado
     document.getElementById('resultado').textContent = `El espacio ocupado por ${totalPalets} palets es ${metrosLineales.toFixed(2)} metros lineales.`;
