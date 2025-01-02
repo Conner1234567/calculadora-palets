@@ -33,12 +33,9 @@ function calcularEspacio() {
     const camionLargo = 1360;  // Largo del camión en centímetros (13.6 metros)
     const camionAncho = 244;   // Ancho del camión en centímetros (2.44 metros)
 
-    let espacioOcupado = 0;
     let totalPalets = 0;
-    let totalMetrosLineales = 0;
-    let xPos = 0;
-    let yPos = 0;
-    let largoActual = 0;  // Para calcular el largo total ocupado en una única línea
+    let espacioOcupado = 0;
+    let metrosLineales = 0;
 
     palets = [];  // Limpiar los palets
 
@@ -70,16 +67,16 @@ function calcularEspacio() {
             palets.push({ largo: largoPalet, ancho: anchoPalet, color: colorPalet });
         }
 
-        // Cálculo de espacio total
+        // Sumar el total de palets y el espacio ocupado
         espacioOcupado += largoPalet * cantidadPalet;
         totalPalets += cantidadPalet;
     }
 
-    // Cálculo de metros lineales ocupados (sin contar filas separadas)
-    totalMetrosLineales = (espacioOcupado / 100); // Convertir a metros lineales (ya que estamos trabajando en centímetros)
+    // Calcular los metros lineales ocupados, solo sumando el largo de los palets que caben en el camión
+    metrosLineales = espacioOcupado / 100;  // Convertir a metros lineales (dividiendo por 100)
 
-    // Mostrar resultado en metros lineales
-    document.getElementById('resultado').textContent = `El espacio ocupado por ${totalPalets} palets es ${totalMetrosLineales.toFixed(2)} metros lineales.`;
+    // Mostrar el resultado
+    document.getElementById('resultado').textContent = `El espacio ocupado por ${totalPalets} palets es ${metrosLineales.toFixed(2)} metros lineales.`;
 
     // Dibujar los palets dentro del camión
     dibujarCamion(palets, camionLargo, camionAncho);
