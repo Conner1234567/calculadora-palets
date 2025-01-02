@@ -3,8 +3,9 @@ let camionAncho = 244; // Ancho del camión en cm
 let camionLargo = 1360; // Largo del camión en cm
 let camionArea = document.getElementById('camionArea');
 let resultadoDiv = document.getElementById('resultado');
+let paletListDiv = document.getElementById('palet-list');
 
-// Variable para llevar el control de colores asignados a los tamaños de los palets
+// Colores asignados a cada tipo de palet
 let coloresAsignados = {};
 
 function agregarPalets() {
@@ -13,82 +14,83 @@ function agregarPalets() {
     const cantidad = parseInt(document.getElementById('cantidad').value);
 
     if (largo && ancho && cantidad) {
-        // Agregar los palets con las medidas ingresadas y la cantidad especificada
-        for (let i = 0; i < cantidad; i++) {
-            palets.push({ largo, ancho });
-        }
+        // Guardar palets en la lista
+        palets.push({ largo, ancho, cantidad });
 
+        // Actualizar lista visual
+        actualizarListaPalets();
         actualizarCamion();
     } else {
-        alert('Por favor, ingresa las medidas y la cantidad de los palets.');
+        alert('Por favor, completa todos los campos.');
     }
+}
+
+function actualizarListaPalets() {
+    paletListDiv.innerHTML = '<ul>';
+    palets.forEach((palet, index) => {
+        paletListDiv.innerHTML += `
+            <li>
+                ${palet.cantidad} palets de ${palet.largo}x${palet.ancho} cm
+                <button onclick="eliminarPalet(${index})">Eliminar</button>
+            </li>
+        `;
+    });
+    paletListDiv.innerHTML += '</ul>';
+}
+
+function eliminarPalet(index) {
+    palets.splice(index, 1);
+    actualizarListaPalets();
+    actualizarCamion();
 }
 
 function actualizarCamion() {
     camionArea.innerHTML = '';  // Limpiar el área del camión
     let totalLdm = 0;
-    let currentX = 0; // Posición horizontal para colocar los palets
-    let currentY = 0; // Posición vertical para la siguiente fila
+    let currentX = 0; // Posición horizontal
+    let currentY = 0; // Posición vertical
 
-    // Recorremos todos los palets
     palets.forEach(palet => {
-        // Verificamos si el palet cabe en la fila actual
-        if (currentX + palet.largo <= camionLargo) {
-            // Asignar un color único para cada tamaño de palet
-            let color = obtenerColorParaPalet(palet.largo, palet.ancho);
+        const { largo, ancho, cantidad } = palet;
 
-            // Colocar el palet en el camión
-            let paletElemento = document.createElement('div');
-            paletElemento.classList.add('palet');
-            paletElemento.style.width = `${palet.largo}px`;
-            paletElemento.style.height = `${palet.ancho}px`;
-            paletElemento.style.backgroundColor = color;
-            paletElemento.style.position = 'absolute';
-            paletElemento.style.left = `${currentX}px`;
-            paletElemento.style.top = `${currentY}px`;
-            camionArea.appendChild(paletElemento);
+        for (let i = 0; i < cantidad; i++) {
+            if (currentX + largo > camionLargo) {
+                currentY += ancho;
+                currentX = 0; // Reiniciar posición horizontal
+            }
 
-            // Actualizamos la posición horizontal para el siguiente palet
-            currentX += palet.largo;
-        } else {
-            // Si no cabe, movemos a la siguiente fila
-            currentY += palet.ancho;
-            currentX = 0; // Reiniciar la posición horizontal
+            if (currentY + ancho <= camionAncho) {
+                let color = obtenerColorParaPalet(largo, ancho);
+                let paletElemento = document.createElement('div');
+                paletElemento.classList.add('palet');
+                paletElemento.style.width = `${largo}px`;
+                paletElemento.style.height = `${ancho}px`;
+                paletElemento.style.backgroundColor = color;
+                paletElemento.style.left = `${currentX}px`;
+                paletElemento.style.top = `${currentY}px`;
+                camionArea.appendChild(paletElemento);
 
-            // Asignar un color único para cada tamaño de palet
-            let color = obtenerColorParaPalet(palet.largo, palet.ancho);
-
-            // Colocar el palet en la nueva fila
-            let paletElemento = document.createElement('div');
-            paletElemento.classList.add('palet');
-            paletElemento.style.width = `${palet.largo}px`;
-            paletElemento.style.height = `${palet.ancho}px`;
-            paletElemento.style.backgroundColor = color;
-            paletElemento.style.position = 'absolute';
-            paletElemento.style.left = `${currentX}px`;
-            paletElemento.style.top = `${currentY}px`;
-            camionArea.appendChild(paletElemento);
-
-            // Actualizamos la posición horizontal
-            currentX += palet.largo;
+                currentX += largo; // Actualizar posición horizontal
+            } else {
+                alert('No hay espacio suficiente para agregar más palets.');
+                break;
+            }
         }
+
+        totalLdm += Math.ceil(currentX / 100); // Actualizar metros lineales
     });
 
-    // Cálculo de los metros lineales ocupados
-    totalLdm = currentY / 100; // Total de metros lineales ocupados
     resultadoDiv.innerHTML = `Total de metros lineales ocupados: ${totalLdm.toFixed(2)} m`;
 }
 
-// Función para obtener un color único para cada tamaño de palet
 function obtenerColorParaPalet(largo, ancho) {
-    let key = `${largo}x${ancho}`;
+    const key = `${largo}x${ancho}`;
     if (!coloresAsignados[key]) {
         coloresAsignados[key] = getRandomColor();
     }
     return coloresAsignados[key];
 }
 
-// Función para generar colores aleatorios
 function getRandomColor() {
     const letters = '0123456789ABCDEF';
     let color = '#';
