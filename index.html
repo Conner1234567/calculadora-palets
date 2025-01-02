@@ -20,7 +20,8 @@
 </head>
 <body>
     <h1>Calculadora de Palets en Camión</h1>
-    <div>
+    
+    <div id="input-container">
         <label for="largo">Largo del palet (cm):</label>
         <input type="number" id="largo" placeholder="Largo" required />
 
@@ -49,10 +50,7 @@
             const cantidad = parseInt(document.getElementById('cantidad').value);
 
             if (largo && ancho && cantidad) {
-                // Limpiar los palets previos
-                palets = [];
-
-                // Generar la cantidad de palets con las mismas medidas
+                // Agregar los palets con las medidas ingresadas y la cantidad especificada
                 for (let i = 0; i < cantidad; i++) {
                     palets.push({ largo, ancho });
                 }
@@ -103,4 +101,25 @@
                     camionArea.appendChild(paletElemento);
 
                     // Actualizar la posición horizontal
-                    currentX += palet.largo;
+                    currentX += palet.largo; // Avanzamos en la dirección horizontal
+                }
+            });
+
+            // Cálculo de los metros lineales ocupados
+            totalLdm = currentY / 100; // Total de metros lineales ocupados
+            resultadoDiv.innerHTML = `Total de metros lineales ocupados: ${totalLdm.toFixed(2)} m`;
+        }
+
+        // Función para generar colores aleatorios
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    </script>
+</body>
+</html>
+
