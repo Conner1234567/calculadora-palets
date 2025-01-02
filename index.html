@@ -49,10 +49,14 @@
             const cantidad = parseInt(document.getElementById('cantidad').value);
 
             if (largo && ancho && cantidad) {
+                // Limpiar los palets previos
+                palets = [];
+
                 // Generar la cantidad de palets con las mismas medidas
                 for (let i = 0; i < cantidad; i++) {
                     palets.push({ largo, ancho });
                 }
+
                 actualizarCamion();
             } else {
                 alert('Por favor, ingresa las medidas y la cantidad de los palets.');
@@ -99,24 +103,4 @@
                     camionArea.appendChild(paletElemento);
 
                     // Actualizar la posición horizontal
-                    currentX += palet.largo; // Avanzamos en la dirección horizontal
-                }
-            });
-
-            // Cálculo de los metros lineales ocupados
-            totalLdm = currentY / 100; // Total de metros lineales ocupados
-            resultadoDiv.innerHTML = `Total de metros lineales ocupados: ${totalLdm.toFixed(2)} m`;
-        }
-
-        // Función para generar colores aleatorios
-        function getRandomColor() {
-            const letters = '0123456789ABCDEF';
-            let color = '#';
-            for (let i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        }
-    </script>
-</body>
-</html>
+                    currentX += palet.largo;
