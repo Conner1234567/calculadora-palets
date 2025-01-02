@@ -77,42 +77,54 @@ function calcularEspacio() {
     document.getElementById('resultado').textContent = `El espacio ocupado por ${totalPalets} palets es ${totalMetrosLineales.toFixed(2)} metros lineales de los ${camionLargo / 100} metros disponibles en el camión.`;
 
     // Mostrar los palets dentro del camión
-    dibujarCamion(palets);
+    dibujarCamion(palets, camionLargo, camionAncho);
 }
 
 // Función para dibujar los palets dentro del camión
-function dibujarCamion(palets) {
+function dibujarCamion(palets, camionLargo, camionAncho) {
     const camionDiv = document.getElementById('camion');
     camionDiv.innerHTML = ''; // Limpiar antes de dibujar
 
     let xPos = 0;
     let yPos = 0;
 
-    // Dibujar los palets en el camión
+    // Organizar los palets de forma ordenada dentro del camión
     for (let i = 0; i < palets.length; i++) {
         const largoPalet = palets[i].largo;
         const anchoPalet = palets[i].ancho;
-        const cantidadPalet = palets[i].cantidad;
         const colorPalet = palets[i].color;
 
-        // Solo dibujar una vez por cantidad (sin repetirse por cada palet)
-        for (let j = 0; j < cantidadPalet; j++) {
+        // Verificar si el palet cabe en la fila actual
+        if (xPos + largoPalet <= camionLargo) {
+            // Dibujar el palet
             const paletDiv = document.createElement('div');
             paletDiv.classList.add('palet');
             paletDiv.style.width = `${largoPalet}px`; // Usar centímetros convertidos directamente a píxeles
             paletDiv.style.height = `${anchoPalet}px`; // Usar centímetros convertidos directamente a píxeles
             paletDiv.style.backgroundColor = colorPalet; // Asignar color aleatorio
-            paletDiv.style.left = `${xPos * largoPalet}px`;
+            paletDiv.style.left = `${xPos}px`;
             paletDiv.style.top = `${yPos * anchoPalet}px`;
 
             camionDiv.appendChild(paletDiv);
 
-            // Ajustar la posición para el siguiente palet
-            xPos++;
-            if (xPos * largoPalet > 1360) {  // Si el palet se sale del camión, empezar nueva fila
-                xPos = 0;
-                yPos++;
-            }
+            // Actualizar posición para el siguiente palet
+            xPos += largoPalet;
+        } else {
+            // Si el palet no cabe en la fila actual, comenzar una nueva fila
+            yPos++;
+            xPos = largoPalet;  // Comenzar desde el principio de la nueva fila
+            const paletDiv = document.createElement('div');
+            paletDiv.classList.add('palet');
+            paletDiv.style.width = `${largoPalet}px`; // Usar centímetros convertidos directamente a píxeles
+            paletDiv.style.height = `${anchoPalet}px`; // Usar centímetros convertidos directamente a píxeles
+            paletDiv.style.backgroundColor = colorPalet; // Asignar color aleatorio
+            paletDiv.style.left = `${xPos - largoPalet}px`; // Ajustar posición de X para la nueva fila
+            paletDiv.style.top = `${yPos * anchoPalet}px`;
+
+            camionDiv.appendChild(paletDiv);
+
+            // Actualizar posición para el siguiente palet en la nueva fila
+            xPos += largoPalet;
         }
     }
 }
@@ -126,4 +138,3 @@ function obtenerColorAleatorio() {
     }
     return color;
 }
-
