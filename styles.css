@@ -38,8 +38,8 @@ button:hover {
 }
 
 .camion {
-    width: 500px;
-    height: 250px;
+    width: 1360px;  /* Largo del camión en píxeles */
+    height: 244px;  /* Ancho del camión en píxeles */
     border: 2px solid #000;
     position: relative;
     background-color: #f0f0f0;
