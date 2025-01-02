@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Palets en Camión</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Calculadora de Palets</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <h1>Calculadora de Palets para Camión</h1>
 
-    <h1>Calculadora de Espacio de Palets en Camión</h1>
+    <div id="formulario">
+        <button onclick="agregarPalet()">Añadir Palet</button>
+        <div id="formPalets"></div>
 
-    <div id="formPalets"></div>
-    <button onclick="agregarPalet()">Agregar Palet</button>
-
-    <h2 id="resultado"></h2>
-
-    <div id="camion" style="position: relative; width: 1360px; height: 244px; border: 2px solid black; background-color: #f0f0f0;">
-        <!-- El camión será el contenedor de los palets -->
+        <button onclick="calcularEspacio()">Calcular Espacio Ocupado</button>
+        <p id="resultado"></p>
     </div>
 
-    <button onclick="calcularEspacio()">Calcular Espacio Ocupado</button>
+    <div id="camion" class="camion">
+        <div id="camionArea" class="area-camion"></div>
+    </div>
 
     <script src="script.js"></script>
 </body>
