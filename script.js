@@ -1,4 +1,5 @@
 let palets = [];  // Array para almacenar los palets
+let coloresPalets = {};  // Objeto para almacenar el color asignado a cada tamaño de palet
 
 // Función para agregar un palet al formulario
 function agregarPalet() {
@@ -54,15 +55,24 @@ function calcularEspacio() {
             return;
         }
 
+        // Asignar un color único por tamaño de palet
+        let colorPalet;
+        if (!coloresPalets[`${largoPalet}x${anchoPalet}`]) {
+            colorPalet = obtenerColorAleatorio();
+            coloresPalets[`${largoPalet}x${anchoPalet}`] = colorPalet;
+        } else {
+            colorPalet = coloresPalets[`${largoPalet}x${anchoPalet}`];
+        }
+
         // Añadir palets al array
         for (let j = 0; j < cantidadPalet; j++) {
-            const colorPalet = obtenerColorAleatorio();
             palets.push({ largo: largoPalet, ancho: anchoPalet, color: colorPalet });
         }
 
-        espacioOcupado += largoPalet * cantidadPalet;  // Cálculo de espacio total
+        // Cálculo de espacio total
+        espacioOcupado += largoPalet * cantidadPalet;
         totalPalets += cantidadPalet;
-        totalMetrosLineales += (largoPalet * cantidadPalet) / 100;
+        totalMetrosLineales += (largoPalet * cantidadPalet) / 100; // Convertir a metros
     }
 
     // Mostrar resultado en metros lineales
