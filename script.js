@@ -45,21 +45,21 @@ function calcularDistribucion() {
     camionArea.innerHTML = ''; // Limpiar área del camión
     let ocupacion = Array.from({ length: camionLargo }, () => Array(camionAncho).fill(false)); // Ocupación en cm
     let totalLdm = 0;
-    let filasOcupadas = 0;
+    let columnasOcupadas = 0;
 
     palets.forEach(palet => {
         const { largo, ancho, cantidad } = palet;
         let colocado = 0;
 
         while (colocado < cantidad) {
-            let posicion = encontrarEspacioDisponible(ancho, largo, ocupacion); // Buscar espacio para el palet
+            let posicion = encontrarEspacioDisponible(largo, ancho, ocupacion); // Buscar espacio para el palet
             if (!posicion) {
                 alert(`No hay suficiente espacio para un palet de ${largo}x${ancho} cm.`);
                 break;
             }
 
             // Marcar ocupación
-            ocuparEspacio(posicion, ancho, largo, ocupacion);
+            ocuparEspacio(posicion, largo, ancho, ocupacion);
 
             // Dibujar el palet
             let color = obtenerColorParaPalet(largo, ancho);
@@ -86,10 +86,10 @@ function calcularDistribucion() {
     resultadoDiv.innerHTML = `Total de metros lineales ocupados: ${(totalLdm / 100).toFixed(2)} m`;
 }
 
-function encontrarEspacioDisponible(ancho, largo, ocupacion) {
-    for (let x = 0; x <= camionLargo - largo; x++) {
-        for (let y = 0; y <= camionAncho - ancho; y++) {
-            if (esEspacioLibre(x, y, ancho, largo, ocupacion)) {
+function encontrarEspacioDisponible(largo, ancho, ocupacion) {
+    for (let y = 0; y <= camionAncho - ancho; y++) {
+        for (let x = 0; x <= camionLargo - largo; x++) {
+            if (esEspacioLibre(x, y, largo, ancho, ocupacion)) {
                 return { x, y };
             }
         }
@@ -97,7 +97,7 @@ function encontrarEspacioDisponible(ancho, largo, ocupacion) {
     return null; // No hay espacio disponible
 }
 
-function esEspacioLibre(x, y, ancho, largo, ocupacion) {
+function esEspacioLibre(x, y, largo, ancho, ocupacion) {
     for (let i = 0; i < largo; i++) {
         for (let j = 0; j < ancho; j++) {
             if (ocupacion[x + i] && ocupacion[x + i][y + j]) {
@@ -108,7 +108,7 @@ function esEspacioLibre(x, y, ancho, largo, ocupacion) {
     return true;
 }
 
-function ocuparEspacio(posicion, ancho, largo, ocupacion) {
+function ocuparEspacio(posicion, largo, ancho, ocupacion) {
     for (let i = 0; i < largo; i++) {
         for (let j = 0; j < ancho; j++) {
             ocupacion[posicion.x + i][posicion.y + j] = true;
@@ -132,7 +132,6 @@ function getRandomColor() {
     }
     return color;
 }
-
 
 
 
