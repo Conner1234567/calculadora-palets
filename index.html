@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Palets</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Calculadora de Palets</h1>
+    <form id="formulario">
+        <label for="largo">Largo del palet (cm):</label>
+        <input type="number" id="largo" required>
+
+        <label for="ancho">Ancho del palet (cm):</label>
+        <input type="number" id="ancho" required>
+
+        <label for="altura">Altura del palet (cm):</label>
+        <input type="number" id="altura" required>
+
+        <button type="submit">Calcular Volumen</button>
+    </form>
+    <div id="resultado"></div>
+    <script src="script.js"></script>
+</body>
+</html>
