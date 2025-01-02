@@ -38,6 +38,7 @@ function calcularEspacio() {
     let filaActual = 0;
     let xPos = 0;
     let yPos = 0;
+    let camionArea = camionLargo * camionAncho;
 
     palets = [];  // Limpiar los palets
 
@@ -86,7 +87,7 @@ function dibujarCamion(palets, camionLargo, camionAncho) {
         const anchoPalet = palets[i].ancho;
         const colorPalet = palets[i].color;
 
-        // Verificar si cabe en la fila actual
+        // Verificar si el palet cabe en la fila actual
         if (xPos + largoPalet <= camionLargo) {
             // Dibujar palet
             const paletDiv = document.createElement('div');
@@ -101,7 +102,7 @@ function dibujarCamion(palets, camionLargo, camionAncho) {
 
             // Actualizar posición en X para el siguiente palet
             xPos += largoPalet;
-        } else {
+        } else if (yPos + anchoPalet <= camionAncho) {
             // Si no cabe en la fila, mover a la siguiente fila
             yPos += anchoPalet;
             xPos = largoPalet;  // Comenzar la nueva fila con el siguiente palet
@@ -119,6 +120,10 @@ function dibujarCamion(palets, camionLargo, camionAncho) {
 
             // Actualizar posición en X para el siguiente palet
             xPos += largoPalet;
+        } else {
+            // Si no cabe, advertir que los palets exceden el espacio disponible
+            alert("Los palets exceden el espacio del camión.");
+            return;
         }
     }
 }
@@ -132,3 +137,4 @@ function obtenerColorAleatorio() {
     }
     return color;
 }
+
