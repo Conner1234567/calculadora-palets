@@ -75,12 +75,12 @@
             let x = 0, y = 0, totalLinearMeters = 0;
 
             pallets.forEach((pallet, index) => {
-                if (x + pallet.length > truckWidth) {
-                    x = 0;
-                    y += pallet.width;
+                if (y + pallet.width > truckHeight) {
+                    y = 0;
+                    x += pallet.length;
                 }
 
-                if (y + pallet.width > truckHeight) {
+                if (x + pallet.length > truckWidth) {
                     alert('No caben más palets en el camión.');
                     return;
                 }
@@ -94,8 +94,8 @@
                 palletDiv.textContent = `${index + 1}`;
                 truck.appendChild(palletDiv);
 
-                x += pallet.length;
-                totalLinearMeters = Math.max(totalLinearMeters, (x / 100)); // Convertimos a metros
+                y += pallet.width;
+                totalLinearMeters = Math.max(totalLinearMeters, (x + pallet.length) / 100); // Convertimos a metros
             });
 
             document.getElementById('result').textContent = `Metros lineales ocupados: ${totalLinearMeters.toFixed(2)} m`;
@@ -103,3 +103,4 @@
     </script>
 </body>
 </html>
+
