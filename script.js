@@ -61,7 +61,7 @@ function renderPalets() {
 function canPlacePalet(x, y, ancho, largo) {
     for (let row = y; row < y + largo; row++) {
         for (let col = x; col < x + ancho; col++) {
-            if (ocupacion[row][col]) {
+            if (row >= camionLargo || col >= camionAncho || ocupacion[row][col]) {
                 return false;
             }
         }
@@ -81,6 +81,5 @@ function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107"];
     return colors[index % colors.length];
 }
-
 
 
