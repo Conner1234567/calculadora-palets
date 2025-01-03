@@ -25,22 +25,23 @@ function renderPalets() {
     const camionArea = document.getElementById("camion-area");
     camionArea.innerHTML = "";
 
-    // Ordenar los palets por su tamaño (de mayor a menor)
-    palets.sort((a, b) => (b.ancho * b.largo) - (a.ancho * a.largo));
-
     let x = 0; // Coordenada x en cm
     let y = 0; // Coordenada y en cm
     let filaLargo = 0; // Largo total utilizado en la fila actual
+
+    // Ordenar los palets por su área (de mayor a menor)
+    palets.sort((a, b) => (b.ancho * b.largo) - (a.ancho * a.largo));
 
     palets.forEach(({ ancho, largo, cantidad }, index) => {
         for (let i = 0; i < cantidad; i++) {
             // Si no cabe en la fila actual, pasar a la siguiente fila
             if (x + ancho > camionAncho) {
-                // Verificar si se puede mover a la siguiente fila sin sobrepasar el largo del camión
+                // Si el siguiente palet no cabe en el camión, pasar a la siguiente fila
                 if (y + filaLargo + largo > camionLargo) {
                     alert("El camión está lleno, no caben más palets.");
                     return;
                 }
+
                 // Colocar los palets en la siguiente fila
                 x = 0;
                 y += filaLargo;  // Usar el largo de la fila actual
@@ -93,3 +94,4 @@ function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107"];
     return colors[index % colors.length];
 }
+
