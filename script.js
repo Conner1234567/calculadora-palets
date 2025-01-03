@@ -27,19 +27,24 @@ function renderPalets() {
 
     let x = 0; // Coordenada x en cm
     let y = 0; // Coordenada y en cm
+    let filaLargo = 0; // Largo total utilizado en la fila actual
 
     palets.forEach(({ ancho, largo, cantidad }, index) => {
         for (let i = 0; i < cantidad; i++) {
+            // Si no cabe en la fila actual, pasar a la siguiente fila
             if (x + ancho > camionAncho) {
                 x = 0;
-                y += largo;
+                y += filaLargo;  // Usar el largo de la fila actual
+                filaLargo = 0;  // Reiniciar el largo utilizado de la fila
+
+                // Verificar si cabe en el camión en el eje Y
+                if (y + largo > camionLargo) {
+                    alert("El camión está lleno, no caben más palets.");
+                    return;
+                }
             }
 
-            if (y + largo > camionLargo) {
-                alert("El camión está lleno, no caben más palets.");
-                return;
-            }
-
+            // Colocar el palet
             const paletDiv = document.createElement("div");
             paletDiv.classList.add("palet");
             paletDiv.style.width = `${ancho}px`;
@@ -49,7 +54,9 @@ function renderPalets() {
             paletDiv.style.top = `${y}px`;
             camionArea.appendChild(paletDiv);
 
+            // Actualizar las coordenadas de la fila
             x += ancho;
+            filaLargo = Math.max(filaLargo, largo);  // Mantener el largo máximo de la fila
         }
     });
 }
