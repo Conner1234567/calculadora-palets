@@ -120,4 +120,3 @@ function getColor(index) {
     return colors[index % colors.length];
 }
 
-
