@@ -32,35 +32,88 @@ function renderPalets() {
     // Ordenar los palets por su área (de mayor a menor)
     palets.sort((a, b) => (b.ancho * b.largo) - (a.ancho * a.largo));
 
+    // Crear un array para registrar el espacio disponible
+    let fila = new Array(camionAncho).fill(0); // Cada celda representa el ancho del camión en cm
+
     palets.forEach(({ ancho, largo, cantidad }, index) => {
         for (let i = 0; i < cantidad; i++) {
-            // Si no cabe en la fila actual, pasar a la siguiente fila
-            if (x + ancho > camionAncho) {
-                // Si el siguiente palet no cabe en el camión, pasar a la siguiente fila
-                if (y + filaLargo + largo > camionLargo) {
+            // Buscar una posición en la fila donde el palet pueda encajar sin sobreponerse
+            let placed = false;
+
+            // Recorremos la fila para encontrar un espacio libre donde quepa el palet
+            for (let startX = 0; startX <= camionAncho - ancho; startX++) {
+                // Verificar si hay espacio para colocar el palet en esta posición
+                let canPlace = true;
+                for (let j = startX; j < startX + ancho; j++) {
+                    if (fila[j] > 0) {
+                        canPlace = false;
+                        break;
+                    }
+                }
+
+                if (canPlace) {
+                    // Colocar el palet en la fila
+                    for (let j = startX; j < startX + ancho; j++) {
+                        fila[j] = largo; // Ocupamos ese espacio con el largo del palet
+                    }
+
+                    const paletDiv = document.createElement("div");
+                    paletDiv.classList.add("palet");
+                    paletDiv.style.width = `${ancho}px`;
+                    paletDiv.style.height = `${largo}px`;
+                    paletDiv.style.backgroundColor = getColor(index);
+                    paletDiv.style.left = `${startX}px`;
+                    paletDiv.style.top = `${y}px`;
+                    camionArea.appendChild(paletDiv);
+
+                    placed = true;
+                    break;
+                }
+            }
+
+            if (!placed) {
+                // Si no se pudo colocar en la fila actual, pasar a la siguiente fila
+                y += filaLargo; // Usar el largo de la fila actual
+                fila = new Array(camionAncho).fill(0); // Resetear la fila
+                filaLargo = 0; // Reiniciar el largo utilizado
+                placed = false;
+
+                // Reintentar la colocación en la nueva fila
+                for (let startX = 0; startX <= camionAncho - ancho; startX++) {
+                    let canPlace = true;
+                    for (let j = startX; j < startX + ancho; j++) {
+                        if (fila[j] > 0) {
+                            canPlace = false;
+                            break;
+                        }
+                    }
+
+                    if (canPlace) {
+                        for (let j = startX; j < startX + ancho; j++) {
+                            fila[j] = largo;
+                        }
+
+                        const paletDiv = document.createElement("div");
+                        paletDiv.classList.add("palet");
+                        paletDiv.style.width = `${ancho}px`;
+                        paletDiv.style.height = `${largo}px`;
+                        paletDiv.style.backgroundColor = getColor(index);
+                        paletDiv.style.left = `${startX}px`;
+                        paletDiv.style.top = `${y}px`;
+                        camionArea.appendChild(paletDiv);
+
+                        placed = true;
+                        break;
+                    }
+                }
+
+                if (!placed) {
                     alert("El camión está lleno, no caben más palets.");
                     return;
                 }
-
-                // Colocar los palets en la siguiente fila
-                x = 0;
-                y += filaLargo;  // Usar el largo de la fila actual
-                filaLargo = 0;  // Reiniciar el largo utilizado de la fila
             }
 
-            // Colocar el palet
-            const paletDiv = document.createElement("div");
-            paletDiv.classList.add("palet");
-            paletDiv.style.width = `${ancho}px`;
-            paletDiv.style.height = `${largo}px`;
-            paletDiv.style.backgroundColor = getColor(index);
-            paletDiv.style.left = `${x}px`;
-            paletDiv.style.top = `${y}px`;
-            camionArea.appendChild(paletDiv);
-
-            // Actualizar las coordenadas de la fila
-            x += ancho;
-            filaLargo = Math.max(filaLargo, largo);  // Mantener el largo máximo de la fila
+            filaLargo = Math.max(filaLargo, largo); // Mantener el largo máximo de la fila
         }
     });
 }
