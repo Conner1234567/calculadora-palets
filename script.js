@@ -33,15 +33,15 @@ function renderPalets() {
         for (let i = 0; i < cantidad; i++) {
             // Si no cabe en la fila actual, pasar a la siguiente fila
             if (x + ancho > camionAncho) {
-                x = 0;
-                y += filaLargo;  // Usar el largo de la fila actual
-                filaLargo = 0;  // Reiniciar el largo utilizado de la fila
-
-                // Verificar si cabe en el camión en el eje Y
-                if (y + largo > camionLargo) {
+                // Si no cabe en una nueva fila, verificar si hay espacio en el eje Y
+                if (y + filaLargo + largo > camionLargo) {
                     alert("El camión está lleno, no caben más palets.");
                     return;
                 }
+                // Colocar los palets en la siguiente fila
+                x = 0;
+                y += filaLargo;  // Usar el largo de la fila actual
+                filaLargo = 0;  // Reiniciar el largo utilizado de la fila
             }
 
             // Colocar el palet
@@ -90,6 +90,4 @@ function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107"];
     return colors[index % colors.length];
 }
-
-
 
