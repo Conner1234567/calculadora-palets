@@ -3,24 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Palets</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Simulador de Carga de Camión</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        .truck {
+            position: relative;
+            width: 1360px; /* 13.6m en escala */
+            height: 244px; /* 2.44m en escala */
+            margin: 20px auto;
+            border: 2px solid #333;
+            background-color: #f4f4f4;
+        }
+        .pallet {
+            position: absolute;
+            background-color: rgba(0, 128, 0, 0.7);
+            border: 1px solid #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 12px;
+        }
+        .form-container {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Calculadora de Palets</h1>
-    <div id="formulario">
-        <label for="ancho">Ancho (cm):</label>
-        <input type="number" id="ancho" min="1">
-        <label for="largo">Largo (cm):</label>
-        <input type="number" id="largo" min="1">
-        <label for="cantidad">Cantidad:</label>
-        <input type="number" id="cantidad" min="1">
-        <button id="agregarPalet">Agregar Palet</button>
-        <button id="calcular">Calcular Metros Lineales</button>
+    <h1>Simulador de Carga de Camión</h1>
+    <div class="form-container">
+        <label for="pallet-width">Ancho del palet (cm):</label>
+        <input type="number" id="pallet-width" min="1" required>
+        <label for="pallet-length">Largo del palet (cm):</label>
+        <input type="number" id="pallet-length" min="1" required>
+        <label for="pallet-quantity">Cantidad:</label>
+        <input type="number" id="pallet-quantity" min="1" required>
+        <button onclick="addPallets()">Añadir Palets</button>
     </div>
-    <div id="resultado"></div>
-    <div id="camion-area"></div>
-    <script src="script.js"></script>
+    <div class="truck" id="truck"></div>
+    <p id="result"></p>
+
+    <script>
+        const truckWidth = 244; // 2.44m en cm
+        const truckLength = 1360; // 13.6m en cm
+        let pallets = [];
+
+        function addPallets() {
+            const palletWidth = parseInt(document.getElementById('pallet-width').value);
+            const palletLength = parseInt(document.getElementById('pallet-length').value);
+            const palletQuantity = parseInt(document.getElementById('pallet-quantity').value);
+
+            if (isNaN(palletWidth) || isNaN(palletLength) || isNaN(palletQuantity)) {
+                alert('Por favor, introduce valores válidos.');
+                return;
+            }
+
+            for (let i = 0; i < palletQuantity; i++) {
+                pallets.push({ width: palletWidth, length: palletLength });
+            }
+
+            renderTruck();
+        }
+
+        function renderTruck() {
+            const truck = document.getElementById('truck');
+            truck.innerHTML = '';
+            let x = 0, y = 0, totalLinearMeters = 0;
+
+            pallets.forEach((pallet, index) => {
+                if (x + pallet.length > truckLength) {
+                    x = 0;
+                    y += pallet.width;
+                }
+
+                if (y + pallet.width > truckWidth) {
+                    alert('No caben más palets en el camión.');
+                    return;
+                }
+
+                const palletDiv = document.createElement('div');
+                palletDiv.className = 'pallet';
+                palletDiv.style.width = `${pallet.length}px`;
+                palletDiv.style.height = `${pallet.width}px`;
+                palletDiv.style.left = `${x}px`;
+                palletDiv.style.top = `${y}px`;
+                palletDiv.textContent = `${index + 1}`;
+                truck.appendChild(palletDiv);
+
+                x += pallet.length;
+                totalLinearMeters = Math.max(totalLinearMeters, x / 100); // Convertimos a metros
+            });
+
+            document.getElementById('result').textContent = `Metros lineales ocupados: ${totalLinearMeters.toFixed(2)} m`;
+        }
+    </script>
 </body>
 </html>
-
