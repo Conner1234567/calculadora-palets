@@ -12,8 +12,8 @@
         }
         .truck {
             position: relative;
-            width: 1360px; /* 13.6m en escala */
-            height: 244px; /* 2.44m en escala */
+            width: 244px; /* 2.44m en escala */
+            height: 1360px; /* 13.6m en escala */
             margin: 20px auto;
             border: 2px solid #333;
             background-color: #f4f4f4;
@@ -75,27 +75,27 @@
             let x = 0, y = 0, totalLinearMeters = 0;
 
             pallets.forEach((pallet, index) => {
-                if (x + pallet.length > truckLength) {
-                    x = 0;
-                    y += pallet.width;
+                if (y + pallet.length > truckLength) {
+                    y = 0;
+                    x += pallet.width;
                 }
 
-                if (y + pallet.width > truckWidth) {
+                if (x + pallet.width > truckWidth) {
                     alert('No caben más palets en el camión.');
                     return;
                 }
 
                 const palletDiv = document.createElement('div');
                 palletDiv.className = 'pallet';
-                palletDiv.style.width = `${pallet.length}px`;
-                palletDiv.style.height = `${pallet.width}px`;
+                palletDiv.style.width = `${pallet.width}px`;
+                palletDiv.style.height = `${pallet.length}px`;
                 palletDiv.style.left = `${x}px`;
                 palletDiv.style.top = `${y}px`;
                 palletDiv.textContent = `${index + 1}`;
                 truck.appendChild(palletDiv);
 
-                x += pallet.length;
-                totalLinearMeters = Math.max(totalLinearMeters, x / 100); // Convertimos a metros
+                y += pallet.length;
+                totalLinearMeters = Math.max(totalLinearMeters, (x + pallet.width) / 100); // Convertimos a metros
             });
 
             document.getElementById('result').textContent = `Metros lineales ocupados: ${totalLinearMeters.toFixed(2)} m`;
