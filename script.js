@@ -17,11 +17,6 @@ document.getElementById("agregarPalet").addEventListener("click", () => {
     renderPalets();
 });
 
-document.getElementById("calcular").addEventListener("click", () => {
-    const metrosLineales = calcularMetrosLineales();
-    document.getElementById("resultado").innerText = `Metros lineales ocupados: ${metrosLineales.toFixed(2)} m`;
-});
-
 function renderPalets() {
     const camionArea = document.getElementById("camion-area");
     camionArea.innerHTML = ""; // Limpiar la representación visual del camión
@@ -31,10 +26,10 @@ function renderPalets() {
 
     palets.forEach(({ ancho, largo, cantidad }, index) => {
         for (let i = 0; i < cantidad; i++) {
-            let placed = false;
+            let colocado = false;
 
             for (let y = 0; y <= camionLargo - largo; y++) {
-                if (placed) break;
+                if (colocado) break;
 
                 for (let x = 0; x <= camionAncho - ancho; x++) {
                     if (canPlacePalet(x, y, ancho, largo)) {
@@ -49,13 +44,13 @@ function renderPalets() {
                         paletDiv.style.top = `${y}px`;
                         camionArea.appendChild(paletDiv);
 
-                        placed = true;
+                        colocado = true;
                         break;
                     }
                 }
             }
 
-            if (!placed) {
+            if (!colocado) {
                 alert("El camión está lleno, no caben más palets.");
                 return;
             }
@@ -82,36 +77,9 @@ function placePalet(x, y, ancho, largo) {
     }
 }
 
-function calcularMetrosLineales() {
-    let metrosLineales = 0;
-    let ocupadoAncho = 0;
-
-    palets.forEach(({ ancho, largo, cantidad }) => {
-        let paletsRestantes = cantidad;
-
-        while (paletsRestantes > 0) {
-            if (ocupadoAncho + ancho > camionAncho) {
-                ocupadoAncho = 0;
-                metrosLineales += largo / 100; // Convertir a metros
-            }
-
-            ocupadoAncho += ancho;
-            paletsRestantes--;
-        }
-
-        if (ocupadoAncho > 0) {
-            metrosLineales += largo / 100; // Agregar última fila ocupada
-        }
-    });
-
-    return metrosLineales;
-}
-
 function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107"];
     return colors[index % colors.length];
 }
-
-
 
 
