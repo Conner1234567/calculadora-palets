@@ -42,7 +42,7 @@ function renderPalets() {
                 if (placed) break;
 
                 for (let xPos = 0; xPos < camionAncho - ancho; xPos++) {
-                    // Comprobamos si el espacio está libre para colocar el palet
+                    // Comprobamos si el área que ocuparía el palet está libre
                     if (canPlacePalet(xPos, yPos, ancho, largo)) {
                         // Colocar el palet
                         placePalet(xPos, yPos, ancho, largo);
