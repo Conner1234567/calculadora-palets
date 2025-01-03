@@ -32,31 +32,32 @@ function renderPalets() {
     // Ordenar los palets por su área (de mayor a menor)
     palets.sort((a, b) => (b.ancho * b.largo) - (a.ancho * a.largo));
 
-    // Crear un array para registrar el espacio disponible
+    // Crear un array para registrar el espacio disponible por columna en cada fila
     let fila = new Array(camionAncho).fill(0); // Cada celda representa el ancho del camión en cm
 
     palets.forEach(({ ancho, largo, cantidad }, index) => {
         for (let i = 0; i < cantidad; i++) {
-            // Buscar una posición en la fila donde el palet pueda encajar sin sobreponerse
             let placed = false;
 
-            // Recorremos la fila para encontrar un espacio libre donde quepa el palet
+            // Buscar un espacio libre en la fila donde el palet pueda caber
             for (let startX = 0; startX <= camionAncho - ancho; startX++) {
-                // Verificar si hay espacio para colocar el palet en esta posición
                 let canPlace = true;
+
+                // Verificar si el palet cabe en el espacio seleccionado
                 for (let j = startX; j < startX + ancho; j++) {
-                    if (fila[j] > 0) {
+                    if (fila[j] > 0) {  // Hay algo en esta posición
                         canPlace = false;
                         break;
                     }
                 }
 
+                // Si el palet cabe, lo colocamos
                 if (canPlace) {
-                    // Colocar el palet en la fila
                     for (let j = startX; j < startX + ancho; j++) {
-                        fila[j] = largo; // Ocupamos ese espacio con el largo del palet
+                        fila[j] = largo; // Ocupamos el espacio con el largo del palet
                     }
 
+                    // Crear el div del palet en la pantalla
                     const paletDiv = document.createElement("div");
                     paletDiv.classList.add("palet");
                     paletDiv.style.width = `${ancho}px`;
@@ -71,18 +72,23 @@ function renderPalets() {
                 }
             }
 
+            // Si no se pudo colocar en la fila actual, mover a la siguiente fila
             if (!placed) {
-                // Si no se pudo colocar en la fila actual, pasar a la siguiente fila
-                y += filaLargo; // Usar el largo de la fila actual
-                fila = new Array(camionAncho).fill(0); // Resetear la fila
-                filaLargo = 0; // Reiniciar el largo utilizado
+                y += filaLargo; // Mover hacia abajo según el largo utilizado en la fila anterior
+                if (y + largo > camionLargo) {
+                    alert("El camión está lleno, no caben más palets.");
+                    return;
+                }
+
+                // Resetear la fila y colocar el palet en la nueva fila
+                fila = new Array(camionAncho).fill(0);
                 placed = false;
 
-                // Reintentar la colocación en la nueva fila
                 for (let startX = 0; startX <= camionAncho - ancho; startX++) {
                     let canPlace = true;
+
                     for (let j = startX; j < startX + ancho; j++) {
-                        if (fila[j] > 0) {
+                        if (fila[j] > 0) { // Comprobar si el palet cabe
                             canPlace = false;
                             break;
                         }
@@ -113,7 +119,7 @@ function renderPalets() {
                 }
             }
 
-            filaLargo = Math.max(filaLargo, largo); // Mantener el largo máximo de la fila
+            filaLargo = Math.max(filaLargo, largo); // Actualizar el largo máximo de la fila
         }
     });
 }
@@ -147,4 +153,5 @@ function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107"];
     return colors[index % colors.length];
 }
+
 
