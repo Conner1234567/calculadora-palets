@@ -1,7 +1,7 @@
 const camionAncho = 244; // Ancho del camión en cm
 const camionLargo = 1360; // Largo del camión en cm
 let palets = [];
-let ocupacion = Array(camionLargo).fill().map(() => Array(camionAncho).fill(false)); // Malla de ocupación (ancho x largo)
+let ocupacion = Array(camionLargo).fill().map(() => Array(camionAncho).fill(false)); // Malla de ocupación
 
 document.getElementById("agregarPalet").addEventListener("click", () => {
     const ancho = parseInt(document.getElementById("ancho").value);
@@ -24,23 +24,24 @@ document.getElementById("calcular").addEventListener("click", () => {
 
 function renderPalets() {
     const camionArea = document.getElementById("camion-area");
-    camionArea.innerHTML = "";
+    camionArea.innerHTML = ""; // Limpiar la representación visual del camión
 
-    // Inicializamos la malla de ocupación
+    // Resetear la malla de ocupación
     ocupacion = Array(camionLargo).fill().map(() => Array(camionAncho).fill(false));
 
-    // Ordenamos los palets de mayor a menor tamaño (para intentar colocar los grandes primero)
+    // Ordenamos los palets de mayor a menor tamaño para intentar colocar los grandes primero
     palets.sort((a, b) => (b.ancho * b.largo) - (a.ancho * a.largo));
 
-    // Procesamos cada palet
     palets.forEach(({ ancho, largo, cantidad }, index) => {
         for (let i = 0; i < cantidad; i++) {
             let placed = false;
 
             // Intentamos colocar el palet en el camión
-            for (let yPos = 0; yPos < camionLargo - largo && !placed; yPos++) {
-                for (let xPos = 0; xPos < camionAncho - ancho && !placed; xPos++) {
-                    // Comprobamos si el espacio está libre
+            for (let yPos = 0; yPos < camionLargo - largo; yPos++) {
+                if (placed) break;
+
+                for (let xPos = 0; xPos < camionAncho - ancho; xPos++) {
+                    // Comprobamos si el espacio está libre para colocar el palet
                     let canPlace = true;
                     for (let y = yPos; y < yPos + largo; y++) {
                         for (let x = xPos; x < xPos + ancho; x++) {
@@ -72,6 +73,7 @@ function renderPalets() {
                         camionArea.appendChild(paletDiv);
 
                         placed = true;
+                        break; // Salimos del bucle de búsqueda de espacio una vez colocado
                     }
                 }
             }
@@ -114,4 +116,5 @@ function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107"];
     return colors[index % colors.length];
 }
+
 
