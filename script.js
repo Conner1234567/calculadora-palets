@@ -33,7 +33,7 @@ function renderPalets() {
         for (let i = 0; i < cantidad; i++) {
             // Si no cabe en la fila actual, pasar a la siguiente fila
             if (x + ancho > camionAncho) {
-                // Si no cabe en una nueva fila, verificar si hay espacio en el eje Y
+                // Verificar si se puede mover a la siguiente fila sin sobrepasar el largo del camión
                 if (y + filaLargo + largo > camionLargo) {
                     alert("El camión está lleno, no caben más palets.");
                     return;
