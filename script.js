@@ -1,6 +1,7 @@
 const camionAncho = 244; // Ancho del camión en cm
 const camionLargo = 1360; // Largo del camión en cm
 let palets = [];
+let ocupacion = []; // Malla de ocupación (ancho x largo)
 
 document.getElementById("agregarPalet").addEventListener("click", () => {
     const ancho = parseInt(document.getElementById("ancho").value);
@@ -25,98 +26,65 @@ function renderPalets() {
     const camionArea = document.getElementById("camion-area");
     camionArea.innerHTML = "";
 
-    let y = 0; // Coordenada y en cm (fila)
-    let fila = new Array(camionAncho).fill(0); // Espacio vacío de la fila actual (0 significa vacío, mayor a 0 indica ocupado)
+    // Inicializamos la malla de ocupación
+    ocupacion = Array.from({ length: camionLargo }, () => Array(camionAncho).fill(false));
 
-    // Ordenar los palets por su área (de mayor a menor) para intentar colocar los grandes primero
+    let y = 0; // Coordenada y en cm (fila)
+    
+    // Ordenamos los palets de mayor a menor tamaño (para intentar colocar los grandes primero)
     palets.sort((a, b) => (b.ancho * b.largo) - (a.ancho * a.largo));
 
+    // Procesamos cada palet
     palets.forEach(({ ancho, largo, cantidad }, index) => {
         for (let i = 0; i < cantidad; i++) {
             let placed = false;
 
-            // Intentar colocar el palet en la fila
-            for (let startX = 0; startX <= camionAncho - ancho; startX++) {
-                let canPlace = true;
-
-                // Comprobar si el palet cabe en el espacio disponible de la fila
-                for (let j = startX; j < startX + ancho; j++) {
-                    if (fila[j] > 0) {  // Ya hay algo en esa posición
-                        canPlace = false;
-                        break;
-                    }
-                }
-
-                // Si el palet cabe, colocarlo en la fila
-                if (canPlace) {
-                    for (let j = startX; j < startX + ancho; j++) {
-                        fila[j] = largo;  // Ocupamos el espacio con el largo del palet
-                    }
-
-                    // Crear el div del palet
-                    const paletDiv = document.createElement("div");
-                    paletDiv.classList.add("palet");
-                    paletDiv.style.width = `${ancho}px`;
-                    paletDiv.style.height = `${largo}px`;
-                    paletDiv.style.backgroundColor = getColor(index);
-                    paletDiv.style.left = `${startX}px`;
-                    paletDiv.style.top = `${y}px`;
-                    camionArea.appendChild(paletDiv);
-
-                    placed = true;
-                    break;
-                }
-            }
-
-            // Si no se pudo colocar en la fila, pasar a la siguiente fila
-            if (!placed) {
-                // Aumentamos la coordenada y
-                y += Math.max(...fila); // Actualizamos el y según el largo de la fila anterior
-                if (y + largo > camionLargo) {
-                    alert("El camión está lleno, no caben más palets.");
-                    return;
-                }
-
-                // Resetear la fila
-                fila = new Array(camionAncho).fill(0);
-
-                // Intentar colocar el palet en la nueva fila
-                for (let startX = 0; startX <= camionAncho - ancho; startX++) {
+            // Intentamos colocar el palet en el camión
+            for (let yPos = 0; yPos < camionLargo - largo; yPos++) {
+                if (placed) break; // Si ya lo colocamos, salimos del bucle
+                
+                for (let xPos = 0; xPos <= camionAncho - ancho; xPos++) {
+                    // Comprobamos si el espacio está libre
                     let canPlace = true;
-
-                    // Comprobar si el palet cabe en el espacio disponible de la nueva fila
-                    for (let j = startX; j < startX + ancho; j++) {
-                        if (fila[j] > 0) {  // Ya hay algo en esa posición
-                            canPlace = false;
-                            break;
+                    for (let x = xPos; x < xPos + ancho; x++) {
+                        for (let y = yPos; y < yPos + largo; y++) {
+                            if (ocupacion[y][x]) { // Si alguna posición está ocupada
+                                canPlace = false;
+                                break;
+                            }
                         }
+                        if (!canPlace) break;
                     }
 
-                    // Si el palet cabe, colocarlo en la nueva fila
+                    // Si encontramos un espacio libre, colocamos el palet
                     if (canPlace) {
-                        for (let j = startX; j < startX + ancho; j++) {
-                            fila[j] = largo;  // Ocupamos el espacio con el largo del palet
+                        // Marcar el espacio como ocupado
+                        for (let x = xPos; x < xPos + ancho; x++) {
+                            for (let y = yPos; y < yPos + largo; y++) {
+                                ocupacion[y][x] = true;
+                            }
                         }
 
+                        // Crear el div del palet
                         const paletDiv = document.createElement("div");
                         paletDiv.classList.add("palet");
                         paletDiv.style.width = `${ancho}px`;
                         paletDiv.style.height = `${largo}px`;
                         paletDiv.style.backgroundColor = getColor(index);
-                        paletDiv.style.left = `${startX}px`;
-                        paletDiv.style.top = `${y}px`;
+                        paletDiv.style.left = `${xPos}px`;
+                        paletDiv.style.top = `${yPos}px`;
                         camionArea.appendChild(paletDiv);
 
                         placed = true;
                         break;
                     }
                 }
+            }
 
-                // Si no se puede colocar el palet, alertar al usuario
-                if (!placed) {
-                    alert("El camión está lleno, no caben más palets.");
-                    return;
-                }
+            // Si no se pudo colocar el palet, alertar
+            if (!placed) {
+                alert("El camión está lleno, no caben más palets.");
+                return;
             }
         }
     });
