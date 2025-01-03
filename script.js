@@ -1,7 +1,7 @@
 const camionAncho = 244; // Ancho del camión en cm
 const camionLargo = 1360; // Largo del camión en cm
 let palets = [];
-let ocupacion = Array(camionLargo).fill().map(() => Array(camionAncho).fill(false)); // Malla de ocupación
+let ocupacion = Array.from({ length: camionLargo }, () => Array(camionAncho).fill(false)); // Malla de ocupación
 
 document.getElementById("agregarPalet").addEventListener("click", () => {
     const ancho = parseInt(document.getElementById("ancho").value);
@@ -27,21 +27,18 @@ function renderPalets() {
     camionArea.innerHTML = ""; // Limpiar la representación visual del camión
 
     // Resetear la malla de ocupación
-    ocupacion = Array(camionLargo).fill().map(() => Array(camionAncho).fill(false));
-
-    // Ordenamos los palets de mayor a menor tamaño para intentar colocar los grandes primero
-    palets.sort((a, b) => (b.ancho * b.largo) - (a.ancho * a.largo));
+    ocupacion = Array.from({ length: camionLargo }, () => Array(camionAncho).fill(false));
 
     // Intentamos colocar los palets
     palets.forEach(({ ancho, largo, cantidad }, index) => {
         for (let i = 0; i < cantidad; i++) {
             let placed = false;
 
-            // Intentamos colocar el palet
-            for (let yPos = 0; yPos < camionLargo - largo; yPos++) {
+            // Intentamos colocar el palet en el camión
+            for (let yPos = 0; yPos <= camionLargo - largo; yPos++) {
                 if (placed) break;
 
-                for (let xPos = 0; xPos < camionAncho - ancho; xPos++) {
+                for (let xPos = 0; xPos <= camionAncho - ancho; xPos++) {
                     // Comprobamos si el área que ocuparía el palet está libre
                     if (canPlacePalet(xPos, yPos, ancho, largo)) {
                         // Colocar el palet
