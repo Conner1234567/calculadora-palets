@@ -77,7 +77,7 @@
             pallets.forEach((pallet, index) => {
                 if (y + pallet.width > truckHeight) {
                     y = 0;
-                    x += pallet.length;
+                    x += pallet.length; // Mover a la siguiente columna
                 }
 
                 if (x + pallet.length > truckWidth) {
