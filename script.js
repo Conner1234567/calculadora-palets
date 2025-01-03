@@ -32,35 +32,20 @@ function renderPalets() {
     // Ordenamos los palets de mayor a menor tamaño para intentar colocar los grandes primero
     palets.sort((a, b) => (b.ancho * b.largo) - (a.ancho * a.largo));
 
+    // Intentamos colocar los palets
     palets.forEach(({ ancho, largo, cantidad }, index) => {
         for (let i = 0; i < cantidad; i++) {
             let placed = false;
 
-            // Intentamos colocar el palet en el camión
+            // Intentamos colocar el palet
             for (let yPos = 0; yPos < camionLargo - largo; yPos++) {
                 if (placed) break;
 
                 for (let xPos = 0; xPos < camionAncho - ancho; xPos++) {
                     // Comprobamos si el espacio está libre para colocar el palet
-                    let canPlace = true;
-                    for (let y = yPos; y < yPos + largo; y++) {
-                        for (let x = xPos; x < xPos + ancho; x++) {
-                            if (ocupacion[y][x]) { // Si alguna posición está ocupada
-                                canPlace = false;
-                                break;
-                            }
-                        }
-                        if (!canPlace) break;
-                    }
-
-                    // Si encontramos un espacio libre, colocamos el palet
-                    if (canPlace) {
-                        // Marcar el espacio como ocupado
-                        for (let y = yPos; y < yPos + largo; y++) {
-                            for (let x = xPos; x < xPos + ancho; x++) {
-                                ocupacion[y][x] = true;
-                            }
-                        }
+                    if (canPlacePalet(xPos, yPos, ancho, largo)) {
+                        // Colocar el palet
+                        placePalet(xPos, yPos, ancho, largo);
 
                         // Crear el div del palet
                         const paletDiv = document.createElement("div");
@@ -85,6 +70,27 @@ function renderPalets() {
             }
         }
     });
+}
+
+function canPlacePalet(xPos, yPos, ancho, largo) {
+    // Comprobamos si el área que ocuparía el palet está libre
+    for (let y = yPos; y < yPos + largo; y++) {
+        for (let x = xPos; x < xPos + ancho; x++) {
+            if (ocupacion[y][x]) { // Si alguna posición está ocupada
+                return false;
+            }
+        }
+    }
+    return true; // Si todas las posiciones están libres
+}
+
+function placePalet(xPos, yPos, ancho, largo) {
+    // Marcar el espacio como ocupado
+    for (let y = yPos; y < yPos + largo; y++) {
+        for (let x = xPos; x < xPos + ancho; x++) {
+            ocupacion[y][x] = true; // Marcar como ocupado
+        }
+    }
 }
 
 function calcularMetrosLineales() {
@@ -116,5 +122,4 @@ function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107"];
     return colors[index % colors.length];
 }
-
 
