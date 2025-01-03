@@ -80,21 +80,22 @@ function renderPalets() {
                 fila = new Array(camionAncho).fill(0);
                 placed = false;
 
+                // Verificar todas las posiciones de la nueva fila para colocar el palet
                 for (let startX = 0; startX <= camionAncho - ancho; startX++) {
                     let canPlace = true;
 
-                    // Verificar si el palet cabe en el espacio disponible
+                    // Comprobar si el palet cabe en el espacio disponible
                     for (let j = startX; j < startX + ancho; j++) {
-                        if (fila[j] > 0) {
+                        if (fila[j] > 0) {  // Ya hay algo en esa posición
                             canPlace = false;
                             break;
                         }
                     }
 
-                    // Si cabe, colocamos el palet en la nueva fila
+                    // Si el palet cabe, colocarlo en la nueva fila
                     if (canPlace) {
                         for (let j = startX; j < startX + ancho; j++) {
-                            fila[j] = largo;
+                            fila[j] = largo; // Ocupamos el espacio con el largo del palet
                         }
 
                         const paletDiv = document.createElement("div");
@@ -111,6 +112,7 @@ function renderPalets() {
                     }
                 }
 
+                // Si no se puede colocar el palet, alertar al usuario
                 if (!placed) {
                     alert("El camión está lleno, no caben más palets.");
                     return;
