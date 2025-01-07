@@ -46,8 +46,8 @@ function renderPalets() {
             paletDiv.style.top = `0px`; // Los palets están alineados horizontalmente en el camión
             camionArea.appendChild(paletDiv);
 
-            // Actualizar el largo ocupado solo considerando el largo del palet
-            largoOcupado += largo / 100; // Sumar el largo ocupado en LDM
+            // Actualizar el largo ocupado solo considerando el largo real en cm
+            largoOcupado += largo / 100; // Sumar el largo ocupado en metros
 
             // Avanzar en la dirección del largo
             currentX += largo;
@@ -61,5 +61,4 @@ function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107", "#9C27B0", "#3F51B5"];
     return colors[index % colors.length];
 }
-
 
