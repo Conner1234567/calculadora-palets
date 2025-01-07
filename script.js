@@ -1,6 +1,6 @@
 const camionAncho = 244; // Ancho real del camión en cm
 const camionLargo = 1360; // Largo real del camión en cm
-const escalaVisual = 816 / camionLargo; // Escala basada en el largo del camión
+const escalaVisual = 816 / camionLargo; // Escala visual basada en el largo del camión
 let palets = [];
 let ocupacion = Array.from({ length: camionAncho }, () => Array(camionLargo).fill(false)); // Malla de ocupación
 
@@ -22,7 +22,7 @@ function renderPalets() {
     const camionArea = document.getElementById("camion-area");
     camionArea.innerHTML = ""; // Limpiar la representación visual del camión
 
-    ocupacion = Array.from({ length: camionAncho }, () => Array(camionLargo).fill(false));
+    ocupacion = Array.from({ length: camionAncho }, () => Array(camionLargo).fill(false)); // Limpiar la malla de ocupación
 
     let totalLDM = 0;
 
@@ -36,6 +36,7 @@ function renderPalets() {
                 const { x, y } = espacio;
                 placePalet(x, y, ancho, largo);
 
+                // Crear el div visual del palet
                 const paletDiv = document.createElement("div");
                 paletDiv.classList.add("palet");
                 paletDiv.style.width = `${largo * escalaVisual}px`; // Escalar el largo visual
