@@ -36,8 +36,8 @@ function renderPalets() {
 
                 const paletDiv = document.createElement("div");
                 paletDiv.classList.add("palet");
-                paletDiv.style.width = `${largo}px`; // Largo como ancho visual
-                paletDiv.style.height = `${ancho}px`; // Ancho como altura visual
+                paletDiv.style.width = `${largo}px`; // El largo del palet es la "ancho" visual
+                paletDiv.style.height = `${ancho}px`; // El ancho del palet es la "alto" visual
                 paletDiv.style.backgroundColor = getColor(index);
                 paletDiv.style.left = `${x}px`;
                 paletDiv.style.top = `${y}px`;
