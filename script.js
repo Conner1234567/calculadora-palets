@@ -1,5 +1,5 @@
-const camionAncho = 244; // Ancho del camión en cm (ahora vertical)
-const camionLargo = 1360; // Largo del camión en cm (ahora horizontal)
+const camionAncho = 244; // Ancho del camión en cm (vertical)
+const camionLargo = 1360; // Largo del camión en cm (horizontal)
 let palets = [];
 let ocupacion = Array.from({ length: camionLargo }, () => Array(camionAncho).fill(false)); // Malla de ocupación
 let ldmOcupados = 0; // Variable para almacenar los LDM ocupados
@@ -67,10 +67,15 @@ function encontrarEspacio(ancho, largo) {
 }
 
 function canPlacePalet(x, y, ancho, largo) {
+    // Verificar si el palet cabe dentro del área del camión
+    if (x + ancho > camionAncho || y + largo > camionLargo) {
+        return false; // El palet se sale del camión
+    }
+
     for (let row = y; row < y + largo; row++) {
         for (let col = x; col < x + ancho; col++) {
-            if (row >= camionLargo || col >= camionAncho || ocupacion[row][col]) {
-                return false;
+            if (ocupacion[row][col]) {
+                return false; // El espacio ya está ocupado
             }
         }
     }
