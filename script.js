@@ -95,10 +95,4 @@ function mostrarLDM() {
     ldmElement.innerText = `Total LDM ocupados: ${ldmOcupados.toFixed(2)} m`;
 }
 
-function mostrarOcupacion() {
-    console.log("Ocupación del camión:");
-    ocupacion.forEach((fila, i) => {
-        console.log(`Fila ${i}: ${fila.map(cell => (cell ? "X" : "-")).join("")}`);
-    });
-}
 
