@@ -1,5 +1,5 @@
-const camionAncho = 244; // Ancho del camión en cm
-const camionLargo = 1360; // Largo del camión en cm
+const camionAncho = 244; // Ancho del camión en cm (horizontal)
+const camionLargo = 1360; // Largo del camión en cm (horizontal)
 let palets = [];
 let ocupacion = Array.from({ length: camionLargo }, () => Array(camionAncho).fill(false)); // Malla de ocupación
 
@@ -34,8 +34,8 @@ function renderPalets() {
 
                 const paletDiv = document.createElement("div");
                 paletDiv.classList.add("palet");
-                paletDiv.style.width = `${ancho}px`;
-                paletDiv.style.height = `${largo}px`;
+                paletDiv.style.width = `${ancho}px`; // Ancho visual del palet
+                paletDiv.style.height = `${largo}px`; // Largo visual del palet
                 paletDiv.style.backgroundColor = getColor(index);
                 paletDiv.style.left = `${x}px`;
                 paletDiv.style.top = `${y}px`;
