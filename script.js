@@ -100,4 +100,3 @@ function mostrarLDM() {
     ldmElement.innerText = `Total LDM ocupados: ${ldmOcupados.toFixed(2)} m`;
 }
 
-
