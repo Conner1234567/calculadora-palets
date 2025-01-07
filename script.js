@@ -1,6 +1,5 @@
 const camionAncho = 244; // Ancho real del camión en cm
 const camionLargo = 1360; // Largo real del camión en cm
-const camionLargoMaximoLDM = 1360; // 13,60 metros = 1360 cm
 const escalaVisual = 816 / camionLargo; // Escala visual basada en el largo del camión
 
 let palets = [];
@@ -23,6 +22,7 @@ document.getElementById("agregarPalet").addEventListener("click", () => {
 function renderPalets() {
     const camionArea = document.getElementById("camion-area");
     camionArea.innerHTML = ""; // Limpiar la representación visual del camión
+
     largoOcupado = 0; // Resetear el largo ocupado
 
     let currentX = 0; // Posición en el eje X para los palets
@@ -85,5 +85,4 @@ function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107", "#9C27B0", "#3F51B5"];
     return colors[index % colors.length];
 }
-
 
