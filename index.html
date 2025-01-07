@@ -7,8 +7,8 @@
     <style>
         #camion-area {
             position: relative;
-            width: 244px; /* Ancho del camión en cm */
-            height: 1360px; /* Largo del camión en cm */
+            width: 1360px; /* Largo del camión en cm (horizontal) */
+            height: 244px; /* Ancho del camión en cm (vertical) */
             background-color: #e0e0e0;
             border: 2px solid #000;
             margin: 20px auto;
@@ -30,6 +30,11 @@
             font-size: 16px;
             width: 100px;
         }
+        #ldm {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -41,7 +46,9 @@
         <button id="agregarPalet">Agregar Palet</button>
     </div>
     <div id="camion-area"></div>
+    <div id="ldm">Total LDM ocupados: 0</div>
 
     <script src="script.js"></script>
 </body>
 </html>
+
