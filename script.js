@@ -46,7 +46,7 @@ function renderPalets() {
                 paletDiv.style.top = `${y * escalaVisual}px`;
                 camionArea.appendChild(paletDiv);
 
-                // Calcular LDM ocupado por el palet, en función de su largo
+                // Calcular LDM ocupado por el palet, considerando el largo de cada palet (1,20 metros)
                 totalLDM += largo / 100; // Convertir el largo de cada palet a metros
             } else {
                 alert(`No hay espacio suficiente para el palet ${i + 1} del grupo ${grupoIndex + 1}.`);
