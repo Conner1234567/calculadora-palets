@@ -3,54 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulación de Carga de Camión</title>
-    <style>
-        #camion-area {
-            position: relative;
-            width: 1360px; /* Largo del camión */
-            height: 244px; /* Ancho del camión */
-            background-color: lightgray;
-            border: 2px solid black;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        .palet {
-            position: absolute;
-            border: 1px solid #000;
-        }
-
-        #ldm {
-            margin-top: 20px;
-            font-size: 20px;
-        }
-
-        input {
-            margin: 5px;
-        }
-    </style>
+    <title>Gestión de Camión</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="container">
+        <h1>Gestión de Carga del Camión</h1>
+        <div class="input-section">
+            <label for="ancho">Ancho del Palet (cm):</label>
+            <input type="number" id="ancho" min="1">
 
-    <h2>Simulación de Carga de Camión</h2>
+            <label for="largo">Largo del Palet (cm):</label>
+            <input type="number" id="largo" min="1">
 
-    <div>
-        <label for="ancho">Ancho del palet (cm):</label>
-        <input type="number" id="ancho" min="1">
-        <label for="largo">Largo del palet (cm):</label>
-        <input type="number" id="largo" min="1">
-        <label for="cantidad">Cantidad:</label>
-        <input type="number" id="cantidad" min="1">
-        <button id="agregarPalet">Agregar Palet</button>
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" id="cantidad" min="1">
+
+            <button id="agregarPalet">Agregar Palet</button>
+        </div>
+
+        <div id="camion-container">
+            <div id="camion-area"></div>
+        </div>
+
+        <div id="total-ldm">
+            <strong>Total LDM ocupados:</strong> <span id="ldm-ocupados">0</span>
+        </div>
     </div>
 
-    <div id="camion-area"></div>
-
-    <div id="ldm">Total LDM ocupados: 0 m</div>
-
-    <script src="app.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
-
-
 
