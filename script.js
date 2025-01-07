@@ -52,44 +52,18 @@ function renderPalets() {
 }
 
 function encontrarEspacio(ancho, largo) {
-    const huecos = [];
     for (let y = 0; y <= camionLargo - largo; y++) {
         for (let x = 0; x <= camionAncho - ancho; x++) {
             if (canPlacePalet(x, y, ancho, largo)) {
-                huecos.push({ x, y, espacioLibre: calcularEspacioLibre(x, y, ancho, largo) });
+                return { x, y };
             }
         }
     }
 
-    // Ordenar los huecos por espacio libre ascendente (priorizar huecos pequeños)
-    huecos.sort((a, b) => a.espacioLibre - b.espacioLibre);
-
-    return huecos.length > 0 ? huecos[0] : null; // Devuelve el mejor hueco o null
-}
-
-function calcularEspacioLibre(x, y, ancho, largo) {
-    let espacioLibre = 0;
-
-    for (let row = y; row < y + largo; row++) {
-        for (let col = x; col < x + ancho; col++) {
-            if (!ocupacion[row][col]) {
-                espacioLibre++;
-            }
-        }
-    }
-
-    return espacioLibre;
+    return null; // No hay espacio suficiente
 }
 
 function canPlacePalet(x, y, ancho, largo) {
-    // Intentar posición normal
-    if (puedeColocar(x, y, ancho, largo)) return true;
-
-    // Intentar rotar (cambiar ancho y largo)
-    return puedeColocar(x, y, largo, ancho);
-}
-
-function puedeColocar(x, y, ancho, largo) {
     for (let row = y; row < y + largo; row++) {
         for (let col = x; col < x + ancho; col++) {
             if (row >= camionLargo || col >= camionAncho || ocupacion[row][col]) {
