@@ -1,38 +1,59 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Carga del Camión</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Distribución de Palets</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .form-container {
+            margin-bottom: 20px;
+        }
+
+        .camion-container {
+            position: relative;
+            width: 1280px; /* 60% más grande */
+            height: 230px; /* 60% más grande */
+            background-color: #f0f0f0;
+            border: 2px solid #000;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .palet {
+            position: absolute;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .info-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Gestión de Carga del Camión</h1>
-        <div class="input-section">
-            <label for="ancho">Ancho del Palet (cm):</label>
-            <input type="number" id="ancho" min="1">
-
-            <label for="largo">Largo del Palet (cm):</label>
-            <input type="number" id="largo" min="1">
-
-            <label for="cantidad">Cantidad:</label>
-            <input type="number" id="cantidad" min="1">
-
-            <button id="agregarPalet">Agregar Palet</button>
-        </div>
-
-        <div id="camion-container">
-            <div id="camion-area"></div>
-        </div>
-
-        <div id="total-ldm">
-            <strong>Total LDM ocupados:</strong> <span id="ldm-ocupados">0</span>
-        </div>
+    <div class="form-container">
+        <label>Ancho (cm): <input type="number" id="ancho"></label>
+        <label>Largo (cm): <input type="number" id="largo"></label>
+        <label>Cantidad: <input type="number" id="cantidad"></label>
+        <button id="agregarPalet">Agregar Palet</button>
     </div>
-
+    <div class="camion-container" id="camion-area"></div>
+    <div class="info-container">
+        <p>Total LDM ocupados: <span id="ldm-ocupados">0.00</span> m</p>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
-
 
