@@ -3,91 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Distribución de Palets</title>
+    <title>Gestor de Distribución de Palets</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f7f9fc;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            background-color: #f4f4f4;
-            height: 100vh;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
         }
 
         .form-container {
-            margin-bottom: 20px;
+            background-color: #ffffff;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
+            width: 90%;
+            max-width: 500px;
         }
 
         .form-container input {
-            margin: 5px;
-            padding: 5px;
-            width: 100px;
+            margin: 10px;
+            padding: 10px;
+            width: calc(30% - 20px);
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
 
         .form-container button {
-            padding: 8px 15px;
+            padding: 10px 20px;
             font-size: 14px;
             background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
         .form-container button:hover {
-            background-color: #45a049;
+            background-color: #3e8e41;
         }
 
         .camion-container {
             position: relative;
-            width: 816px; /* Escalado visual del largo del camión (13.6 m) */
-            height: 146px; /* Escalado visual del ancho del camión (2.44 m) */
             background-color: #e0e0e0;
+            width: 816px; /* Escala visual: 13.6 m */
+            height: 146px; /* Escala visual: 2.44 m */
             border: 2px solid #000;
-            margin: 20px 0;
+            margin: 20px auto;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
+        .camion-label {
+            position: absolute;
+            font-size: 16px;
+            font-weight: bold;
+            color: #555;
+            bottom: -25px;
+        }
+
         .palet {
             position: absolute;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            border: 1px solid #000;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 10px;
             font-weight: bold;
-            color: #fff;
+            color: white;
+            border: 1px solid #000;
         }
 
         .info-container {
+            margin: 20px;
             text-align: center;
-            margin-top: 10px;
         }
 
         .info-container p {
-            font-size: 16px;
+            font-size: 18px;
             margin: 5px 0;
+        }
+
+        footer {
+            margin-top: auto;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            color: #777;
+            background-color: #f1f1f1;
+            width: 100%;
         }
     </style>
 </head>
 <body>
+    <header>
+        <h1>Gestor de Distribución de Palets</h1>
+    </header>
+
     <div class="form-container">
         <label>Ancho (cm): <input type="number" id="ancho" placeholder="Ej: 100"></label>
         <label>Largo (cm): <input type="number" id="largo" placeholder="Ej: 120"></label>
         <label>Cantidad: <input type="number" id="cantidad" placeholder="Ej: 5"></label>
+        <br>
         <button id="agregarPalet">Agregar Palet</button>
     </div>
-    <div class="camion-container" id="camion-area"></div>
+
+    <div class="camion-container" id="camion-area">
+        <span class="camion-label">Camión (13.6m x 2.44m)</span>
+    </div>
+
     <div class="info-container">
         <p>Total LDM ocupados: <span id="ldm-ocupados">0.00</span> m</p>
     </div>
+
+    <footer>
+        <p>&copy; 2025 Gestor de Palets. Todos los derechos reservados.</p>
+    </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
