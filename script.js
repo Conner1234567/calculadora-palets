@@ -30,8 +30,8 @@ function renderPalets() {
         const { ancho, largo, cantidad } = grupo;
 
         for (let i = 0; i < cantidad; i++) {
-            // Asegurarse de que no se exceda el largo total del camión
-            if (currentX + largo > camionLargo) {
+            // Asegurarse de que no se exceda el largo total del camión (considerando la escala visual)
+            if (currentX + largo * escalaVisual > 816) { // 816 es el tamaño visual total del camión
                 alert("El camión está lleno. No se pueden agregar más palets.");
                 return;
             }
@@ -42,15 +42,15 @@ function renderPalets() {
             paletDiv.style.width = `${largo * escalaVisual}px`; // Escalar el largo visual
             paletDiv.style.height = `${ancho * escalaVisual}px`; // Escalar el ancho visual
             paletDiv.style.backgroundColor = getColor(grupoIndex); // Color único para cada grupo
-            paletDiv.style.left = `${currentX * escalaVisual}px`;
+            paletDiv.style.left = `${currentX}px`; // Usar el valor actual de currentX sin escalar
             paletDiv.style.top = `0px`; // Los palets están alineados horizontalmente en el camión
             camionArea.appendChild(paletDiv);
 
-            // Actualizar el largo ocupado solo considerando el largo real en cm
-            largoOcupado += largo / 100; // Sumar el largo ocupado en metros
+            // Actualizar el largo ocupado considerando la escala visual
+            largoOcupado += largo * escalaVisual / 100; // Sumar el largo ocupado en LDM con la escala
 
-            // Avanzar en la dirección del largo
-            currentX += largo;
+            // Avanzar en la dirección del largo usando la escala visual
+            currentX += largo * escalaVisual;
         }
     });
 
@@ -61,4 +61,5 @@ function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107", "#9C27B0", "#3F51B5"];
     return colors[index % colors.length];
 }
+
 
