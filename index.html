@@ -7,21 +7,42 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+            height: 100vh;
         }
 
         .form-container {
             margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-container input {
+            margin: 5px;
+            padding: 5px;
+            width: 100px;
+        }
+
+        .form-container button {
+            padding: 5px 10px;
+            font-size: 14px;
         }
 
         .camion-container {
             position: relative;
-            width: 800px; /* Escalado visual del largo del camión */
-            height: 143px; /* Escalado visual del ancho del camión */
-            background-color: #f0f0f0;
+            width: 816px; /* Escalado visual del largo del camión (13.6m) */
+            height: 146px; /* Escalado visual del ancho del camión (2.44m) */
+            background-color: #e0e0e0;
             border: 2px solid #000;
-            margin: auto;
-            overflow: hidden;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .palet {
@@ -38,22 +59,25 @@
 
         .info-container {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 10px;
+        }
+
+        .info-container p {
+            font-size: 16px;
+            margin: 5px 0;
         }
     </style>
 </head>
 <body>
     <div class="form-container">
-        <label>Ancho (cm): <input type="number" id="ancho"></label>
-        <label>Largo (cm): <input type="number" id="largo"></label>
-        <label>Cantidad: <input type="number" id="cantidad"></label>
+        <label>Ancho (cm): <input type="number" id="ancho" placeholder="Ej: 100"></label>
+        <label>Largo (cm): <input type="number" id="largo" placeholder="Ej: 120"></label>
+        <label>Cantidad: <input type="number" id="cantidad" placeholder="Ej: 5"></label>
         <button id="agregarPalet">Agregar Palet</button>
     </div>
     <div class="camion-container" id="camion-area"></div>
     <div class="info-container">
         <p>Total LDM ocupados: <span id="ldm-ocupados">0.00</span> m</p>
     </div>
-    <script src="script.js"></script>
-</body>
-</html>
+    <script src="script.js
 
