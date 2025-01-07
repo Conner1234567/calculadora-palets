@@ -10,7 +10,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
+    overflow: auto;
 }
 
 .container {
@@ -19,8 +20,8 @@ body {
     padding: 20px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    width: 80%;
-    max-width: 1000px;
+    width: 90%;
+    max-width: 1200px;
 }
 
 h1 {
@@ -56,12 +57,16 @@ button:hover {
 #camion-container {
     margin-top: 30px;
     position: relative;
-    width: 244px;
-    height: 1360px;
+    width: 800px;
+    height: 144px;
     background-color: #eee;
     border: 2px solid #bbb;
     border-radius: 8px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
     position: relative;
+    overflow: hidden;
 }
 
 .palet {
