@@ -26,7 +26,10 @@ function renderPalets() {
 
     let totalLDM = 0;
 
-    palets.forEach(({ ancho, largo, cantidad }, index) => {
+    for (let grupo of palets) {
+        const { ancho, largo, cantidad } = grupo;
+        let paletsColocados = 0;
+
         for (let i = 0; i < cantidad; i++) {
             const espacio = encontrarEspacio(ancho, largo);
 
@@ -38,18 +41,19 @@ function renderPalets() {
                 paletDiv.classList.add("palet");
                 paletDiv.style.width = `${(largo / camionLargo) * 800}px`; // Escalar al tamaño visual del camión
                 paletDiv.style.height = `${(ancho / camionAncho) * 144}px`; // Escalar al tamaño visual del camión
-                paletDiv.style.backgroundColor = getColor(index);
+                paletDiv.style.backgroundColor = getColor(paletsColocados);
                 paletDiv.style.left = `${(x / camionLargo) * 800}px`;
                 paletDiv.style.top = `${(y / camionAncho) * 144}px`;
                 camionArea.appendChild(paletDiv);
 
-                totalLDM += largo / 100; // Sumar LDM ocupado
+                paletsColocados++;
+                totalLDM += largo / 100; // Calcular LDM correctamente
             } else {
-                alert(`No hay espacio suficiente para el palet ${i + 1} del grupo ${index + 1}`);
-                return;
+                alert(`No hay espacio suficiente para el palet ${i + 1} del grupo actual.`);
+                break;
             }
         }
-    });
+    }
 
     document.getElementById("ldm-ocupados").textContent = totalLDM.toFixed(2);
 }
@@ -57,7 +61,7 @@ function renderPalets() {
 function encontrarEspacio(ancho, largo) {
     for (let y = 0; y <= camionAncho - ancho; y++) {
         for (let x = 0; x <= camionLargo - largo; x++) {
-            if (canPlacePalet(x, y, ancho, largo)) {
+            if (puedeColocarPalet(x, y, ancho, largo)) {
                 return { x, y };
             }
         }
@@ -65,7 +69,7 @@ function encontrarEspacio(ancho, largo) {
     return null;
 }
 
-function canPlacePalet(x, y, ancho, largo) {
+function puedeColocarPalet(x, y, ancho, largo) {
     for (let row = y; row < y + ancho; row++) {
         for (let col = x; col < x + largo; col++) {
             if (row >= camionAncho || col >= camionLargo || ocupacion[row][col]) {
