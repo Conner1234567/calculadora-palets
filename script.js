@@ -24,7 +24,7 @@ function renderPalets() {
 
     ocupacion = Array.from({ length: camionAncho }, () => Array(camionLargo).fill(false)); // Limpiar la malla de ocupación
 
-    let totalLDM = 0;
+    let totalLDM = 0; // Total LDM ocupado en metros
 
     palets.forEach((grupo, grupoIndex) => {
         const { ancho, largo, cantidad } = grupo;
@@ -46,7 +46,8 @@ function renderPalets() {
                 paletDiv.style.top = `${y * escalaVisual}px`;
                 camionArea.appendChild(paletDiv);
 
-                totalLDM += largo / 100; // Sumar LDM ocupados
+                // Calcular LDM ocupado por el palet, en función de su largo
+                totalLDM += largo / 100; // Convertir el largo de cada palet a metros
             } else {
                 alert(`No hay espacio suficiente para el palet ${i + 1} del grupo ${grupoIndex + 1}.`);
                 break;
