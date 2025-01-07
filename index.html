@@ -8,7 +8,7 @@
         #camion-area {
             position: relative;
             width: 100%;
-            height: 500px;
+            height: 300px;
             background-color: lightgray;
             border: 2px solid black;
             overflow: hidden;
@@ -23,9 +23,15 @@
             margin-top: 20px;
             font-size: 20px;
         }
+
+        input {
+            margin: 5px;
+        }
     </style>
 </head>
 <body>
+
+    <h2>Simulación de Carga de Camión</h2>
 
     <div>
         <label for="ancho">Ancho del palet (cm):</label>
@@ -39,7 +45,7 @@
 
     <div id="camion-area"></div>
 
-    <div id="ldm">Total LDM ocupados: 0</div>
+    <div id="ldm">Total LDM ocupados: 0 m</div>
 
     <script src="app.js"></script>
 </body>
