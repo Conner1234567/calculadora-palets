@@ -26,39 +26,70 @@ function renderPalets() {
 
     palets.forEach(({ ancho, largo, cantidad }, index) => {
         for (let i = 0; i < cantidad; i++) {
-            let colocado = false;
+            const espacio = encontrarEspacio(ancho, largo);
 
-            for (let y = 0; y <= camionLargo - largo; y++) {
-                if (colocado) break;
+            if (espacio) {
+                const { x, y } = espacio;
+                placePalet(x, y, ancho, largo);
 
-                for (let x = 0; x <= camionAncho - ancho; x++) {
-                    if (canPlacePalet(x, y, ancho, largo)) {
-                        placePalet(x, y, ancho, largo);
-
-                        const paletDiv = document.createElement("div");
-                        paletDiv.classList.add("palet");
-                        paletDiv.style.width = `${ancho}px`;
-                        paletDiv.style.height = `${largo}px`;
-                        paletDiv.style.backgroundColor = getColor(index);
-                        paletDiv.style.left = `${x}px`;
-                        paletDiv.style.top = `${y}px`;
-                        camionArea.appendChild(paletDiv);
-
-                        colocado = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!colocado) {
-                alert("El camión está lleno, no caben más palets.");
+                const paletDiv = document.createElement("div");
+                paletDiv.classList.add("palet");
+                paletDiv.style.width = `${ancho}px`;
+                paletDiv.style.height = `${largo}px`;
+                paletDiv.style.backgroundColor = getColor(index);
+                paletDiv.style.left = `${x}px`;
+                paletDiv.style.top = `${y}px`;
+                paletDiv.innerText = `${ancho}x${largo}`;
+                camionArea.appendChild(paletDiv);
+            } else {
+                alert(`No hay espacio suficiente para el palet ${i + 1} del grupo ${index + 1}`);
                 return;
             }
         }
     });
+
+    mostrarOcupacion(); // Debug para ver cómo se llenó el camión
+}
+
+function encontrarEspacio(ancho, largo) {
+    const huecos = [];
+    for (let y = 0; y <= camionLargo - largo; y++) {
+        for (let x = 0; x <= camionAncho - ancho; x++) {
+            if (canPlacePalet(x, y, ancho, largo)) {
+                huecos.push({ x, y, espacioLibre: calcularEspacioLibre(x, y, ancho, largo) });
+            }
+        }
+    }
+
+    // Ordenar los huecos por espacio libre ascendente (priorizar huecos pequeños)
+    huecos.sort((a, b) => a.espacioLibre - b.espacioLibre);
+
+    return huecos.length > 0 ? huecos[0] : null; // Devuelve el mejor hueco o null
+}
+
+function calcularEspacioLibre(x, y, ancho, largo) {
+    let espacioLibre = 0;
+
+    for (let row = y; row < y + largo; row++) {
+        for (let col = x; col < x + ancho; col++) {
+            if (!ocupacion[row][col]) {
+                espacioLibre++;
+            }
+        }
+    }
+
+    return espacioLibre;
 }
 
 function canPlacePalet(x, y, ancho, largo) {
+    // Intentar posición normal
+    if (puedeColocar(x, y, ancho, largo)) return true;
+
+    // Intentar rotar (cambiar ancho y largo)
+    return puedeColocar(x, y, largo, ancho);
+}
+
+function puedeColocar(x, y, ancho, largo) {
     for (let row = y; row < y + largo; row++) {
         for (let col = x; col < x + ancho; col++) {
             if (row >= camionLargo || col >= camionAncho || ocupacion[row][col]) {
@@ -82,15 +113,10 @@ function getColor(index) {
     return colors[index % colors.length];
 }
 
-// Nueva función para encontrar el mejor espacio disponible
-function encontrarEspacio(ancho, largo) {
-    for (let y = 0; y <= camionLargo - largo; y++) {
-        for (let x = 0; x <= camionAncho - ancho; x++) {
-            if (canPlacePalet(x, y, ancho, largo)) {
-                return { x, y };
-            }
-        }
-    }
-    return null; // No hay espacio disponible
+function mostrarOcupacion() {
+    console.log("Ocupación del camión:");
+    ocupacion.forEach((fila, i) => {
+        console.log(`Fila ${i}: ${fila.map(cell => (cell ? "X" : "-")).join("")}`);
+    });
 }
 
