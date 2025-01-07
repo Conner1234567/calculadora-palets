@@ -1,7 +1,8 @@
-const camionAncho = 244; // Ancho del camión en cm
-const camionLargo = 1360; // Largo del camión en cm
+const camionAncho = 244; // Ancho del camión en cm (ahora vertical)
+const camionLargo = 1360; // Largo del camión en cm (ahora horizontal)
 let palets = [];
 let ocupacion = Array.from({ length: camionLargo }, () => Array(camionAncho).fill(false)); // Malla de ocupación
+let ldmOcupados = 0; // Variable para almacenar los LDM ocupados
 
 document.getElementById("agregarPalet").addEventListener("click", () => {
     const ancho = parseInt(document.getElementById("ancho").value);
@@ -20,6 +21,7 @@ document.getElementById("agregarPalet").addEventListener("click", () => {
 function renderPalets() {
     const camionArea = document.getElementById("camion-area");
     camionArea.innerHTML = ""; // Limpiar la representación visual del camión
+    ldmOcupados = 0; // Resetear los LDM ocupados al renderizar
 
     // Resetear la malla de ocupación
     ocupacion = Array.from({ length: camionLargo }, () => Array(camionAncho).fill(false));
@@ -31,6 +33,7 @@ function renderPalets() {
             if (espacio) {
                 const { x, y } = espacio;
                 placePalet(x, y, ancho, largo);
+                ldmOcupados += largo / 100; // Incrementar LDM ocupados en metros
 
                 const paletDiv = document.createElement("div");
                 paletDiv.classList.add("palet");
@@ -48,7 +51,7 @@ function renderPalets() {
         }
     });
 
-    mostrarOcupacion(); // Debug para ver cómo se llenó el camión
+    mostrarLDM(); // Mostrar LDM ocupados
 }
 
 function encontrarEspacio(ancho, largo) {
@@ -85,6 +88,11 @@ function placePalet(x, y, ancho, largo) {
 function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107"];
     return colors[index % colors.length];
+}
+
+function mostrarLDM() {
+    const ldmElement = document.getElementById("ldm");
+    ldmElement.innerText = `Total LDM ocupados: ${ldmOcupados.toFixed(2)} m`;
 }
 
 function mostrarOcupacion() {
