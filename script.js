@@ -1,5 +1,5 @@
-const camionAncho = 244; // Ancho del camión en cm (de izquierda a derecha)
-const camionLargo = 1360; // Largo del camión en cm (de arriba a abajo)
+const camionAncho = 244; // Ancho del camión en cm (horizontal)
+const camionLargo = 1360; // Largo del camión en cm (vertical)
 let palets = [];
 let ocupacion = Array.from({ length: camionLargo }, () => Array(camionAncho).fill(false)); // Malla de ocupación
 let metrosLinealesOcupados = 0;
@@ -36,8 +36,8 @@ function renderPalets() {
 
                 const paletDiv = document.createElement("div");
                 paletDiv.classList.add("palet");
-                paletDiv.style.width = `${largo}px`; // Largo se usa como ancho visual
-                paletDiv.style.height = `${ancho}px`; // Ancho se usa como altura visual
+                paletDiv.style.width = `${largo}px`; // Largo como ancho visual
+                paletDiv.style.height = `${ancho}px`; // Ancho como altura visual
                 paletDiv.style.backgroundColor = getColor(index);
                 paletDiv.style.left = `${x}px`;
                 paletDiv.style.top = `${y}px`;
@@ -60,7 +60,7 @@ function actualizarLDM() {
 }
 
 function encontrarEspacio(ancho, largo) {
-    // Primero intentamos colocar los palets a lo largo del camión, ocupando el ancho
+    // Intentamos colocar los palets en el camión ocupando el ancho primero (de izquierda a derecha)
     for (let y = 0; y <= camionLargo - largo; y++) {
         for (let x = 0; x <= camionAncho - ancho; x++) {
             if (canPlacePalet(x, y, ancho, largo)) {
@@ -69,7 +69,7 @@ function encontrarEspacio(ancho, largo) {
         }
     }
 
-    // Si no hay espacio en el ancho, intentamos colocar a lo largo del camión (de arriba hacia abajo)
+    // Si no se puede colocar a lo largo, intentamos colocar en un nivel más alto (es decir, comenzamos el siguiente nivel)
     for (let y = 0; y <= camionLargo - largo; y++) {
         for (let x = 0; x <= camionAncho - ancho; x++) {
             if (canPlacePalet(x, y, ancho, largo)) {
