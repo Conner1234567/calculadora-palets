@@ -3,42 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camión y Palets</title>
-    <style>
-        #camion-area {
-            position: relative;
-            width: 816px;
-            height: 400px;
-            border: 2px solid #000;
-            margin-top: 20px;
-        }
-        .palet {
-            position: absolute;
-            background-color: rgba(0, 128, 0, 0.7);
-            border: 1px solid #333;
-        }
-    </style>
+    <title>Gestión de Palets</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <h1>Gestión de Palets en Camión</h1>
 
     <div>
-        <label for="ancho">Ancho del Palet (cm):</label>
-        <input type="number" id="ancho" value="80" />
+        <label for="ancho">Ancho del Palet (cm): </label>
+        <input type="number" id="ancho">
     </div>
     <div>
-        <label for="largo">Largo del Palet (cm):</label>
-        <input type="number" id="largo" value="120" />
+        <label for="largo">Largo del Palet (cm): </label>
+        <input type="number" id="largo">
     </div>
     <div>
-        <label for="cantidad">Cantidad de Palets:</label>
-        <input type="number" id="cantidad" value="1" />
+        <label for="cantidad">Cantidad de Palets: </label>
+        <input type="number" id="cantidad">
     </div>
     <button id="agregarPalet">Agregar Palet</button>
 
-    <h3>Total LDM Ocupados: <span id="ldm-ocupados">0.00</span></h3>
+    <h2>Visualización del Camión</h2>
+    <div id="camion-area" style="width: 816px; height: 244px; position: relative; border: 1px solid #000;">
+        <!-- Aquí se dibujarán los palets -->
+    </div>
 
-    <div id="camion-area"></div>
+    <p>Total LDM ocupados: <span id="ldm-ocupados">0</span> LDM</p>
 
-    <script src="camion.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
