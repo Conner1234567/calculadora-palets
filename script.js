@@ -46,7 +46,7 @@ function renderPalets() {
                 paletDiv.style.top = `${y * escalaVisual}px`;
                 camionArea.appendChild(paletDiv);
 
-                // Cálculo de LDM ocupados (ahora multiplicamos el largo de cada palet por la cantidad de palets)
+                // Cálculo de LDM ocupados (usando solo el largo de cada palet)
                 totalLDM += largo / 100; // Convertir el largo de cada palet a metros
             } else {
                 alert(`No hay espacio suficiente para el palet ${i + 1} del grupo ${grupoIndex + 1}.`);
@@ -55,7 +55,7 @@ function renderPalets() {
         }
     });
 
-    document.getElementById("ldm-ocupados").textContent = totalLDM.toFixed(2);
+    document.getElementById("ldm-ocupados").textContent = totalLDM.toFixed(2); // Mostrar el resultado en LDM
 }
 
 function encontrarEspacio(ancho, largo) {
