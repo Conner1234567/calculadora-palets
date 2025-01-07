@@ -3,6 +3,7 @@ const camionLargo = 1360; // Largo real del camión en cm
 const escalaVisual = 816 / camionLargo; // Escala visual basada en el largo del camión
 let palets = [];
 let ocupacion = Array.from({ length: camionAncho }, () => Array(camionLargo).fill(false)); // Malla de ocupación
+let espacioLargoOcupado = 0; // Para llevar cuenta de cuanto del largo se ha ocupado
 
 document.getElementById("agregarPalet").addEventListener("click", () => {
     const ancho = parseInt(document.getElementById("ancho").value);
@@ -23,8 +24,9 @@ function renderPalets() {
     camionArea.innerHTML = ""; // Limpiar la representación visual del camión
 
     ocupacion = Array.from({ length: camionAncho }, () => Array(camionLargo).fill(false)); // Limpiar la malla de ocupación
+    espacioLargoOcupado = 0; // Resetear el largo ocupado
 
-    let totalLDM = 0; // Total LDM ocupado en metros
+    let largoOcupadoActual = 0; // Largo ocupado en la fila actual
 
     palets.forEach((grupo, grupoIndex) => {
         const { ancho, largo, cantidad } = grupo;
@@ -46,8 +48,14 @@ function renderPalets() {
                 paletDiv.style.top = `${y * escalaVisual}px`;
                 camionArea.appendChild(paletDiv);
 
-                // Cálculo de LDM ocupados (usando solo el largo de cada palet)
-                totalLDM += largo / 100; // Convertir el largo de cada palet a metros
+                // Actualizar el largo ocupado solo considerando lo largo total que ocupan los palets
+                largoOcupadoActual += largo / 100; // Sumar el largo ocupado en LDM
+
+                // Verificar si el camión ya está lleno en la dirección de largo
+                if (largoOcupadoActual > camionLargo / 100) {
+                    alert("El camión está lleno. No se pueden agregar más palets.");
+                    return;
+                }
             } else {
                 alert(`No hay espacio suficiente para el palet ${i + 1} del grupo ${grupoIndex + 1}.`);
                 break;
@@ -55,7 +63,7 @@ function renderPalets() {
         }
     });
 
-    document.getElementById("ldm-ocupados").textContent = totalLDM.toFixed(2); // Mostrar el resultado en LDM
+    document.getElementById("ldm-ocupados").textContent = largoOcupadoActual.toFixed(2); // Mostrar el total LDM ocupado
 }
 
 function encontrarEspacio(ancho, largo) {
@@ -92,3 +100,4 @@ function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107", "#9C27B0", "#3F51B5"];
     return colors[index % colors.length];
 }
+
