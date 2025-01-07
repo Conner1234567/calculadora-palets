@@ -1,8 +1,15 @@
 const camionAncho = 244; // Ancho real del camión en cm
 const camionLargo = 1360; // Largo real del camión en cm
 const escalaVisual = 816 / camionLargo; // Escala visual basada en el largo del camión
+
+// Dimensiones visuales del camión
+const camionArea = document.getElementById("camion-area");
+camionArea.style.width = `${816}px`; // El ancho visual del camión
+camionArea.style.height = `${244 * escalaVisual}px`; // El alto visual del camión ajustado a la escala
+
 let palets = [];
 let largoOcupado = 0; // Para llevar cuenta de cuanto del largo se ha ocupado
+let anchoOcupado = 0; // Para llevar cuenta de cuanto del ancho se ha ocupado
 
 document.getElementById("agregarPalet").addEventListener("click", () => {
     const ancho = parseInt(document.getElementById("ancho").value);
@@ -19,38 +26,49 @@ document.getElementById("agregarPalet").addEventListener("click", () => {
 });
 
 function renderPalets() {
-    const camionArea = document.getElementById("camion-area");
     camionArea.innerHTML = ""; // Limpiar la representación visual del camión
-
     largoOcupado = 0; // Resetear el largo ocupado
+    anchoOcupado = 0; // Resetear el ancho ocupado
 
-    let currentX = 0; // Posición en el eje X para los palets
+    let currentX = 0; // Posición en el eje X (largo del camión)
+    let currentY = 0; // Posición en el eje Y (ancho del camión)
 
     palets.forEach((grupo, grupoIndex) => {
         const { ancho, largo, cantidad } = grupo;
 
         for (let i = 0; i < cantidad; i++) {
-            // Asegurarse de que no se exceda el largo total del camión (considerando la escala visual)
-            if (currentX + largo * escalaVisual > 816) { // 816 es el tamaño visual total del camión
-                alert("El camión está lleno. No se pueden agregar más palets.");
-                return;
+            // Verificar si el palet cabe dentro del camión, considerando la posición actual en X e Y
+            const paletAnchoVisual = ancho * escalaVisual;
+            const paletLargoVisual = largo * escalaVisual;
+
+            if (currentX + paletLargoVisual > 816) { // Si no cabe horizontalmente
+                // Si no cabe, saltar a la siguiente fila (Y)
+                currentX = 0;
+                currentY += paletAnchoVisual;
+                if (currentY + paletAnchoVisual > (244 * escalaVisual)) { // Si no cabe verticalmente
+                    alert("El camión está lleno. No se pueden agregar más palets.");
+                    return;
+                }
             }
 
             // Crear el div visual del palet
             const paletDiv = document.createElement("div");
             paletDiv.classList.add("palet");
-            paletDiv.style.width = `${largo * escalaVisual}px`; // Escalar el largo visual
-            paletDiv.style.height = `${ancho * escalaVisual}px`; // Escalar el ancho visual
+            paletDiv.style.width = `${paletLargoVisual}px`; // Escalar el largo visual
+            paletDiv.style.height = `${paletAnchoVisual}px`; // Escalar el ancho visual
             paletDiv.style.backgroundColor = getColor(grupoIndex); // Color único para cada grupo
-            paletDiv.style.left = `${currentX}px`; // Usar el valor actual de currentX sin escalar
-            paletDiv.style.top = `0px`; // Los palets están alineados horizontalmente en el camión
+            paletDiv.style.left = `${currentX}px`; // Posición X visual
+            paletDiv.style.top = `${currentY}px`; // Posición Y visual
             camionArea.appendChild(paletDiv);
 
-            // Actualizar el largo ocupado considerando la escala visual
-            largoOcupado += largo * escalaVisual / 100; // Sumar el largo ocupado en LDM con la escala
+            // Actualizar el largo ocupado
+            largoOcupado += largo / 100; // Sumar el largo ocupado en LDM
 
-            // Avanzar en la dirección del largo usando la escala visual
-            currentX += largo * escalaVisual;
+            // Actualizar el ancho ocupado (si cambia)
+            anchoOcupado = Math.max(anchoOcupado, currentY + paletAnchoVisual);
+
+            // Avanzar en la dirección del largo (X)
+            currentX += paletLargoVisual;
         }
     });
 
@@ -61,5 +79,4 @@ function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107", "#9C27B0", "#3F51B5"];
     return colors[index % colors.length];
 }
-
 
