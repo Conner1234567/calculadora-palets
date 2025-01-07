@@ -37,14 +37,16 @@ function renderPalets() {
         const { ancho, largo, cantidad } = grupo;
 
         for (let i = 0; i < cantidad; i++) {
-            // Verificar si el palet cabe dentro del camión, considerando la posición actual en X e Y
+            // Escalar dimensiones de los palets
             const paletAnchoVisual = ancho * escalaVisual;
             const paletLargoVisual = largo * escalaVisual;
 
-            if (currentX + paletLargoVisual > 816) { // Si no cabe horizontalmente
-                // Si no cabe, saltar a la siguiente fila (Y)
-                currentX = 0;
-                currentY += paletAnchoVisual;
+            // Verificar si el palet cabe dentro del camión en el eje X (largo)
+            if (currentX + paletLargoVisual > 816) { // Si no cabe horizontalmente, pasar a la siguiente fila
+                currentX = 0; // Reiniciar la posición en X
+                currentY += ancho * escalaVisual; // Mover a la siguiente fila (Y)
+                
+                // Verificar si el palet cabe en el eje Y (ancho)
                 if (currentY + paletAnchoVisual > (244 * escalaVisual)) { // Si no cabe verticalmente
                     alert("El camión está lleno. No se pueden agregar más palets.");
                     return;
@@ -63,9 +65,6 @@ function renderPalets() {
 
             // Actualizar el largo ocupado
             largoOcupado += largo / 100; // Sumar el largo ocupado en LDM
-
-            // Actualizar el ancho ocupado (si cambia)
-            anchoOcupado = Math.max(anchoOcupado, currentY + paletAnchoVisual);
 
             // Avanzar en la dirección del largo (X)
             currentX += paletLargoVisual;
