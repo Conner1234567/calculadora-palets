@@ -1,6 +1,7 @@
 const camionAncho = 244; // Ancho real del camión en cm
 const camionLargo = 1360; // Largo real del camión en cm
-const escalaVisual = 816 / camionLargo; // Escala visual basada en el largo del camión
+const escalaVisualAncho = 816 / camionLargo; // Escala visual basada en el largo del camión
+const escalaVisualAlto = 244 / camionAncho; // Escala visual basada en el ancho del camión
 
 let palets = [];
 let largoOcupado = 0; // Para llevar cuenta de cuanto del largo se ha ocupado
@@ -28,26 +29,22 @@ function renderPalets() {
     let currentX = 0; // Posición en el eje X para los palets
     let currentY = 0; // Posición en el eje Y para los palets (esto sirve para las filas)
 
-    // Tamaño visual del camión
-    camionArea.style.width = `${816}px`; // El ancho visual del camión
-    camionArea.style.height = `${244 * escalaVisual}px`; // El alto visual del camión ajustado a la escala
-
     palets.forEach((grupo, grupoIndex) => {
         const { ancho, largo, cantidad } = grupo;
 
         for (let i = 0; i < cantidad; i++) {
             // Escalar dimensiones de los palets
-            const paletAnchoVisual = ancho * escalaVisual;
-            const paletLargoVisual = largo * escalaVisual;
+            const paletAnchoVisual = ancho * escalaVisualAncho;
+            const paletLargoVisual = largo * escalaVisualAlto;
 
             // Verificar si el palet cabe dentro del camión en el eje X (largo)
-            if (currentX + paletLargoVisual > 816) { // Si no cabe horizontalmente (se excede el largo visual)
-                // Si no cabe, saltar a la siguiente fila (Y)
+            if (currentX + paletLargoVisual > 816) { // Si no cabe horizontalmente
+                // Mover a la siguiente fila en el eje Y
                 currentX = 0;
-                currentY += ancho * escalaVisual; // Mover a la siguiente fila (Y)
-                
-                // Verificar si el palet cabe en el eje Y (ancho)
-                if (currentY + paletAnchoVisual > (244 * escalaVisual)) { // Si no cabe verticalmente (se excede el ancho visual)
+                currentY += paletAnchoVisual; // Ajustar la altura visual para la nueva fila
+
+                // Si el nuevo palet no cabe en el eje Y (ancho del camión)
+                if (currentY + paletAnchoVisual > (244 * escalaVisualAlto)) {
                     alert("El camión está lleno. No se pueden agregar más palets.");
                     return;
                 }
@@ -85,4 +82,3 @@ function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107", "#9C27B0", "#3F51B5"];
     return colors[index % colors.length];
 }
-
