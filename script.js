@@ -1,7 +1,7 @@
 const camionAncho = 244; // Ancho del camión en cm
 const camionLargo = 1360; // Largo del camión en cm
 let palets = [];
-let ocupacion = Array.from({ length: camionLargo }, () => Array(camionAncho).fill(false)); // Malla de ocupación
+let ocupacion = Array.from({ length: camionAncho }, () => Array(camionLargo).fill(false)); // Malla de ocupación
 let metrosLinealesOcupados = 0;
 
 document.getElementById("agregarPalet").addEventListener("click", () => {
@@ -23,7 +23,7 @@ function renderPalets() {
     camionArea.innerHTML = ""; // Limpiar la representación visual del camión
 
     // Resetear la malla de ocupación
-    ocupacion = Array.from({ length: camionLargo }, () => Array(camionAncho).fill(false));
+    ocupacion = Array.from({ length: camionAncho }, () => Array(camionLargo).fill(false));
     metrosLinealesOcupados = 0;
 
     palets.forEach(({ ancho, largo, cantidad }, index) => {
@@ -36,7 +36,7 @@ function renderPalets() {
 
                 const paletDiv = document.createElement("div");
                 paletDiv.classList.add("palet");
-                paletDiv.style.width = `${largo}px`; // Largo se usa como ancho visual en horizontal
+                paletDiv.style.width = `${largo}px`; // Largo se usa como ancho visual
                 paletDiv.style.height = `${ancho}px`; // Ancho se usa como altura visual
                 paletDiv.style.backgroundColor = getColor(index);
                 paletDiv.style.left = `${x}px`;
@@ -73,7 +73,7 @@ function encontrarEspacio(ancho, largo) {
 function canPlacePalet(x, y, ancho, largo) {
     for (let row = y; row < y + ancho; row++) {
         for (let col = x; col < x + largo; col++) {
-            if (row >= camionAncho || col >= camionLargo || ocupacion[col][row]) {
+            if (row >= camionAncho || col >= camionLargo || ocupacion[row][col]) {
                 return false;
             }
         }
@@ -84,7 +84,7 @@ function canPlacePalet(x, y, ancho, largo) {
 function placePalet(x, y, ancho, largo) {
     for (let row = y; row < y + ancho; row++) {
         for (let col = x; col < x + largo; col++) {
-            ocupacion[col][row] = true;
+            ocupacion[row][col] = true;
         }
     }
 }
