@@ -3,34 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Palets</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Simulador de carga de camión</title>
+    <style>
+        #camion-area {
+            position: relative;
+            width: 816px; /* Escala visual del largo (13,60 m) */
+            height: 244px; /* Escala visual del ancho (2,44 m) */
+            border: 2px solid #000;
+            background-color: #f0f0f0;
+        }
+        .palet {
+            position: absolute;
+            border: 2px solid #000;
+            box-sizing: border-box;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        #ldm-ocupados {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Gestión de Palets en Camión</h1>
+    <h1>Simulador de Carga de Camión</h1>
 
-    <div>
-        <label for="ancho">Ancho del Palet (cm): </label>
-        <input type="number" id="ancho">
+    <div class="form-group">
+        <label for="ancho">Ancho del palet (cm):</label>
+        <input type="number" id="ancho" min="1" required>
     </div>
-    <div>
-        <label for="largo">Largo del Palet (cm): </label>
-        <input type="number" id="largo">
+    <div class="form-group">
+        <label for="largo">Largo del palet (cm):</label>
+        <input type="number" id="largo" min="1" required>
     </div>
-    <div>
-        <label for="cantidad">Cantidad de Palets: </label>
-        <input type="number" id="cantidad">
+    <div class="form-group">
+        <label for="cantidad">Cantidad de palets:</label>
+        <input type="number" id="cantidad" min="1" required>
     </div>
     <button id="agregarPalet">Agregar Palet</button>
 
-    <h2>Visualización del Camión</h2>
-    <div id="camion-area" style="width: 816px; height: 244px; position: relative; border: 1px solid #000;">
-        <!-- Aquí se dibujarán los palets -->
-    </div>
+    <h2>Espacio ocupado: <span id="ldm-ocupados">0</span> metros lineales</h2>
 
-    <p>Total LDM ocupados: <span id="ldm-ocupados">0</span> LDM</p>
+    <div id="camion-area"></div>
 
-    <script src="script.js"></script>
+    <script>
+        const camionAncho = 244; // Ancho real del camión en cm
+        const camionLargo = 1360; // Largo real del camión en cm
+        const escalaVisual = 816 / camionLargo; // Escala visual basada en el largo del camión
+
+        let palets = [];
+        let largoOcupado = 0; // Para llevar cuenta de cuanto del largo se ha ocupado
+
+        document.getElementById("agregarPalet").addEventListener("click", () => {
+            const ancho = parseInt(document.getElementById("ancho").value);
+            const largo = parseInt(document.getElementById("largo").value);
+            const cantidad = parseInt(document.getElementById("cantidad").value);
+
+            if (isNaN(ancho) || isNaN(largo) || isNaN(cantidad) || ancho <= 0 || largo <= 0 || cantidad <= 0) {
+                alert("Por favor, ingrese valores válidos para ancho, largo y cantidad.");
+                return;
+            }
+
+            palets.push({ ancho, largo, cantidad });
+            renderPalets();
+        });
+
+        function renderPalets() {
+            const camionArea = document.getElementById("camion-area");
+            camionArea.innerHTML = ""; // Limpiar la representación visual del camión
+
+            largoOcupado = 0; // Resetear el largo ocupado
+
+            let currentX = 0; // Posición en el eje X para los palets
+            let currentY = 0; // Posición en el eje Y para los palets (esto sirve para las filas)
+
+            palets.forEach((grupo, grupoIndex) => {
+                const { ancho, largo, cantidad } = grupo;
+
+                for (let i = 0; i < cantidad; i++) {
+                    // Escalar dimensiones de los palets
+                    const paletAnchoVisual = ancho * escalaVisual;
+                    const paletLargoVisual = largo * escalaVisual;
+
+                    // Verificar si el palet cabe dentro del camión en el eje X (largo)
+                    if (currentX + paletLargoVisual > 816) { // Si no cabe horizontalmente
+                        // Mover a la siguiente fila en el eje Y
+                        currentX = 0;
+                        currentY += ancho * escalaVisual; // Ajustar la altura visual para la nueva fila
+
+                        // Si el nuevo palet no cabe en el eje Y (ancho del camión)
+                        if (currentY + paletAnchoVisual > (244 * escalaVisual)) {
+                            alert("El camión está lleno. No se pueden agregar más palets.");
+                            return;
+                        }
+                    }
+
+                    // Crear el div visual del palet
+                    const paletDiv = document.createElement("div");
+                    paletDiv.classList.add("palet");
+                    paletDiv.style.width = `${paletLargoVisual}px`; // Escalar el largo visual
+                    paletDiv.style.height = `${paletAnchoVisual}px`; // Escalar el ancho visual
+                    paletDiv.style.backgroundColor = getColor(grupoIndex); // Color único para cada grupo
+                    paletDiv.style.left = `${currentX}px`; // Posición X visual
+                    paletDiv.style.top = `${currentY}px`; // Posición Y visual
+                    camionArea.appendChild(paletDiv);
+
+                    // Actualizar el largo ocupado en LDM (convertido a metros)
+                    largoOcupado += largo / 100; // Sumar el largo ocupado en LDM (metros lineales)
+
+                    // Si el total ocupado supera el máximo de 13,60 metros (1360 cm), detendremos el proceso
+                    if (largoOcupado > 13.60) {
+                        alert("El camión está lleno. No se pueden agregar más palets.");
+                        return;
+                    }
+
+                    // Avanzar en la dirección del largo (X)
+                    currentX += paletLargoVisual;
+                }
+            });
+
+            // Mostrar el total de LDM ocupado en el camión
+            document.getElementById("ldm-ocupados").textContent = largoOcupado.toFixed(2); // Mostrar el total LDM ocupado
+        }
+
+        function getColor(index) {
+            const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107", "#9C27B0", "#3F51B5"];
+            return colors[index % colors.length];
+        }
+    </script>
 </body>
 </html>
+
 
