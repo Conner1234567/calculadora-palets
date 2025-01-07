@@ -1,5 +1,6 @@
-const camionAncho = 244; // Alto del camión (en cm)
-const camionLargo = 1360; // Largo del camión (en cm)
+const camionAncho = 244; // Ancho del camión en cm
+const camionLargo = 1360; // Largo del camión en cm
+const escalaVisual = 1.6; // Escala del 60% adicional
 let palets = [];
 let ocupacion = Array.from({ length: camionAncho }, () => Array(camionLargo).fill(false)); // Malla de ocupación
 
@@ -21,14 +22,12 @@ function renderPalets() {
     const camionArea = document.getElementById("camion-area");
     camionArea.innerHTML = ""; // Limpiar la representación visual del camión
 
-    // Resetear la malla de ocupación
     ocupacion = Array.from({ length: camionAncho }, () => Array(camionLargo).fill(false));
 
     let totalLDM = 0;
 
-    for (let grupo of palets) {
+    palets.forEach((grupo, grupoIndex) => {
         const { ancho, largo, cantidad } = grupo;
-        let paletsColocados = 0;
 
         for (let i = 0; i < cantidad; i++) {
             const espacio = encontrarEspacio(ancho, largo);
@@ -39,28 +38,27 @@ function renderPalets() {
 
                 const paletDiv = document.createElement("div");
                 paletDiv.classList.add("palet");
-                paletDiv.style.width = `${(largo / camionLargo) * 800}px`; // Escalar al tamaño visual del camión
-                paletDiv.style.height = `${(ancho / camionAncho) * 144}px`; // Escalar al tamaño visual del camión
-                paletDiv.style.backgroundColor = getColor(paletsColocados);
-                paletDiv.style.left = `${(x / camionLargo) * 800}px`;
-                paletDiv.style.top = `${(y / camionAncho) * 144}px`;
+                paletDiv.style.width = `${(largo / camionLargo) * 1280}px`; // Escalar al tamaño visual del camión
+                paletDiv.style.height = `${(ancho / camionAncho) * 230}px`; // Escalar al tamaño visual del camión
+                paletDiv.style.backgroundColor = getColor(grupoIndex); // Color único para cada grupo
+                paletDiv.style.left = `${(x / camionLargo) * 1280}px`;
+                paletDiv.style.top = `${(y / camionAncho) * 230}px`;
                 camionArea.appendChild(paletDiv);
 
-                paletsColocados++;
                 totalLDM += largo / 100; // Calcular LDM correctamente
             } else {
-                alert(`No hay espacio suficiente para el palet ${i + 1} del grupo actual.`);
+                alert(`No hay espacio suficiente para el palet ${i + 1} del grupo ${grupoIndex + 1}.`);
                 break;
             }
         }
-    }
+    });
 
     document.getElementById("ldm-ocupados").textContent = totalLDM.toFixed(2);
 }
 
 function encontrarEspacio(ancho, largo) {
-    for (let y = 0; y <= camionAncho - ancho; y++) {
-        for (let x = 0; x <= camionLargo - largo; x++) {
+    for (let x = 0; x <= camionLargo - largo; x++) {
+        for (let y = 0; y <= camionAncho - ancho; y++) {
             if (puedeColocarPalet(x, y, ancho, largo)) {
                 return { x, y };
             }
@@ -89,6 +87,6 @@ function placePalet(x, y, ancho, largo) {
 }
 
 function getColor(index) {
-    const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107"];
+    const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107", "#9C27B0", "#3F51B5"];
     return colors[index % colors.length];
 }
