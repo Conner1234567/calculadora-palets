@@ -30,6 +30,7 @@ function renderPalets() {
         const { ancho, largo, cantidad } = grupo;
 
         for (let i = 0; i < cantidad; i++) {
+            // Asegurarse de que no se exceda el largo total del camión
             if (currentX + largo > camionLargo) {
                 alert("El camión está lleno. No se pueden agregar más palets.");
                 return;
@@ -45,7 +46,7 @@ function renderPalets() {
             paletDiv.style.top = `0px`; // Los palets están alineados horizontalmente en el camión
             camionArea.appendChild(paletDiv);
 
-            // Actualizar el largo ocupado solo considerando el largo que ocupa el palet
+            // Actualizar el largo ocupado solo considerando el largo del palet
             largoOcupado += largo / 100; // Sumar el largo ocupado en LDM
 
             // Avanzar en la dirección del largo
@@ -60,4 +61,5 @@ function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107", "#9C27B0", "#3F51B5"];
     return colors[index % colors.length];
 }
+
 
