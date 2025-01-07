@@ -1,5 +1,5 @@
-const camionAncho = 244; // Ancho del camión en cm (horizontal)
-const camionLargo = 1360; // Largo del camión en cm (horizontal)
+const camionAncho = 244; // Ancho del camión en cm
+const camionLargo = 1360; // Largo del camión en cm
 let palets = [];
 let ocupacion = Array.from({ length: camionLargo }, () => Array(camionAncho).fill(false)); // Malla de ocupación
 
@@ -119,3 +119,4 @@ function mostrarOcupacion() {
         console.log(`Fila ${i}: ${fila.map(cell => (cell ? "X" : "-")).join("")}`);
     });
 }
+
