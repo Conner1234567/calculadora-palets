@@ -1,15 +1,10 @@
 const camionAncho = 244; // Ancho real del camión en cm
 const camionLargo = 1360; // Largo real del camión en cm
+const camionLargoMaximoLDM = 1360; // 13,60 metros = 1360 cm
 const escalaVisual = 816 / camionLargo; // Escala visual basada en el largo del camión
-
-// Dimensiones visuales del camión
-const camionArea = document.getElementById("camion-area");
-camionArea.style.width = `${816}px`; // El ancho visual del camión
-camionArea.style.height = `${244 * escalaVisual}px`; // El alto visual del camión ajustado a la escala
 
 let palets = [];
 let largoOcupado = 0; // Para llevar cuenta de cuanto del largo se ha ocupado
-let anchoOcupado = 0; // Para llevar cuenta de cuanto del ancho se ha ocupado
 
 document.getElementById("agregarPalet").addEventListener("click", () => {
     const ancho = parseInt(document.getElementById("ancho").value);
@@ -26,12 +21,16 @@ document.getElementById("agregarPalet").addEventListener("click", () => {
 });
 
 function renderPalets() {
+    const camionArea = document.getElementById("camion-area");
     camionArea.innerHTML = ""; // Limpiar la representación visual del camión
     largoOcupado = 0; // Resetear el largo ocupado
-    anchoOcupado = 0; // Resetear el ancho ocupado
 
-    let currentX = 0; // Posición en el eje X (largo del camión)
-    let currentY = 0; // Posición en el eje Y (ancho del camión)
+    let currentX = 0; // Posición en el eje X para los palets
+    let currentY = 0; // Posición en el eje Y para los palets (esto sirve para las filas)
+
+    // Tamaño visual del camión
+    camionArea.style.width = `${816}px`; // El ancho visual del camión
+    camionArea.style.height = `${244 * escalaVisual}px`; // El alto visual del camión ajustado a la escala
 
     palets.forEach((grupo, grupoIndex) => {
         const { ancho, largo, cantidad } = grupo;
@@ -42,12 +41,13 @@ function renderPalets() {
             const paletLargoVisual = largo * escalaVisual;
 
             // Verificar si el palet cabe dentro del camión en el eje X (largo)
-            if (currentX + paletLargoVisual > 816) { // Si no cabe horizontalmente, pasar a la siguiente fila
-                currentX = 0; // Reiniciar la posición en X
+            if (currentX + paletLargoVisual > 816) { // Si no cabe horizontalmente (se excede el largo visual)
+                // Si no cabe, saltar a la siguiente fila (Y)
+                currentX = 0;
                 currentY += ancho * escalaVisual; // Mover a la siguiente fila (Y)
                 
                 // Verificar si el palet cabe en el eje Y (ancho)
-                if (currentY + paletAnchoVisual > (244 * escalaVisual)) { // Si no cabe verticalmente
+                if (currentY + paletAnchoVisual > (244 * escalaVisual)) { // Si no cabe verticalmente (se excede el ancho visual)
                     alert("El camión está lleno. No se pueden agregar más palets.");
                     return;
                 }
@@ -63,14 +63,21 @@ function renderPalets() {
             paletDiv.style.top = `${currentY}px`; // Posición Y visual
             camionArea.appendChild(paletDiv);
 
-            // Actualizar el largo ocupado
-            largoOcupado += largo / 100; // Sumar el largo ocupado en LDM
+            // Actualizar el largo ocupado en LDM (convertido a metros)
+            largoOcupado += largo / 100; // Sumar el largo ocupado en LDM (metros lineales)
+
+            // Si el total ocupado supera el máximo de 13,60 metros (1360 cm), detendremos el proceso
+            if (largoOcupado > 13.60) {
+                alert("El camión está lleno. No se pueden agregar más palets.");
+                return;
+            }
 
             // Avanzar en la dirección del largo (X)
             currentX += paletLargoVisual;
         }
     });
 
+    // Mostrar el total de LDM ocupado en el camión
     document.getElementById("ldm-ocupados").textContent = largoOcupado.toFixed(2); // Mostrar el total LDM ocupado
 }
 
@@ -78,4 +85,5 @@ function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107", "#9C27B0", "#3F51B5"];
     return colors[index % colors.length];
 }
+
 
