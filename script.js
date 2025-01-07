@@ -1,7 +1,7 @@
-const camionLargo = 244; // Ancho del camión en cm (ahora es el largo del camión)
-const camionAncho = 1360; // Largo del camión en cm (ahora es el ancho del camión)
+const camionLargo = 1360; // Ahora el largo del camión es el ancho (horizontal)
+const camionAncho = 244;  // El ancho del camión ahora es la altura
 let palets = [];
-let ocupacion = Array.from({ length: camionLargo }, () => Array(camionAncho).fill(false)); // Malla de ocupación
+let ocupacion = Array.from({ length: camionAncho }, () => Array(camionLargo).fill(false)); // Malla de ocupación
 let ldmOcupados = 0; // Variable para almacenar los LDM ocupados
 
 document.getElementById("agregarPalet").addEventListener("click", () => {
@@ -24,7 +24,7 @@ function renderPalets() {
     ldmOcupados = 0; // Resetear los LDM ocupados al renderizar
 
     // Resetear la malla de ocupación
-    ocupacion = Array.from({ length: camionLargo }, () => Array(camionAncho).fill(false));
+    ocupacion = Array.from({ length: camionAncho }, () => Array(camionLargo).fill(false));
 
     palets.forEach(({ ancho, largo, cantidad }, index) => {
         for (let i = 0; i < cantidad; i++) {
@@ -55,8 +55,8 @@ function renderPalets() {
 }
 
 function encontrarEspacio(ancho, largo) {
-    for (let y = 0; y <= camionLargo - largo; y++) {
-        for (let x = 0; x <= camionAncho - ancho; x++) {
+    for (let y = 0; y <= camionAncho - largo; y++) {
+        for (let x = 0; x <= camionLargo - ancho; x++) {
             if (canPlacePalet(x, y, ancho, largo)) {
                 return { x, y };
             }
@@ -68,7 +68,7 @@ function encontrarEspacio(ancho, largo) {
 
 function canPlacePalet(x, y, ancho, largo) {
     // Verificar si el palet cabe dentro del área del camión
-    if (x + ancho > camionAncho || y + largo > camionLargo) {
+    if (x + ancho > camionLargo || y + largo > camionAncho) {
         return false; // El palet se sale del camión
     }
 
@@ -99,4 +99,3 @@ function mostrarLDM() {
     const ldmElement = document.getElementById("ldm");
     ldmElement.innerText = `Total LDM ocupados: ${ldmOcupados.toFixed(2)} m`;
 }
-
