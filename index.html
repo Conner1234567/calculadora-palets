@@ -1,134 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Distribución de Palets - Camión Horizontal</title>
+    <title>Gestión de Palets en Camión</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-
-        h1 {
-            text-align: center;
-            color: #4CAF50;
-        }
-
         #camion-area {
             position: relative;
-            width: 1360px; /* Largo del camión en cm */
-            height: 244px; /* Ancho del camión en cm */
-            border: 2px dashed #4CAF50;
+            width: 244px; /* Ancho del camión */
+            height: 1360px; /* Largo del camión */
+            background-color: #e0e0e0;
+            border: 2px solid #000;
             margin: 20px auto;
-            background-color: #fff;
-            overflow: hidden;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            transform: rotate(0deg); /* Mantener horizontal */
         }
-
         .palet {
             position: absolute;
-            border: 1px solid #333;
             box-sizing: border-box;
-            text-align: center;
-            color: #fff;
-            font-size: 10px;
-            font-weight: bold;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 3px;
+            border: 1px solid #000;
         }
-
-        form {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding: 20px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        form label {
+        #controls {
+            margin: 20px;
             display: flex;
             flex-direction: column;
-            font-size: 14px;
-            font-weight: bold;
-            color: #4CAF50;
-            width: 150px;
+            gap: 10px;
+            align-items: center;
         }
-
-        form input {
-            margin-top: 5px;
-            padding: 8px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        #ldm {
-            text-align: center;
-            font-size: 18px;
-            color: #333;
-            margin-top: 10px;
-        }
-
-        @media (max-width: 600px) {
-            #camion-area {
-                width: 100%;
-                height: auto;
-            }
-            form {
-                flex-direction: column;
-            }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            width: 100px;
         }
     </style>
 </head>
 <body>
-    <h1>Distribución de Palets en el Camión</h1>
+    <h1>Gestión de Palets en Camión</h1>
+    <div id="controls">
+        <input type="number" id="ancho" placeholder="Ancho del Palet" />
+        <input type="number" id="largo" placeholder="Largo del Palet" />
+        <input type="number" id="cantidad" placeholder="Cantidad" />
+        <button id="agregarPalet">Agregar Palet</button>
+    </div>
     <div id="camion-area"></div>
-    <div id="ldm">Metros lineales ocupados: 0 LDM</div>
-    <form>
-        <label>
-            Ancho (cm):
-            <input type="number" id="ancho" placeholder="Ancho del palet" min="1">
-        </label>
-        <label>
-            Largo (cm):
-            <input type="number" id="largo" placeholder="Largo del palet" min="1">
-        </label>
-        <label>
-            Cantidad:
-            <input type="number" id="cantidad" placeholder="Cantidad de palets" min="1">
-        </label>
-        <button type="button" id="agregarPalet">Agregar Palet</button>
-    </form>
+
     <script src="script.js"></script>
 </body>
 </html>
-
