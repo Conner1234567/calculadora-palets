@@ -89,7 +89,7 @@
                     if (currentX + paletLargoVisual > 816) { // Si no cabe horizontalmente
                         // Mover a la siguiente fila en el eje Y
                         currentX = 0;
-                        currentY += ancho * escalaVisual; // Ajustar la altura visual para la nueva fila
+                        currentY += paletAnchoVisual; // Ajustar la altura visual para la nueva fila
 
                         // Si el nuevo palet no cabe en el eje Y (ancho del camión)
                         if (currentY + paletAnchoVisual > (244 * escalaVisual)) {
@@ -133,5 +133,4 @@
     </script>
 </body>
 </html>
-
 
