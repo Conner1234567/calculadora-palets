@@ -82,3 +82,15 @@ function getColor(index) {
     return colors[index % colors.length];
 }
 
+// Nueva función para encontrar el mejor espacio disponible
+function encontrarEspacio(ancho, largo) {
+    for (let y = 0; y <= camionLargo - largo; y++) {
+        for (let x = 0; x <= camionAncho - ancho; x++) {
+            if (canPlacePalet(x, y, ancho, largo)) {
+                return { x, y };
+            }
+        }
+    }
+    return null; // No hay espacio disponible
+}
+
