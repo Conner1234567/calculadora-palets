@@ -60,16 +60,7 @@ function actualizarLDM() {
 }
 
 function encontrarEspacio(ancho, largo) {
-    // Intentamos colocar los palets en el camión ocupando el ancho primero (de izquierda a derecha)
-    for (let y = 0; y <= camionLargo - largo; y++) {
-        for (let x = 0; x <= camionAncho - ancho; x++) {
-            if (canPlacePalet(x, y, ancho, largo)) {
-                return { x, y };
-            }
-        }
-    }
-
-    // Si no se puede colocar a lo largo, intentamos colocar en un nivel más alto (es decir, comenzamos el siguiente nivel)
+    // Recorremos de izquierda a derecha (llenamos el ancho primero)
     for (let y = 0; y <= camionLargo - largo; y++) {
         for (let x = 0; x <= camionAncho - ancho; x++) {
             if (canPlacePalet(x, y, ancho, largo)) {
@@ -82,17 +73,19 @@ function encontrarEspacio(ancho, largo) {
 }
 
 function canPlacePalet(x, y, ancho, largo) {
+    // Verificamos si el espacio está libre
     for (let row = y; row < y + largo; row++) {
         for (let col = x; col < x + ancho; col++) {
             if (row >= camionLargo || col >= camionAncho || ocupacion[row][col]) {
-                return false;
+                return false; // No cabe o ya está ocupado
             }
         }
     }
-    return true;
+    return true; // Espacio libre
 }
 
 function placePalet(x, y, ancho, largo) {
+    // Marcamos las posiciones como ocupadas
     for (let row = y; row < y + largo; row++) {
         for (let col = x; col < x + ancho; col++) {
             ocupacion[row][col] = true;
@@ -104,4 +97,3 @@ function getColor(index) {
     const colors = ["#4CAF50", "#FF9800", "#03A9F4", "#E91E63", "#FFC107"];
     return colors[index % colors.length];
 }
-
