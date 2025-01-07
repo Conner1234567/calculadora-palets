@@ -1,5 +1,5 @@
-const camionAncho = 244; // Ancho del camión en cm
-const camionLargo = 1360; // Largo del camión en cm
+const camionAncho = 244; // Ancho del camión en cm (límite vertical)
+const camionLargo = 1360; // Largo del camión en cm (límite horizontal)
 let palets = [];
 let ocupacion = Array.from({ length: camionLargo }, () => Array(camionAncho).fill(false)); // Malla de ocupación
 let ldmOcupados = 0; // Variable para almacenar los LDM ocupados
