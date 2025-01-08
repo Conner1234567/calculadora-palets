@@ -32,8 +32,9 @@ function renderTruck() {
     pallets.forEach((pallet, index) => {
         // Si el palet no cabe en la fila actual, moverlo a la siguiente fila
         if (x + pallet.length > truckWidth) {
-            x = 0; // Resetear el eje x (comenzamos desde el principio de la siguiente fila)
-            y += rowHeight; // Aumentamos el eje y según la altura de la fila
+            // Si no cabe en la fila, resetear x e incrementar y
+            x = 0; 
+            y += rowHeight; // Aumentamos la altura de la fila
             rowHeight = 0; // Reseteamos la altura de la fila
         }
 
@@ -61,9 +62,5 @@ function renderTruck() {
     });
 
     document.getElementById('result').textContent = `Metros lineales ocupados: ${totalLinearMeters.toFixed(2)} m`;
-}
-
-function finalizeGroup() {
-    renderTruck();
 }
 
