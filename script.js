@@ -23,12 +23,13 @@ function renderTruck() {
     const truck = document.getElementById('truck');
     truck.innerHTML = '';
 
-    let positions = []; // Para guardar las posiciones ocupadas
+    let positions = []; // Lista de posiciones ocupadas
     let x = 0, y = 0, maxX = 0, totalLinearMeters = 0;
 
     pallets.forEach((pallet, index) => {
-        // Encuentra una posición válida
         let placed = false;
+
+        // Encuentra un lugar disponible para el pallet
         for (let i = 0; i <= truckWidth - pallet.length; i++) {
             for (let j = 0; j <= truckHeight - pallet.width; j++) {
                 if (isPositionAvailable(i, j, pallet, positions)) {
@@ -46,7 +47,7 @@ function renderTruck() {
             return;
         }
 
-        // Coloca el pallet en la posición válida
+        // Guarda la posición del pallet
         positions.push({ x, y, width: pallet.width, length: pallet.length });
 
         const palletDiv = document.createElement('div');
