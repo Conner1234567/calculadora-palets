@@ -70,15 +70,21 @@ button:hover {
     background-color: #2980b9;
 }
 
+.truck-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
 .truck {
     position: relative;
     width: 1360px; /* 13.6m en escala */
     height: 244px; /* 2.44m en escala */
-    margin: 20px auto;
     border: 2px solid #333;
     background-color: #e6f7ff;
     overflow: hidden;
     border-radius: 8px;
+    box-sizing: border-box;
 }
 
 .pallet {
