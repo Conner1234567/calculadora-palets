@@ -1,5 +1,5 @@
-const truckWidth = 1360; // 13.6m en cm
-const truckHeight = 244; // 2.44m en cm
+const truckWidth = 244; // 13.6m en cm
+const truckHeight = 1360; // 2.44m en cm
 let pallets = [];
 let currentGroup = 1;
 let colorGroups = ['#1abc9c', '#3498db', '#9b59b6', '#e74c3c', '#f1c40f'];
