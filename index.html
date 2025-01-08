@@ -14,7 +14,6 @@
             <option value="Cliente 1">Cliente 1</option>
             <option value="Cliente 2">Cliente 2</option>
             <option value="Cliente 3">Cliente 3</option>
-            <!-- Agregar más clientes si es necesario -->
         </select>
 
         <label for="pallet-width">Ancho del palet (cm):</label>
@@ -27,6 +26,7 @@
         <input type="number" id="pallet-quantity" min="1" required>
 
         <button onclick="addPallets()">Añadir Palets</button>
+        <button onclick="finalizeClientGroup()">Finalizar Grupo</button>
     </div>
 
     <div class="truck" id="truck"></div>
@@ -35,3 +35,4 @@
     <script src="script.js"></script>
 </body>
 </html>
+
