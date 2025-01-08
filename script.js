@@ -30,14 +30,14 @@ function renderTruck() {
     let x = 0, y = 0, totalLinearMeters = 0, rowHeight = 0;
 
     pallets.forEach((pallet, index) => {
-        // Si no cabe el palet en la fila actual, pasamos a la siguiente fila
+        // Si el palet no cabe en la fila actual, moverlo a la siguiente fila
         if (x + pallet.length > truckWidth) {
-            x = 0; // Resetear el eje x
-            y += rowHeight; // Pasar a la siguiente fila
-            rowHeight = 0; // Resetear la altura de la fila
+            x = 0; // Resetear el eje x (comenzamos desde el principio de la siguiente fila)
+            y += rowHeight; // Aumentamos el eje y según la altura de la fila
+            rowHeight = 0; // Reseteamos la altura de la fila
         }
 
-        // Si no cabe el palet en el camión verticalmente, detiene la inserción
+        // Verificar si el palet cabe en el camión verticalmente
         if (y + pallet.width > truckHeight) {
             alert('No caben más palets en el camión.');
             return;
@@ -46,17 +46,17 @@ function renderTruck() {
         // Crear el div para el palet
         const palletDiv = document.createElement('div');
         palletDiv.className = 'pallet';
-        palletDiv.style.width = `${pallet.length}px`;
-        palletDiv.style.height = `${pallet.width}px`;
-        palletDiv.style.left = `${x}px`;
-        palletDiv.style.top = `${y}px`;
+        palletDiv.style.width = `${pallet.length}px`; // Establecer el largo del palet
+        palletDiv.style.height = `${pallet.width}px`; // Establecer el ancho del palet
+        palletDiv.style.left = `${x}px`; // Establecer la posición horizontal
+        palletDiv.style.top = `${y}px`; // Establecer la posición vertical
         palletDiv.style.backgroundColor = pallet.color;
         palletDiv.textContent = `Grupo ${pallet.group} - ${index + 1}`;
         truck.appendChild(palletDiv);
 
         // Ajustar la posición para el siguiente palet
-        x += pallet.length;
-        rowHeight = Math.max(rowHeight, pallet.width); // Establecer la altura de la fila más alta
+        x += pallet.length; // Aumentamos el valor de x para la siguiente posición en la fila
+        rowHeight = Math.max(rowHeight, pallet.width); // Establecemos la altura de la fila según el palet más alto
         totalLinearMeters = Math.max(totalLinearMeters, (x + pallet.length) / 100); // Convertimos a metros
     });
 
@@ -66,3 +66,4 @@ function renderTruck() {
 function finalizeGroup() {
     renderTruck();
 }
+
