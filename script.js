@@ -22,20 +22,32 @@ function addPallets() {
 function renderTruck() {
     const truck = document.getElementById('truck');
     truck.innerHTML = '';
-    let x = 0, y = 0, maxY = 0, totalLinearMeters = 0;
+
+    let positions = []; // Para guardar las posiciones ocupadas
+    let x = 0, y = 0, maxX = 0, totalLinearMeters = 0;
 
     pallets.forEach((pallet, index) => {
-        if (y + pallet.width > truckHeight) {
-            // Cambiar de columna al sobrepasar el ancho del camión
-            y = 0;
-            x += maxY;
-            maxY = 0;
+        // Encuentra una posición válida
+        let placed = false;
+        for (let i = 0; i <= truckWidth - pallet.length; i++) {
+            for (let j = 0; j <= truckHeight - pallet.width; j++) {
+                if (isPositionAvailable(i, j, pallet, positions)) {
+                    x = i;
+                    y = j;
+                    placed = true;
+                    break;
+                }
+            }
+            if (placed) break;
         }
 
-        if (x + pallet.length > truckWidth) {
+        if (!placed) {
             alert('No caben más palets en el camión.');
             return;
         }
+
+        // Coloca el pallet en la posición válida
+        positions.push({ x, y, width: pallet.width, length: pallet.length });
 
         const palletDiv = document.createElement('div');
         palletDiv.className = 'pallet';
@@ -46,11 +58,20 @@ function renderTruck() {
         palletDiv.textContent = `${index + 1}`;
         truck.appendChild(palletDiv);
 
-        y += pallet.width;
-        maxY = Math.max(maxY, pallet.length);
-        totalLinearMeters = Math.max(totalLinearMeters, (x + pallet.length) / 100); // Convertimos a metros
+        // Actualiza el cálculo de metros lineales
+        maxX = Math.max(maxX, x + pallet.length);
+        totalLinearMeters = maxX / 100; // Convertimos a metros
     });
 
     document.getElementById('result').textContent = `Metros lineales ocupados: ${totalLinearMeters.toFixed(2)} m`;
+}
+
+function isPositionAvailable(x, y, pallet, positions) {
+    return !positions.some(pos => 
+        x < pos.x + pos.length &&
+        x + pallet.length > pos.x &&
+        y < pos.y + pos.width &&
+        y + pallet.width > pos.y
+    );
 }
 
