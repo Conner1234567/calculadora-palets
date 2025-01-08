@@ -1,6 +1,8 @@
+// script.js
 const truckWidth = 1360; // 13.6m en cm
 const truckHeight = 244; // 2.44m en cm
 let pallets = [];
+let colorGroups = ['#1abc9c', '#3498db', '#9b59b6', '#e74c3c', '#f1c40f'];
 
 function addPallets() {
     const palletWidth = parseInt(document.getElementById('pallet-width').value);
@@ -12,8 +14,10 @@ function addPallets() {
         return;
     }
 
+    const groupColor = colorGroups[pallets.length % colorGroups.length];
+
     for (let i = 0; i < palletQuantity; i++) {
-        pallets.push({ width: palletWidth, length: palletLength });
+        pallets.push({ width: palletWidth, length: palletLength, color: groupColor });
     }
 
     renderTruck();
@@ -22,33 +26,18 @@ function addPallets() {
 function renderTruck() {
     const truck = document.getElementById('truck');
     truck.innerHTML = '';
-
-    let positions = []; // Lista de posiciones ocupadas
-    let x = 0, y = 0, maxX = 0, totalLinearMeters = 0;
+    let x = 0, y = 0, totalLinearMeters = 0;
 
     pallets.forEach((pallet, index) => {
-        let placed = false;
-
-        // Encuentra un lugar disponible para el pallet
-        for (let i = 0; i <= truckWidth - pallet.length; i++) {
-            for (let j = 0; j <= truckHeight - pallet.width; j++) {
-                if (isPositionAvailable(i, j, pallet, positions)) {
-                    x = i;
-                    y = j;
-                    placed = true;
-                    break;
-                }
-            }
-            if (placed) break;
+        if (y + pallet.width > truckHeight) {
+            y = 0;
+            x += pallet.length;
         }
 
-        if (!placed) {
+        if (x + pallet.length > truckWidth) {
             alert('No caben más palets en el camión.');
             return;
         }
-
-        // Guarda la posición del pallet
-        positions.push({ x, y, width: pallet.width, length: pallet.length });
 
         const palletDiv = document.createElement('div');
         palletDiv.className = 'pallet';
@@ -56,23 +45,13 @@ function renderTruck() {
         palletDiv.style.height = `${pallet.width}px`;
         palletDiv.style.left = `${x}px`;
         palletDiv.style.top = `${y}px`;
+        palletDiv.style.backgroundColor = pallet.color;
         palletDiv.textContent = `${index + 1}`;
         truck.appendChild(palletDiv);
 
-        // Actualiza el cálculo de metros lineales
-        maxX = Math.max(maxX, x + pallet.length);
-        totalLinearMeters = maxX / 100; // Convertimos a metros
+        y += pallet.width;
+        totalLinearMeters = Math.max(totalLinearMeters, (x + pallet.length) / 100); // Convertimos a metros
     });
 
     document.getElementById('result').textContent = `Metros lineales ocupados: ${totalLinearMeters.toFixed(2)} m`;
 }
-
-function isPositionAvailable(x, y, pallet, positions) {
-    return !positions.some(pos => 
-        x < pos.x + pos.length &&
-        x + pallet.length > pos.x &&
-        y < pos.y + pos.width &&
-        y + pallet.width > pos.y
-    );
-}
-
