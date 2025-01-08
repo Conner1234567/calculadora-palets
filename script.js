@@ -1,36 +1,37 @@
-// script.js
 const truckWidth = 1360; // 13.6m en cm
 const truckHeight = 244; // 2.44m en cm
 let pallets = [];
-let currentClient = 'Cliente 1'; // Cliente inicial
-let clientColors = {
-    'Cliente 1': '#1abc9c',
-    'Cliente 2': '#3498db',
-    'Cliente 3': '#9b59b6',
-};
-
-// Obtener cliente seleccionado
-document.getElementById('client-select').addEventListener('change', function() {
-    currentClient = this.value; // Cambiar el cliente actual
-});
+let colorGroups = ['#1abc9c', '#3498db', '#9b59b6', '#e74c3c', '#f1c40f'];
+let currentGroup = '';
 
 function addPallets() {
     const palletWidth = parseInt(document.getElementById('pallet-width').value);
     const palletLength = parseInt(document.getElementById('pallet-length').value);
     const palletQuantity = parseInt(document.getElementById('pallet-quantity').value);
+    const groupName = document.getElementById('group-name').value.trim();
 
-    if (isNaN(palletWidth) || isNaN(palletLength) || isNaN(palletQuantity)) {
-        alert('Por favor, introduce valores válidos.');
+    if (isNaN(palletWidth) || isNaN(palletLength) || isNaN(palletQuantity) || groupName === '') {
+        alert('Por favor, introduce valores válidos y un nombre para el grupo.');
         return;
     }
 
-    const groupColor = clientColors[currentClient]; // Asignar color según el cliente
+    // Si no se ha introducido un nombre para el grupo, lo usamos como "Grupo X"
+    if (!currentGroup) {
+        currentGroup = groupName;
+    }
+
+    const groupColor = colorGroups[pallets.length % colorGroups.length];
 
     for (let i = 0; i < palletQuantity; i++) {
-        pallets.push({ width: palletWidth, length: palletLength, color: groupColor, client: currentClient });
+        pallets.push({ width: palletWidth, length: palletLength, color: groupColor, group: groupName });
     }
 
     renderTruck();
+}
+
+function finalizeGroup() {
+    // Reseteamos el nombre del grupo para el siguiente
+    currentGroup = '';
 }
 
 function renderTruck() {
@@ -40,8 +41,8 @@ function renderTruck() {
 
     pallets.forEach((pallet, index) => {
         if (y + pallet.width > truckHeight) {
-            y = 0; // Reiniciar la posición vertical al inicio de la siguiente fila
-            x += pallet.length; // Mover a la siguiente columna
+            y = 0;
+            x += pallet.length;
         }
 
         if (x + pallet.length > truckWidth) {
@@ -56,20 +57,13 @@ function renderTruck() {
         palletDiv.style.left = `${x}px`;
         palletDiv.style.top = `${y}px`;
         palletDiv.style.backgroundColor = pallet.color;
-        palletDiv.textContent = `${index + 1} (${pallet.client})`;
+        palletDiv.textContent = `${index + 1}`;
         truck.appendChild(palletDiv);
 
-        y += pallet.width; // Incrementar la posición vertical para el próximo palet en la misma fila
+        y += pallet.width;
         totalLinearMeters = Math.max(totalLinearMeters, (x + pallet.length) / 100); // Convertimos a metros
     });
 
     document.getElementById('result').textContent = `Metros lineales ocupados: ${totalLinearMeters.toFixed(2)} m`;
 }
 
-function finalizeClientGroup() {
-    // Este botón resetea los palets y muestra que el grupo de cliente ha finalizado.
-    alert(`Grupo de ${currentClient} finalizado. Puedes empezar con el siguiente grupo.`);
-    // Se podría agregar un sistema de "reset" para reorganizar los palets si se desea.
-    pallets = []; // Limpiar palets (si es necesario)
-    renderTruck(); // Volver a renderizar el camión vacío
-}
