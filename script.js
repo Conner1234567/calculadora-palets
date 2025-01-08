@@ -2,8 +2,17 @@
 const truckWidth = 1360; // 13.6m en cm
 const truckHeight = 244; // 2.44m en cm
 let pallets = [];
-let colorGroups = ['#1abc9c', '#3498db', '#9b59b6', '#e74c3c', '#f1c40f'];
-let currentGroup = 0; // Para determinar el grupo actual
+const clientColors = {
+    'Cliente 1': '#1abc9c', // Color para Cliente 1
+    'Cliente 2': '#3498db', // Color para Cliente 2
+    'Cliente 3': '#9b59b6', // Color para Cliente 3
+};
+let currentClient = 'Cliente 1'; // Cliente inicial
+
+// Obtener cliente seleccionado
+document.getElementById('client-select').addEventListener('change', function() {
+    currentClient = this.value; // Cambiar el cliente actual
+});
 
 function addPallets() {
     const palletWidth = parseInt(document.getElementById('pallet-width').value);
@@ -15,13 +24,11 @@ function addPallets() {
         return;
     }
 
-    const groupColor = colorGroups[currentGroup % colorGroups.length];
+    const groupColor = clientColors[currentClient]; // Asignar color según el cliente
 
     for (let i = 0; i < palletQuantity; i++) {
-        pallets.push({ width: palletWidth, length: palletLength, color: groupColor });
+        pallets.push({ width: palletWidth, length: palletLength, color: groupColor, client: currentClient });
     }
-
-    currentGroup++; // Cambiar al siguiente grupo para los próximos palets
 
     renderTruck();
 }
@@ -49,7 +56,7 @@ function renderTruck() {
         palletDiv.style.left = `${x}px`;
         palletDiv.style.top = `${y}px`;
         palletDiv.style.backgroundColor = pallet.color;
-        palletDiv.textContent = `${index + 1}`;
+        palletDiv.textContent = `${index + 1} (${pallet.client})`;
         truck.appendChild(palletDiv);
 
         y += pallet.width; // Incrementar la posición vertical para el próximo palet en la misma fila
