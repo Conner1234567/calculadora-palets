@@ -2,12 +2,12 @@
 const truckWidth = 1360; // 13.6m en cm
 const truckHeight = 244; // 2.44m en cm
 let pallets = [];
-const clientColors = {
-    'Cliente 1': '#1abc9c', // Color para Cliente 1
-    'Cliente 2': '#3498db', // Color para Cliente 2
-    'Cliente 3': '#9b59b6', // Color para Cliente 3
-};
 let currentClient = 'Cliente 1'; // Cliente inicial
+let clientColors = {
+    'Cliente 1': '#1abc9c',
+    'Cliente 2': '#3498db',
+    'Cliente 3': '#9b59b6',
+};
 
 // Obtener cliente seleccionado
 document.getElementById('client-select').addEventListener('change', function() {
@@ -64,4 +64,12 @@ function renderTruck() {
     });
 
     document.getElementById('result').textContent = `Metros lineales ocupados: ${totalLinearMeters.toFixed(2)} m`;
+}
+
+function finalizeClientGroup() {
+    // Este botón resetea los palets y muestra que el grupo de cliente ha finalizado.
+    alert(`Grupo de ${currentClient} finalizado. Puedes empezar con el siguiente grupo.`);
+    // Se podría agregar un sistema de "reset" para reorganizar los palets si se desea.
+    pallets = []; // Limpiar palets (si es necesario)
+    renderTruck(); // Volver a renderizar el camión vacío
 }
