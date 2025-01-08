@@ -3,6 +3,7 @@ const truckWidth = 1360; // 13.6m en cm
 const truckHeight = 244; // 2.44m en cm
 let pallets = [];
 let colorGroups = ['#1abc9c', '#3498db', '#9b59b6', '#e74c3c', '#f1c40f'];
+let currentGroup = 0; // Para determinar el grupo actual
 
 function addPallets() {
     const palletWidth = parseInt(document.getElementById('pallet-width').value);
@@ -14,11 +15,13 @@ function addPallets() {
         return;
     }
 
-    const groupColor = colorGroups[pallets.length % colorGroups.length];
+    const groupColor = colorGroups[currentGroup % colorGroups.length];
 
     for (let i = 0; i < palletQuantity; i++) {
         pallets.push({ width: palletWidth, length: palletLength, color: groupColor });
     }
+
+    currentGroup++; // Cambiar al siguiente grupo para los próximos palets
 
     renderTruck();
 }
@@ -30,8 +33,8 @@ function renderTruck() {
 
     pallets.forEach((pallet, index) => {
         if (y + pallet.width > truckHeight) {
-            y = 0;
-            x += pallet.length;
+            y = 0; // Reiniciar la posición vertical al inicio de la siguiente fila
+            x += pallet.length; // Mover a la siguiente columna
         }
 
         if (x + pallet.length > truckWidth) {
@@ -49,7 +52,7 @@ function renderTruck() {
         palletDiv.textContent = `${index + 1}`;
         truck.appendChild(palletDiv);
 
-        y += pallet.width;
+        y += pallet.width; // Incrementar la posición vertical para el próximo palet en la misma fila
         totalLinearMeters = Math.max(totalLinearMeters, (x + pallet.length) / 100); // Convertimos a metros
     });
 
