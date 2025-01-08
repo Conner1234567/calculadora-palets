@@ -9,16 +9,29 @@
 <body>
     <h1>Simulador de Carga de Camión</h1>
     <div class="form-container">
+        <label for="client-select">Selecciona Cliente:</label>
+        <select id="client-select">
+            <option value="Cliente 1">Cliente 1</option>
+            <option value="Cliente 2">Cliente 2</option>
+            <option value="Cliente 3">Cliente 3</option>
+            <!-- Agregar más clientes si es necesario -->
+        </select>
+
         <label for="pallet-width">Ancho del palet (cm):</label>
         <input type="number" id="pallet-width" min="1" required>
+
         <label for="pallet-length">Largo del palet (cm):</label>
         <input type="number" id="pallet-length" min="1" required>
+
         <label for="pallet-quantity">Cantidad:</label>
         <input type="number" id="pallet-quantity" min="1" required>
+
         <button onclick="addPallets()">Añadir Palets</button>
     </div>
+
     <div class="truck" id="truck"></div>
     <p id="result"></p>
+
     <script src="script.js"></script>
 </body>
 </html>
