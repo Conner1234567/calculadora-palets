@@ -27,19 +27,23 @@ function addPallets() {
 function renderTruck() {
     const truck = document.getElementById('truck');
     truck.innerHTML = ''; // Limpiar el camión antes de volver a renderizar
-    let x = 0, y = 0, totalLinearMeters = 0;
+    let x = 0, y = 0, totalLinearMeters = 0, rowHeight = 0;
 
     pallets.forEach((pallet, index) => {
-        if (y + pallet.width > truckHeight) {
-            y = 0;
-            x += pallet.length;
+        // Si no cabe el palet en la fila actual, pasamos a la siguiente fila
+        if (x + pallet.length > truckWidth) {
+            x = 0; // Resetear el eje x
+            y += rowHeight; // Pasar a la siguiente fila
+            rowHeight = 0; // Resetear la altura de la fila
         }
 
-        if (x + pallet.length > truckWidth) {
+        // Si no cabe el palet en el camión verticalmente, detiene la inserción
+        if (y + pallet.width > truckHeight) {
             alert('No caben más palets en el camión.');
             return;
         }
 
+        // Crear el div para el palet
         const palletDiv = document.createElement('div');
         palletDiv.className = 'pallet';
         palletDiv.style.width = `${pallet.length}px`;
@@ -50,7 +54,9 @@ function renderTruck() {
         palletDiv.textContent = `Grupo ${pallet.group} - ${index + 1}`;
         truck.appendChild(palletDiv);
 
-        y += pallet.width;
+        // Ajustar la posición para el siguiente palet
+        x += pallet.length;
+        rowHeight = Math.max(rowHeight, pallet.width); // Establecer la altura de la fila más alta
         totalLinearMeters = Math.max(totalLinearMeters, (x + pallet.length) / 100); // Convertimos a metros
     });
 
