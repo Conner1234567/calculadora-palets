@@ -2,24 +2,20 @@ const truckWidth = 1360; // 13.6m en cm
 const truckHeight = 244; // 2.44m en cm
 let pallets = [];
 let colorGroups = ['#1abc9c', '#3498db', '#9b59b6', '#e74c3c', '#f1c40f'];
-let currentGroup = '';
+let groupCounter = 1; // Contador para los grupos
 
 function addPallets() {
     const palletWidth = parseInt(document.getElementById('pallet-width').value);
     const palletLength = parseInt(document.getElementById('pallet-length').value);
     const palletQuantity = parseInt(document.getElementById('pallet-quantity').value);
-    const groupName = document.getElementById('group-name').value.trim();
 
-    if (isNaN(palletWidth) || isNaN(palletLength) || isNaN(palletQuantity) || groupName === '') {
-        alert('Por favor, introduce valores válidos y un nombre para el grupo.');
+    if (isNaN(palletWidth) || isNaN(palletLength) || isNaN(palletQuantity)) {
+        alert('Por favor, introduce valores válidos.');
         return;
     }
 
-    // Si no se ha introducido un nombre para el grupo, lo usamos como "Grupo X"
-    if (!currentGroup) {
-        currentGroup = groupName;
-    }
-
+    // Usamos el contador de grupos para asignar el nombre automáticamente
+    const groupName = `Grupo ${groupCounter}`;
     const groupColor = colorGroups[pallets.length % colorGroups.length];
 
     for (let i = 0; i < palletQuantity; i++) {
@@ -30,8 +26,8 @@ function addPallets() {
 }
 
 function finalizeGroup() {
-    // Reseteamos el nombre del grupo para el siguiente
-    currentGroup = '';
+    // Incrementamos el contador para el siguiente grupo
+    groupCounter++;
 }
 
 function renderTruck() {
