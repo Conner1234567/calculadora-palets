@@ -18,6 +18,12 @@ h1 {
     justify-content: center;
     gap: 10px;
     flex-wrap: wrap;
+    align-items: center; /* Asegura que los elementos estén alineados correctamente */
+}
+
+label {
+    font-size: 1em;
+    margin-right: 10px;
 }
 
 input, select {
@@ -25,6 +31,7 @@ input, select {
     font-size: 1em;
     border: 1px solid #ccc;
     border-radius: 4px;
+    margin-bottom: 10px; /* Espaciado entre los elementos */
 }
 
 button {
@@ -36,6 +43,8 @@ button {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-top: 10px; /* Para dar espacio entre los botones */
+    margin-left: 5px;
 }
 
 button:hover {
@@ -74,4 +83,3 @@ button:hover {
         transform: scale(1);
     }
 }
-
