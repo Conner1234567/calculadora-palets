@@ -9,12 +9,8 @@
 <body>
     <h1>Simulador de Carga de Camión</h1>
     <div class="form-container">
-        <label for="client-select">Selecciona Cliente:</label>
-        <select id="client-select">
-            <option value="Cliente 1">Cliente 1</option>
-            <option value="Cliente 2">Cliente 2</option>
-            <option value="Cliente 3">Cliente 3</option>
-        </select>
+        <label for="group-name">Nombre del Grupo:</label>
+        <input type="text" id="group-name" placeholder="Ej. Grupo 1" required>
 
         <label for="pallet-width">Ancho del palet (cm):</label>
         <input type="number" id="pallet-width" min="1" required>
@@ -26,7 +22,7 @@
         <input type="number" id="pallet-quantity" min="1" required>
 
         <button onclick="addPallets()">Añadir Palets</button>
-        <button onclick="finalizeClientGroup()">Finalizar Grupo</button>
+        <button onclick="finalizeGroup()">Finalizar Grupo</button>
     </div>
 
     <div class="truck" id="truck"></div>
@@ -35,4 +31,5 @@
     <script src="script.js"></script>
 </body>
 </html>
+
 
