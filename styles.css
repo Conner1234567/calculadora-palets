@@ -1,0 +1,30 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    text-align: center;
+}
+
+.truck {
+    position: relative;
+    width: 1360px; /* 13.6m en escala */
+    height: 244px; /* 2.44m en escala */
+    margin: 20px auto;
+    border: 2px solid #333;
+    background-color: #f4f4f4;
+}
+
+.pallet {
+    position: absolute;
+    background-color: rgba(0, 128, 0, 0.7);
+    border: 1px solid #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 12px;
+}
+
+.form-container {
+    margin-bottom: 20px;
+}
+
