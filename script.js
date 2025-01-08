@@ -22,12 +22,14 @@ function addPallets() {
 function renderTruck() {
     const truck = document.getElementById('truck');
     truck.innerHTML = '';
-    let x = 0, y = 0, totalLinearMeters = 0;
+    let x = 0, y = 0, maxY = 0, totalLinearMeters = 0;
 
     pallets.forEach((pallet, index) => {
         if (y + pallet.width > truckHeight) {
+            // Cambiar de columna al sobrepasar el ancho del camión
             y = 0;
-            x += pallet.length;
+            x += maxY;
+            maxY = 0;
         }
 
         if (x + pallet.length > truckWidth) {
@@ -45,6 +47,7 @@ function renderTruck() {
         truck.appendChild(palletDiv);
 
         y += pallet.width;
+        maxY = Math.max(maxY, pallet.length);
         totalLinearMeters = Math.max(totalLinearMeters, (x + pallet.length) / 100); // Convertimos a metros
     });
 
