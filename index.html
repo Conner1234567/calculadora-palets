@@ -1,31 +1,23 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIMULADOR DE CARGA DE CAMIÓN</title>
+    <title>Simulador de Carga de Camión</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>SIMULADOR DE CARGA DE CAMIÓN</h1>
-
+    <h1>Simulador de Carga de Camión</h1>
     <div class="form-container">
-        <label for="pallet-width">ANCHO DEL PALET (CM):</label>
+        <label for="pallet-width">Ancho del palet (cm):</label>
         <input type="number" id="pallet-width" min="1" required>
-
-        <label for="pallet-length">LARGO DEL PALET (CM):</label>
+        <label for="pallet-length">Largo del palet (cm):</label>
         <input type="number" id="pallet-length" min="1" required>
-
-        <label for="pallet-quantity">CANTIDAD:</label>
+        <label for="pallet-quantity">Cantidad:</label>
         <input type="number" id="pallet-quantity" min="1" required>
-
-        <button onclick="addPallets()">AÑADIR PALETS</button>
-
-        <div id="error-message" style="display:none; color:red; font-size: 1.2em;"></div>
+        <button onclick="addPallets()">Añadir Palets</button>
     </div>
-
     <div class="truck" id="truck"></div>
-
     <p id="result"></p>
 
     <script src="script.js"></script>
