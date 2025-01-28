@@ -1,7 +1,8 @@
 /* Estilos generales */
 body {
     font-family: 'Arial', sans-serif;
-    background: #f4f4f4; /* Fondo claro */
+    background: url('camiones-pattern.png') repeat; /* Fondo sticker boom */
+    background-size: 200px 200px; /* Ajusta el tamaño del patrón */
     margin: 0;
     padding: 0;
     text-align: center;
@@ -32,11 +33,17 @@ h1 {
 input[type="number"] {
     padding: 10px;
     margin: 10px 0;
-    border: 2px solid #4caf50; /* Verde para los bordes */
+    border: 2px solid #4caf50; /* Verde */
     border-radius: 5px;
     width: calc(100% - 24px);
     font-size: 1em;
     background-color: #f9f9f9;
+}
+
+input[type="number"]:focus {
+    outline: none;
+    border-color: #004d40; /* Verde oscuro */
+    box-shadow: 0 0 5px rgba(0, 77, 64, 0.5);
 }
 
 /* Botón */
@@ -67,8 +74,8 @@ button:hover {
 /* Contenedor del camión */
 .truck {
     position: relative;
-    width: 1360px; /* Ancho original del camión (13.6m = 1360px) */
-    height: 244px; /* Alto original del camión (2.44m = 244px) */
+    width: 1360px; /* Ancho del camión */
+    height: 244px; /* Alto del camión */
     margin: 20px auto;
     border: 2px solid #333;
     background-color: #e0e0e0;
@@ -76,17 +83,29 @@ button:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilo de los palets dentro del camión */
+/* Animación al añadir un palet */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 .pallet {
     position: absolute;
-    background-color: #0277bd; /* Azul para los palets */
-    border: 2px solid #01579b; /* Bordes más oscuros */
+    background-color: #0277bd; /* Azul */
+    border: 2px solid #01579b; /* Bordes oscuros */
     color: #fff;
     font-size: 14px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 5px;
+    animation: fadeIn 0.5s ease-in-out;
 }
 
 /* Añadir espacio entre los campos de entrada */
@@ -95,11 +114,3 @@ button:hover {
     margin-bottom: 10px;
     display: block;
 }
-
-/* Efecto en los campos de número cuando están en foco */
-input[type="number"]:focus {
-    outline: none;
-    border-color: #004d40; /* Verde oscuro */
-    box-shadow: 0 0 5px rgba(0, 77, 64, 0.5);
-}
-
