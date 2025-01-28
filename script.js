@@ -1,29 +1,8 @@
-const truckWidth = 1360; // 13.6m en cm
-const truckHeight = 244; // 2.44m en cm
-let pallets = [];
-
-function addPallets() {
-    const palletWidth = parseInt(document.getElementById('pallet-width').value);
-    const palletLength = parseInt(document.getElementById('pallet-length').value);
-    const palletQuantity = parseInt(document.getElementById('pallet-quantity').value);
-
-    if (isNaN(palletWidth) || isNaN(palletLength) || isNaN(palletQuantity)) {
-        alert('Por favor, introduce valores válidos.');
-        return;
-    }
-
-    for (let i = 0; i < palletQuantity; i++) {
-        pallets.push({ width: palletWidth, length: palletLength });
-    }
-
-    renderTruck();
-}
-
 function renderTruck() {
     const truck = document.getElementById('truck');
     truck.innerHTML = '';
 
-    let positions = []; // Lista de posiciones ocupadas
+    let positions = []; 
     let x = 0, y = 0, maxX = 0, totalLinearMeters = 0;
 
     pallets.forEach((pallet, index) => {
@@ -47,7 +26,6 @@ function renderTruck() {
             return;
         }
 
-        // Guarda la posición del pallet
         positions.push({ x, y, width: pallet.width, length: pallet.length });
 
         const palletDiv = document.createElement('div');
@@ -57,22 +35,22 @@ function renderTruck() {
         palletDiv.style.left = `${x}px`;
         palletDiv.style.top = `${y}px`;
         palletDiv.textContent = `${index + 1}`;
+        
+        // Animación para que los palets aparezcan con un efecto
+        palletDiv.style.opacity = 0;
+        palletDiv.style.transition = 'opacity 1s ease-in-out';
         truck.appendChild(palletDiv);
 
         // Actualiza el cálculo de metros lineales
         maxX = Math.max(maxX, x + pallet.length);
-        totalLinearMeters = maxX / 100; // Convertimos a metros
+        totalLinearMeters = maxX / 100;
+
+        // Después de que el div es añadido, lo hacemos visible
+        setTimeout(() => {
+            palletDiv.style.opacity = 1;
+        }, 100);
     });
 
     document.getElementById('result').textContent = `Metros lineales ocupados: ${totalLinearMeters.toFixed(2)} m`;
-}
-
-function isPositionAvailable(x, y, pallet, positions) {
-    return !positions.some(pos => 
-        x < pos.x + pos.length &&
-        x + pallet.length > pos.x &&
-        y < pos.y + pos.width &&
-        y + pallet.width > pos.y
-    );
 }
 
