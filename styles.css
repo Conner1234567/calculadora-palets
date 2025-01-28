@@ -1,49 +1,49 @@
 /* Estilos para la página */
 body {
-    font-family: 'Roboto', sans-serif;
-    background: #f1f8e9; /* Fondo muy claro, verde pastel */
+    font-family: 'Arial', sans-serif;
+    background: #ffffff; /* Fondo blanco limpio */
     margin: 0;
     padding: 0;
     text-align: center;
     color: #333; /* Texto oscuro para contraste */
-    text-transform: uppercase; /* Poner todo en mayúsculas */
+    text-transform: uppercase; /* Todo en mayúsculas */
 }
 
 /* Estilo para el encabezado */
 h1 {
-    font-size: 3em;
+    font-size: 2.5em;
     margin-top: 50px;
-    color: #388e3c; /* Verde oscuro */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    color: #388e3c; /* Verde oscuro y profesional */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 /* Contenedor del formulario */
 .form-container {
-    background-color: #ffeb3b; /* Fondo amarillo/naranja suave */
-    padding: 20px;
-    border-radius: 10px;
+    background-color: #f1f1f1; /* Fondo gris claro, limpio */
+    padding: 30px;
+    border-radius: 8px;
     margin: 20px auto;
-    width: 50%;
+    width: 60%;
     max-width: 600px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilo de los campos de entrada */
 input[type="number"] {
-    padding: 10px;
-    margin: 10px 0;
+    padding: 12px;
+    margin: 12px 0;
     border: 2px solid #388e3c; /* Borde verde oscuro */
     border-radius: 5px;
-    width: calc(100% - 22px);
+    width: calc(100% - 24px);
     font-size: 1.1em;
 }
 
 /* Botón de acción */
 button {
-    background-color: #ff7043; /* Naranja */
+    background-color: #ff7043; /* Naranja brillante */
     color: white;
     border: none;
-    padding: 12px 25px;
+    padding: 14px 30px;
     font-size: 1.2em;
     cursor: pointer;
     border-radius: 5px;
@@ -59,7 +59,7 @@ button:hover {
 /* Estilo para mostrar el resultado */
 #result {
     font-size: 1.5em;
-    margin-top: 20px;
+    margin-top: 30px;
     font-weight: bold;
     color: #388e3c; /* Verde oscuro */
 }
@@ -70,17 +70,17 @@ button:hover {
     width: 1360px; /* 13.6m en escala */
     height: 244px; /* 2.44m en escala */
     margin: 20px auto;
-    border: 3px solid #333; /* Borde oscuro */
-    background-color: #e8f5e9; /* Fondo muy claro, verde pastel */
+    border: 3px solid #333; /* Borde negro */
+    background-color: #f9f9f9; /* Fondo gris muy claro */
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 /* Estilo de los palets dentro del camión */
 .pallet {
     position: absolute;
-    background-color: rgba(56, 142, 60, 0.7); /* Verde más fuerte */
-    border: 2px solid #388e3c; /* Borde verde oscuro */
+    background-color: #4caf50; /* Verde profesional */
+    border: 2px solid #388e3c; /* Borde verde más oscuro */
     color: #fff;
     font-size: 14px;
     display: flex;
@@ -91,7 +91,7 @@ button:hover {
 
 /* Añadir espacio entre los campos de entrada */
 .form-container label {
-    font-size: 1.1em;
+    font-size: 1.2em;
     margin-bottom: 10px;
     display: block;
 }
@@ -99,6 +99,6 @@ button:hover {
 /* Efecto en los campos de número cuando están en foco */
 input[type="number"]:focus {
     outline: none;
-    border-color: #ff7043; /* Borde naranja */
+    border-color: #ff7043; /* Borde naranja al estar en foco */
     box-shadow: 0 0 5px rgba(255, 87, 34, 0.5);
 }
