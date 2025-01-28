@@ -1,3 +1,32 @@
+const truckWidth = 1360; // 13.6m en cm
+const truckHeight = 244; // 2.44m en cm
+let pallets = [];
+
+// Función para añadir palets
+function addPallets() {
+    const palletWidth = parseInt(document.getElementById('pallet-width').value);
+    const palletLength = parseInt(document.getElementById('pallet-length').value);
+    const palletQuantity = parseInt(document.getElementById('pallet-quantity').value);
+
+    const errorMessage = document.getElementById('error-message');
+    errorMessage.style.display = 'none'; // Ocultar mensaje de error
+
+    if (isNaN(palletWidth) || isNaN(palletLength) || isNaN(palletQuantity)) {
+        errorMessage.textContent = 'Por favor, introduce valores válidos.';
+        errorMessage.style.display = 'block';
+        return;
+    }
+
+    // Añadir los palets a la lista
+    for (let i = 0; i < palletQuantity; i++) {
+        pallets.push({ width: palletWidth, length: palletLength });
+    }
+
+    // Renderizar el camión con los palets
+    renderTruck();
+}
+
+// Función para renderizar los palets en el camión
 function renderTruck() {
     const truck = document.getElementById('truck');
     truck.innerHTML = '';
@@ -8,7 +37,7 @@ function renderTruck() {
     pallets.forEach((pallet, index) => {
         let placed = false;
 
-        // Encuentra un lugar disponible para el pallet
+        // Buscar un lugar disponible para el palet
         for (let i = 0; i <= truckWidth - pallet.length; i++) {
             for (let j = 0; j <= truckHeight - pallet.width; j++) {
                 if (isPositionAvailable(i, j, pallet, positions)) {
@@ -41,16 +70,26 @@ function renderTruck() {
         palletDiv.style.transition = 'opacity 1s ease-in-out';
         truck.appendChild(palletDiv);
 
-        // Actualiza el cálculo de metros lineales
+        // Actualizar el cálculo de metros lineales
         maxX = Math.max(maxX, x + pallet.length);
         totalLinearMeters = maxX / 100;
 
-        // Después de que el div es añadido, lo hacemos visible
+        // Hacer visible el palet después de un breve retraso
         setTimeout(() => {
             palletDiv.style.opacity = 1;
         }, 100);
     });
 
     document.getElementById('result').textContent = `Metros lineales ocupados: ${totalLinearMeters.toFixed(2)} m`;
+}
+
+// Función para verificar si la posición está libre
+function isPositionAvailable(x, y, pallet, positions) {
+    return !positions.some(pos => 
+        x < pos.x + pos.length &&
+        x + pallet.length > pos.x &&
+        y < pos.y + pos.width &&
+        y + pallet.width > pos.y
+    );
 }
 
