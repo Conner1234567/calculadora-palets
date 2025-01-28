@@ -1,24 +1,25 @@
 /* Estilos para la página */
 body {
     font-family: 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #6a11cb, #2575fc); /* Gradiente atractivo */
+    background: #f7f7f7; /* Fondo claro */
     margin: 0;
     padding: 0;
     text-align: center;
-    color: #fff;
+    color: #333; /* Texto oscuro para contraste */
+    text-transform: uppercase; /* Poner todo en mayúsculas */
 }
 
 /* Estilo para el encabezado */
 h1 {
-    font-size: 2.5em;
+    font-size: 3em;
     margin-top: 50px;
-    color: #fff;
+    color: #1b5e20; /* Verde oscuro */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* Contenedor del formulario */
 .form-container {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: #ffeb3b; /* Fondo amarillo/naranja */
     padding: 20px;
     border-radius: 10px;
     margin: 20px auto;
@@ -31,18 +32,18 @@ h1 {
 input[type="number"] {
     padding: 10px;
     margin: 10px 0;
-    border: 1px solid #ccc;
+    border: 2px solid #1b5e20; /* Borde verde */
     border-radius: 5px;
     width: calc(100% - 22px);
-    font-size: 1em;
+    font-size: 1.1em;
 }
 
 /* Botón de acción */
 button {
-    background-color: #007bff;
+    background-color: #ff5722; /* Naranja */
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 25px;
     font-size: 1.2em;
     cursor: pointer;
     border-radius: 5px;
@@ -51,7 +52,7 @@ button {
 
 /* Efecto hover en el botón */
 button:hover {
-    background-color: #0056b3;
+    background-color: #e64a19; /* Naranja oscuro */
     transform: scale(1.05);
 }
 
@@ -68,8 +69,8 @@ button:hover {
     width: 1360px; /* 13.6m en escala */
     height: 244px; /* 2.44m en escala */
     margin: 20px auto;
-    border: 3px solid #333;
-    background-color: #f4f4f4;
+    border: 3px solid #333; /* Borde oscuro */
+    background-color: #e8f5e9; /* Fondo claro verde */
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
@@ -77,8 +78,8 @@ button:hover {
 /* Estilo de los palets dentro del camión */
 .pallet {
     position: absolute;
-    background-color: rgba(0, 128, 0, 0.7);
-    border: 1px solid #000;
+    background-color: rgba(27, 94, 32, 0.7); /* Verde oscuro */
+    border: 2px solid #2e7d32; /* Borde verde más oscuro */
     color: #fff;
     font-size: 14px;
     display: flex;
@@ -97,6 +98,6 @@ button:hover {
 /* Efecto en los campos de número cuando están en foco */
 input[type="number"]:focus {
     outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    border-color: #ff5722; /* Borde naranja */
+    box-shadow: 0 0 5px rgba(255, 87, 34, 0.5);
 }
