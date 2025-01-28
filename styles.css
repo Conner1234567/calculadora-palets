@@ -1,4 +1,4 @@
-/* Fondo de la página */
+/* Estilos para la página */
 body {
     font-family: 'Roboto', sans-serif;
     background: linear-gradient(135deg, #6a11cb, #2575fc); /* Gradiente atractivo */
@@ -8,7 +8,7 @@ body {
     color: #fff;
 }
 
-/* Encabezado principal */
+/* Estilo para el encabezado */
 h1 {
     font-size: 2.5em;
     margin-top: 50px;
@@ -16,7 +16,7 @@ h1 {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
-/* Contenedor de formulario */
+/* Contenedor del formulario */
 .form-container {
     background-color: rgba(255, 255, 255, 0.8);
     padding: 20px;
@@ -27,7 +27,7 @@ h1 {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Campos de entrada */
+/* Estilo de los campos de entrada */
 input[type="number"] {
     padding: 10px;
     margin: 10px 0;
@@ -49,24 +49,24 @@ button {
     transition: all 0.3s ease;
 }
 
-/* Efecto al pasar el ratón */
+/* Efecto hover en el botón */
 button:hover {
     background-color: #0056b3;
     transform: scale(1.05);
 }
 
-/* Resultado final */
+/* Estilo para mostrar el resultado */
 #result {
     font-size: 1.5em;
     margin-top: 20px;
     font-weight: bold;
 }
 
-/* Diseño del camión */
+/* Estilo del contenedor del camión */
 .truck {
     position: relative;
-    width: 1360px;
-    height: 244px;
+    width: 1360px; /* 13.6m en escala */
+    height: 244px; /* 2.44m en escala */
     margin: 20px auto;
     border: 3px solid #333;
     background-color: #f4f4f4;
@@ -74,7 +74,7 @@ button:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Palets dentro del camión */
+/* Estilo de los palets dentro del camión */
 .pallet {
     position: absolute;
     background-color: rgba(0, 128, 0, 0.7);
@@ -87,14 +87,14 @@ button:hover {
     border-radius: 5px;
 }
 
-/* Añadir espacio entre los campos del formulario */
+/* Añadir espacio entre los campos de entrada */
 .form-container label {
     font-size: 1.1em;
     margin-bottom: 10px;
     display: block;
 }
 
-/* Efectos sutiles en las entradas de número */
+/* Efecto en los campos de número cuando están en foco */
 input[type="number"]:focus {
     outline: none;
     border-color: #007bff;
