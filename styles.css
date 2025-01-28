@@ -1,11 +1,11 @@
-/* Estilos para la página */
+/* Estilos generales para la página */
 body {
     font-family: 'Arial', sans-serif;
     background: #ffffff; /* Fondo blanco limpio */
     margin: 0;
     padding: 0;
     text-align: center;
-    color: #333; /* Texto oscuro para contraste */
+    color: #333; /* Texto oscuro */
     text-transform: uppercase; /* Todo en mayúsculas */
 }
 
@@ -13,13 +13,13 @@ body {
 h1 {
     font-size: 2.5em;
     margin-top: 50px;
-    color: #388e3c; /* Verde oscuro y profesional */
+    color: #388e3c; /* Verde oscuro */
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 /* Contenedor del formulario */
 .form-container {
-    background-color: #f1f1f1; /* Fondo gris claro, limpio */
+    background-color: #f1f1f1; /* Fondo gris claro */
     padding: 30px;
     border-radius: 8px;
     margin: 20px auto;
